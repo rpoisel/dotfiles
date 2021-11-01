@@ -1,0 +1,409 @@
+(require 'package)
+
+(setq use-package-hook-name-suffix nil)
+
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+(use-package dired
+  :init
+  ;; (setq delete-by-moving-to-trash t)
+  ;; (setq dired-dwim-target t)
+  (setq dired-listing-switches "-AFhlv")
+  (setq dired-ls-F-marks-symlinks t) ;; Required b/c of -F in `dired-listing-switches'.
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'always)
+  (setq dired-use-ls-dired nil)
+  :config
+
+  ;; See https://christiantietze.de/posts/2021/06/emacs-trash-file-macos.
+  ;; Requires http://hasseg.org/trash, for example via `brew install trash`.
+  ;; (defun system-move-file-to-trash (path)
+  ;;   "Moves file at PATH to the macOS Trash according to `move-file-to-trash' convention."
+  ;;   (shell-command (concat "trash -vF \"" path "\"") nil "*Trash Error Buffer*"))
+
+  :hook ((dired-mode-hook . dired-hide-details-mode)
+         (dired-mode-hook . hl-line-mode)))
+
+(use-package dired-x
+  :demand
+  :after dired
+  :init
+  (setq dired-omit-verbose nil)
+  :hook (dired-mode-hook . dired-omit-mode)
+        (dired-mode-hook . dired-hide-details-mode))
+
+(use-package dired-aux
+  :after dired
+  :config
+  ;; (setq dired-isearch-filenames 'dwim) ;; I use [j]ump instead
+  (setq dired-create-destination-dirs 'ask))
+
+(use-package async
+  :ensure)
+
+(use-package dired-async
+  :after (dired async) ;; provided by package async
+  :hook (dired-mode-hook . dired-async-mode))
+
+(use-package wdired
+  :after dired
+  :config
+  (with-eval-after-load 'evil
+    (add-hook 'wdired-mode-hook #'evil-normal-state))
+  (dolist (fn '(wdired-finish-edit wdired-abort-changes wdired-exit))
+    (advice-add fn :after (lambda () (evil-local-mode -1)))))
+
+ (use-package dired-rainbow
+   :ensure
+   :defer 2
+   :config
+   (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
+   (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
+   (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
+   (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
+   (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
+   (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
+   (dired-rainbow-define media "#de751f" ("mp3" "mp4" "mkv" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
+   (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
+   (dired-rainbow-define log "#c17d11" ("log"))
+   (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
+   (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
+   (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
+   (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
+   (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
+   (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
+   (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
+   (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
+   (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
+   (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
+   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
+
+(use-package dired-subtree
+  :ensure
+  :config
+  (bind-keys :map dired-mode-map
+             ("i" . dired-subtree-insert)
+             ("j" . dired-subtree-remove)))
+
+(use-package evil
+  :ensure
+  :demand
+  :init
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-w-delete t)
+  (setq evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1))
+(evil-set-initial-state 'dired-mode 'emacs)
+
+(use-package undo-tree
+  :ensure
+  :config
+  (with-eval-after-load 'evil
+    (custom-set-variables '(evil-undo-system 'undo-tree))) ;; requires use of custom-set; setq doesn't work here
+  (global-undo-tree-mode))
+
+(use-package evil-surround
+  :ensure
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-visualstar
+  :ensure
+  :config (global-evil-visualstar-mode t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ediff                                                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'ediff)
+;; don't start another frame
+;; this is done by default in preluse
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+;; put windows side by side
+(setq ediff-split-window-function (quote split-window-horizontally))
+;;revert windows on exit - needs winner mode
+(winner-mode)
+(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+(defun dw/minibuffer-backward-kill (arg)
+  "When minibuffer is completing a file name delete up to parent
+folder, otherwise delete a word"
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+      (backward-kill-word arg)))
+
+(use-package vertico
+  ;; :straight '(vertico :host github
+  ;;                     :repo "minad/vertico"
+  ;;                     :branch "main")
+  :ensure
+  :bind (:map vertico-map
+         ;; ("C-j" . vertico-next)
+         ;; ("C-k" . vertico-previous)
+         ("C-f" . vertico-exit)
+         :map minibuffer-local-map
+         ("M-h" . dw/minibuffer-backward-kill))
+  :custom
+  (vertico-cycle t)
+  :custom-face
+  (vertico-current ((t (:background "#3a3f5a"))))
+  :init
+  (vertico-mode))
+
+(use-package consult
+  :ensure)
+
+(use-package orderless
+  :ensure
+  :init
+  (setq completion-styles '(orderless))
+  (setq completion-category-defaults nil))
+
+;; (use-package zenburn-theme
+;;   :ensure
+;;   :config (load-theme 'zenburn t))
+(use-package dracula-theme
+  :ensure
+  :config (load-theme 'dracula t))
+
+;; (use-package tree-sitter
+;;   :ensure)
+
+;; (use-package tree-sitter-langs
+;;   :ensure)
+
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 1)
+(use-package company
+  :ensure)
+
+(use-package lsp-mode
+  :ensure
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :commands lsp)
+
+(use-package lsp-ui
+  :ensure
+  :commands lsp-ui-mode)
+
+(use-package lsp-treemacs
+  :ensure
+  :commands lsp-treemacs-errors-list)
+
+(use-package lsp-python-ms
+  :ensure
+  :init (setq lsp-python-ms-executable "/home/rpoisel/.emacs.d/.cache/lsp/mspyls/Microsoft.Python.LanguageServer"))
+(add-hook 'python-mode-hook 'lsp-deferred)
+
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(use-package go-mode
+  :ensure)
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+    ;; (setq lsp-log-io nil) ; if set to true can cause a performance hit
+    ;; (setq lsp-print-performance t)
+    ;; (setq lsp-auto-guess-root t) ; auto detect workspace and start lang server
+
+;; lua
+;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
+(use-package f
+  :ensure)
+
+(setq lsp-clients-lua-language-server-install-dir (f-join (getenv "HOME") ".vscode/extensions/sumneko.lua-2.4.2/server"); Default: ~/.emacs.d/.cache/lsp/lua-language-server/
+        lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/Linux/lua-language-server")
+        lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
+        lsp-lua-workspace-max-preload 2048 ; Default: 300, Max preloaded files
+        lsp-lua-workspace-preload-file-size 1024; Default: 100, Skip files larger than this value (KB) when preloading.
+)
+(use-package lua-mode
+  :ensure
+  :init
+  :config)
+
+(use-package dap-mode
+  :ensure)
+
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
+
+(use-package docker-tramp
+  :ensure)
+
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
+(use-package yaml-mode
+  :ensure)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+
+(use-package rg
+  :demand
+  :ensure
+  :after project
+  :init
+  (setq rg-show-header nil)
+  :config
+  (rg-enable-default-bindings)
+
+  ;; Redefine searches from transient, hardcode :files to "everything".
+  (rg-define-search rg-dwim-current-dir :query point :format literal :files "everything" :dir current)
+  (rg-define-search rg-dwim-project-dir :query point :format literal :files "everything" :dir project)
+  (rg-define-search rg :confirm prefix :files "everything")
+  (rg-define-search rg-literal :format literal :confirm prefix :files "everything")
+  (rg-define-search rg-project :files "everything" :dir project)
+
+  :bind (:map rg-mode-map
+              ;; Use the same key-binding that `wdired' uses by default.
+              ("C-x C-q" . wgrep-change-to-wgrep-mode))
+  :hook (rg-mode-hook . (lambda () (select-window (display-buffer (current-buffer))))))
+(evil-set-initial-state 'rg-mode 'emacs)
+
+(use-package magit
+  :ensure
+  :init
+  :config)
+
+(use-package git-timemachine
+  :ensure
+  :init
+  :config)
+(evil-set-initial-state 'git-timemachine-mode 'emacs)
+
+(use-package dockerfile-mode
+  :ensure
+  :init
+  :config)
+
+(use-package avy
+  :ensure
+  :init
+  :config)
+(global-set-key (kbd "C-:") 'avy-goto-char)
+
+(use-package treemacs
+  :ensure
+  :init
+  :config)
+
+(use-package treemacs-evil
+  :ensure
+  :init
+  :config)
+
+(use-package projectile
+  :ensure
+  :init
+  :config)
+
+(projectile-mode +1)
+;; Recommended keymap prefix on macOS
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+(use-package php-mode
+  :ensure
+  :init
+  :config)
+
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
+(use-package windmove
+  :bind (("S-M-<up>" . windmove-up)
+         ("S-M-<right>" . windmove-right)
+         ("S-M-<down>" . windmove-down)
+         ("S-M-<left>" . windmove-left)))
+
+(use-package vterm
+  :ensure
+  :commands vterm
+  :config
+  (defun turn-off-chrome ()
+    (hl-line-mode -1)
+    (display-line-numbers-mode -1))
+  :hook (vterm-mode . turn-off-chrome))
+
+;; (vterm-toggle-scope 'projectile)
+(use-package vterm-toggle
+  :ensure
+  :custom
+  (vterm-toggle-fullscreen-p nil "Open a vterm in another window.")
+  (vterm-toggle-scope 'project)
+  :bind (("C-c t" . #'vterm-toggle)
+         :map vterm-mode-map
+         ("s-t" . #'vterm) ; Open up new tabs quickly
+         ))
+
+(use-package drag-stuff
+  :ensure t)
+(drag-stuff-global-mode 1)
+(drag-stuff-define-keys)
+
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
+
+(use-package multiple-cursors
+  :ensure t)
+
+(use-package expand-region
+  :ensure t
+  :bind ("C-=" . er/expand-region))
+
+(use-package git-link
+  :ensure
+  :commands (git-link git-link-browse git-link-commit git-link-homepage)
+  :config
+  (defun git-link-browse (&rest args)
+    "Foobar."
+    (interactive)
+    (let ((git-link-open-in-browser t))
+      (if (interactive-p)
+          (call-interactively #'git-link)
+        (apply #'git-link args)))))
+(global-set-key (kbd "C-c g l") 'git-link)
+(global-set-key (kbd "C-c g b") 'git-link-browse)
+
+(use-package json-mode
+  :ensure)
+
+(use-package graphql-mode
+  :ensure)
+
+(use-package rainbow-mode
+  :ensure
+  :defer t
+  :hook (org-mode
+         emacs-lisp-mode
+         web-mode
+         typescript-mode
+         js2-mode))
+
+
+(server-start)
