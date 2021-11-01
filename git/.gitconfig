@@ -1,0 +1,51 @@
+[cola]
+	spellcheck = false
+[user]
+	email = rainer.poisel@gmail.com
+	name = Rainer Poisel
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[pull]
+	rebase = true
+[diff]
+	tool = meld
+	colorMoved = zebra
+[difftool]
+	prompt = false
+[difftool "meld"]
+	cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+	tool = meld
+[mergetool "meld"]
+	prompt = false
+	# see: https://stackoverflow.com/a/34119867
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = rainer.poisel@gmail.com
+	smtpServerPort = 587
+[init]
+	defaultBranch = main
+[interactive]
+  singleKey = true
+
+[alias]
+stash-untracked = "!f() {    \
+    git stash;               \
+    git stash -u;            \
+    git stash pop stash@{1}; \
+}; f"
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	dt = difftool
+	cloner = clone --recursive
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[fetch]
+	prune = true
