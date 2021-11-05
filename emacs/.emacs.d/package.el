@@ -483,6 +483,9 @@ folder, otherwise delete a word"
   :ensure
   :hook (org-mode . efs/org-mode-visual-fill))
 
+(use-package capf-autosuggest
+  :ensure)
+
 (use-package rainbow-mode
   :ensure
   :defer t
