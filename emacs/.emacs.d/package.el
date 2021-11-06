@@ -344,22 +344,22 @@ folder, otherwise delete a word"
   :commands vterm
   :config
   (setq vterm-max-scrollback 10000)
-  (setq vterm-kill-buffer-on-exit t)
+  ;; (setq vterm-kill-buffer-on-exit t)
   (defun turn-off-chrome ()
     (hl-line-mode -1)
     (display-line-numbers-mode -1))
   :hook (vterm-mode . turn-off-chrome))
 
-(use-package vterm-toggle
-  :ensure
-  :custom
-  (vterm-toggle-fullscreen-p nil "Open a vterm in another window.")
-  (vterm-toggle-scope 'project)
-  ;; (vterm-toggle-scope 'projectile)
-  :bind (("C-c t" . #'vterm-toggle)
-         :map vterm-mode-map
-         ("s-t" . #'vterm) ; Open up new tabs quickly
-         ))
+(defun vmacs-auto-exit (buf event)
+  ;; buf unused
+  ;; event unused
+  (kill-buffer-and-window))
+
+;; (add-hook 'vterm-exit-functions (lambda (buf event)
+;; 				  (message "Called.")
+;; 				  (delete-window)))
+
+(add-hook 'vterm-exit-functions #'vmacs-auto-exit)
 
 (use-package multi-vterm
   :ensure t
@@ -393,9 +393,43 @@ folder, otherwise delete a word"
 	(evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
 	(evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-vterm-next)
 	(evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev)
+	(evil-define-key 'normal vterm-mode-map (kbd "C-c 2")    #'rpoisel/multi-vterm-split-vertically)
+	(evil-define-key 'normal vterm-mode-map (kbd "C-c 3")    #'rpoisel/multi-vterm-split-horizontally)
 	(evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
 	(evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
 	(evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
+
+(defun rpoisel/multi-vterm-split-vertically ()
+  (interactive)
+  (select-window (split-window-vertically))
+  (multi-vterm))
+(defun rpoisel/multi-vterm-split-horizontally ()
+  (interactive)
+  (select-window (split-window-horizontally))
+  (multi-vterm))
+(defun rpoisel/multi-vterm-jump-device ()
+  (interactive)
+  (let ((split (read-multiple-choice "Choose splitting"
+				     '((?h "horizontal")
+				       (?v "vertical")))))
+    (let ((jumphost (read-multiple-choice "Choose jumphost"
+					  '((?s "jumpstaging")
+					    (?p "jump")))))
+      (let ((mac (read-string "Enter MAC: ")))
+	(cond
+	 ((eq (nth 0 split) ?h) (rpoisel/multi-vterm-split-horizontally))
+	 ((eq (nth 0 split) ?v) (rpoisel/multi-vterm-split-vertically)))
+	(vterm-insert (format "ssh %s %s" (nth 1 jumphost) mac))
+	(vterm-send-return)
+	(sleep-for 1)
+	(vterm-insert "alias ll=\"ls -la --color=always\"")
+	(vterm-send-return)))))
+
+(global-set-key (kbd "C-c t") 'multi-vterm)
+(global-set-key (kbd "C-c 2") 'rpoisel/multi-vterm-split-vertically)
+(global-set-key (kbd "C-c 3") 'rpoisel/multi-vterm-split-horizontally)
+;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-staging)
+;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-prod)
 
 (use-package drag-stuff
   :ensure t)
