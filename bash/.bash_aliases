@@ -56,7 +56,6 @@ alias gsu="git submodule update --init --recursive"
 # maven
 alias mvci="mvn clean install"
 alias mvcis="mvn clean install -Dpmd.skip -DcheckStyle.skip -DskipTests"
-alias lxc="snap run lxd.lxc"
 alias dpsa="docker ps -a"
 alias drmf="delete_docker_containers"
 alias drmfa="delete_all_docker_containers"
