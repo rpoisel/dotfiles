@@ -164,14 +164,29 @@ folder, otherwise delete a word"
   :init
   (vertico-mode))
 
-(use-package consult
-  :ensure)
-
 (use-package orderless
   :ensure
   :init
   (setq completion-styles '(orderless))
   (setq completion-category-defaults nil))
+
+;; Enable richer annotations using the Marginalia package
+(use-package marginalia
+  :ensure
+  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  :bind (("M-A" . marginalia-cycle)
+         :map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init configuration is always executed (Not lazy!)
+  :init
+
+  ;; Must be in the :init section of use-package such that the mode gets
+  ;; enabled right away. Note that this forces loading the package.
+  (marginalia-mode))
+
+(use-package consult
+  :ensure)
 
 ;; (use-package zenburn-theme
 ;;   :ensure
