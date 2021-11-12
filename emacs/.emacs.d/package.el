@@ -315,7 +315,6 @@ folder, otherwise delete a word"
   :ensure
   :init
   :config)
-(global-set-key (kbd "C-:") 'avy-goto-char)
 
 (use-package treemacs
   :ensure
@@ -440,12 +439,6 @@ folder, otherwise delete a word"
 	(vterm-insert "alias ll=\"ls -la --color=always\"")
 	(vterm-send-return)))))
 
-(global-set-key (kbd "C-c t") 'multi-vterm)
-(global-set-key (kbd "C-c 2") 'rpoisel/multi-vterm-split-vertically)
-(global-set-key (kbd "C-c 3") 'rpoisel/multi-vterm-split-horizontally)
-;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-staging)
-;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-prod)
-
 (use-package drag-stuff
   :ensure t)
 (drag-stuff-global-mode 1)
@@ -474,8 +467,6 @@ folder, otherwise delete a word"
       (if (interactive-p)
           (call-interactively #'git-link)
         (apply #'git-link args)))))
-(global-set-key (kbd "C-c g l") 'git-link)
-(global-set-key (kbd "C-c g b") 'git-link-browse)
 
 (use-package json-mode
   :ensure)
@@ -544,5 +535,21 @@ folder, otherwise delete a word"
          typescript-mode
          js2-mode))
 
+;; global key map
+(global-set-key (kbd "C-:") 'avy-goto-char)
 
+(global-set-key (kbd "C-c t") 'multi-vterm)
+(global-set-key (kbd "C-c 2") 'rpoisel/multi-vterm-split-vertically)
+(global-set-key (kbd "C-c 3") 'rpoisel/multi-vterm-split-horizontally)
+;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-staging)
+;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-prod)
+
+(global-set-key (kbd "C-c g l") 'git-link)
+(global-set-key (kbd "C-c g b") 'git-link-browse)
+
+(global-set-key (kbd "C-c c b") 'consult-buffer)
+(global-set-key (kbd "C-c c l") 'consult-line)
+(global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
+
+;; TODO only start if not yet started
 (server-start)
