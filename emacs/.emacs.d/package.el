@@ -103,7 +103,9 @@
   (setq evil-want-C-w-delete t)
   (setq evil-want-C-i-jump nil)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join))
 (evil-set-initial-state 'dired-mode 'emacs)
 
 (use-package undo-tree
@@ -206,15 +208,50 @@ folder, otherwise delete a word"
 (use-package company
   :ensure)
 
+(use-package corfu
+  :ensure
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-commit-predicate nil)   ;; Do not commit selected candidates on next input
+  ;; (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
+  ;; (corfu-quit-no-match t)        ;; Automatically quit if there is no match
+  ;; (corfu-echo-documentation nil) ;; Do not show documentation in the echo area
+
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  ;; :bind (:map corfu-map
+  ;;        ("TAB" . corfu-next)
+  ;;        ([tab] . corfu-next)
+  ;;        ("S-TAB" . corfu-previous)
+  ;;        ([backtab] . corfu-previous))
+
+  ;; You may want to enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since dabbrev can be used globally (M-/).
+  :init
+  (corfu-global-mode))
+
+(use-package which-key
+  :ensure)
+
 (use-package lsp-mode
   :ensure
+  :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
-  :commands lsp)
+  (setq lsp-file-watch-threshold 10000)
+  :config
+  (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
   :ensure
-  :commands lsp-ui-mode)
+  :init (setq lsp-ui-peek-list-width 80)
+  :hook (lsp-mode . lsp-ui-mode))
 
 (use-package lsp-treemacs
   :ensure
@@ -550,6 +587,12 @@ folder, otherwise delete a word"
 (global-set-key (kbd "C-c c b") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :ensure
+  :init
+  (savehist-mode))
 
 ;; TODO only start if not yet started
 (server-start)
