@@ -446,6 +446,9 @@ folder, otherwise delete a word"
 
 (add-hook 'vterm-exit-functions #'vmacs-auto-exit)
 
+(use-package vterm-toggle
+  :ensure)
+
 (use-package multi-vterm
   :ensure t
   :config
