@@ -305,6 +305,9 @@ folder, otherwise delete a word"
   :ensure t
   :commands (kubernetes-overview))
 
+(require 'kubernetes)
+(evil-set-initial-state 'kubernetes-overview-mode 'emacs)
+
 (use-package yaml-mode
   :ensure)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
