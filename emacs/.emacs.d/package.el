@@ -618,8 +618,9 @@ folder, otherwise delete a word"
 ;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-staging)
 ;; (global-set-key (kbd "C-c s 3") 'rpoisel/multi-vterm-jump-device-prod)
 
+(global-set-key (kbd "C-c g b") 'magit-blame-addition)
 (global-set-key (kbd "C-c g l") 'git-link)
-(global-set-key (kbd "C-c g b") 'git-link-browse)
+(global-set-key (kbd "C-c g B") 'git-link-browse)
 
 (global-set-key (kbd "C-c c b") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
