@@ -371,6 +371,10 @@ folder, otherwise delete a word"
   :init
   :config)
 
+(use-package forge
+  :ensure
+  :after magit)
+
 (use-package git-timemachine
   :ensure
   :init
