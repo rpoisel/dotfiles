@@ -144,8 +144,7 @@
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
 (defun dw/minibuffer-backward-kill (arg)
-  "When minibuffer is completing a file name delete up to parent
-folder, otherwise delete a word"
+  "When minibuffer is completing a file name delete up to parent folder, otherwise delete a word."
   (interactive "p")
   (if minibuffer-completing-file-name
       ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
@@ -371,6 +370,28 @@ folder, otherwise delete a word"
               ("C-x C-q" . wgrep-change-to-wgrep-mode))
   :hook (rg-mode-hook . (lambda () (select-window (display-buffer (current-buffer))))))
 (evil-set-initial-state 'rg-mode 'emacs)
+
+(use-package flymake
+  :bind (("C-c ! n" . flymake-goto-next-error)
+         ("C-c ! p" . flymake-goto-prev-error)))
+
+(use-package prog-mode
+  :config
+  (with-eval-after-load 'evil
+    (add-hook 'prog-mode-hook #'evil-normal-state))
+  :hook ((prog-mode-hook . fg/flymake-mode)
+         ;; (prog-mode-hook . whitespace-mode)
+         (prog-mode-hook . bug-reference-prog-mode)))
+
+;; Inspired by https://www.manueluberti.eu/emacs/2020/11/21/flymake-projects.
+(defun fg/flymake-mode ()
+  "Enable flymake mode if the current buffer is writeable, has a file and belongs to a project."
+  (when (and (eq buffer-read-only nil)
+             (buffer-file-name)
+             (project-current))
+    (flymake-mode +1)
+    )
+  )
 
 (use-package magit
   :ensure
@@ -632,8 +653,10 @@ folder, otherwise delete a word"
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
+(global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c c b") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
+(global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
