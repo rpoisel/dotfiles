@@ -14,6 +14,12 @@
 (eval-when-compile
   (require 'use-package))
 
+(use-package exec-path-from-shell
+  :ensure
+  :config
+  (when (display-graphic-p)
+    (exec-path-from-shell-initialize)))
+
 (use-package dired
   :init
   ;; (setq delete-by-moving-to-trash t)
