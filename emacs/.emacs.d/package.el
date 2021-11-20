@@ -640,6 +640,15 @@
          typescript-mode
          js2-mode))
 
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :ensure
+  :init
+  (savehist-mode))
+
+(use-package guru-mode
+  :ensure)
+
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
 
@@ -658,12 +667,6 @@
 (global-set-key (kbd "C-c c l") 'consult-line)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
-
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :ensure
-  :init
-  (savehist-mode))
 
 ;; TODO only start if not yet started
 (server-start)
