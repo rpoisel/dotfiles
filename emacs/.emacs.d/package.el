@@ -329,8 +329,7 @@
 )
 (use-package lua-mode
   :ensure
-  :init
-  :config)
+  :init (setq-default lua-indent-level 4))
 
 (use-package dap-mode
   :ensure)
