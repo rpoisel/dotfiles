@@ -114,13 +114,6 @@
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join))
 (evil-set-initial-state 'dired-mode 'emacs)
 
-(use-package undo-tree
-  :ensure
-  :config
-  (with-eval-after-load 'evil
-    (custom-set-variables '(evil-undo-system 'undo-tree))) ;; requires use of custom-set; setq doesn't work here
-  (global-undo-tree-mode))
-
 (use-package evil-surround
   :ensure
   :config
@@ -129,6 +122,13 @@
 (use-package evil-visualstar
   :ensure
   :config (global-evil-visualstar-mode t))
+
+(use-package undo-tree
+  :ensure
+  :config
+  (with-eval-after-load 'evil
+    (custom-set-variables '(evil-undo-system 'undo-tree))) ;; requires use of custom-set; setq doesn't work here
+  (global-undo-tree-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ediff                                                                  ;;
