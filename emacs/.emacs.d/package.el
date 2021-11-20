@@ -375,27 +375,15 @@
   :hook (rg-mode-hook . (lambda () (select-window (display-buffer (current-buffer))))))
 (evil-set-initial-state 'rg-mode 'emacs)
 
-(use-package flymake
-  :bind (("C-c ! n" . flymake-goto-next-error)
-         ("C-c ! p" . flymake-goto-prev-error)))
-
 (use-package prog-mode
   :config
   (with-eval-after-load 'evil
     (add-hook 'prog-mode-hook #'evil-normal-state))
-  :hook ((prog-mode-hook . fg/flymake-mode)
-         ;; (prog-mode-hook . whitespace-mode)
-         (prog-mode-hook . bug-reference-prog-mode)))
+  :hook ((prog-mode-hook . bug-reference-prog-mode)))
 
-;; Inspired by https://www.manueluberti.eu/emacs/2020/11/21/flymake-projects.
-(defun fg/flymake-mode ()
-  "Enable flymake mode if the current buffer is writeable, has a file and belongs to a project."
-  (when (and (eq buffer-read-only nil)
-             (buffer-file-name)
-             (project-current))
-    (flymake-mode +1)
-    )
-  )
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 (use-package magit
   :ensure
