@@ -26,6 +26,10 @@ goversion() {
   fi
 }
 
+# system
+alias rc-packages="dpkg -l | grep ^rc | awk '{ print $2 }' | xargs"
+alias drrc="sudo apt purge $(rc-packages)"
+
 # editor
 alias enw="emacs -nw"
 alias ecl="emacsclient"
@@ -37,6 +41,10 @@ alias please="sudo"
 
 # other stuff
 alias ff="find . -type f -name"
+
+# shell
+alias histoff="set +o history"
+alias histon="set -o history"
 
 # git
 alias gg="git cola 2>/dev/null"
@@ -63,9 +71,6 @@ alias drm="docker rm -f"
 alias kc="kubectl"
 alias xclip="xclip -selection clipboard"
 alias rpo="rpoisel"
-
-alias histoff="set +o history"
-alias histon="set -o history"
 
 # cluster
 alias dkc="docker-compose"
