@@ -655,6 +655,7 @@
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-prod)
 
 (global-set-key (kbd "C-c g b") 'magit-blame-addition)
+(global-set-key (kbd "C-c g f") 'magit-log-buffer-file)
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
@@ -662,6 +663,7 @@
 (global-set-key (kbd "C-c c b") 'consult-buffer)
 (global-set-key (kbd "M-o") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
+(global-set-key (kbd "M-l") 'consult-line)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
 
