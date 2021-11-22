@@ -641,6 +641,10 @@
 (use-package guru-mode
   :ensure)
 
+;; Variables
+
+(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
 
@@ -656,6 +660,7 @@
 
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c c b") 'consult-buffer)
+(global-set-key (kbd "M-o") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
