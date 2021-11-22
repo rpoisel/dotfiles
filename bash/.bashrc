@@ -140,13 +140,17 @@ export EDITOR="/usr/bin/emacsclient -a emacs_editor.sh"
 
 shopt -s globstar
 
-source /usr/share/doc/fzf/examples/key-bindings.bash
+if ! [ "${TERM}" == "dumb" ]; then
+  source /usr/share/doc/fzf/examples/key-bindings.bash
 # Using highlight (http://www.andre-simon.de/doku/highlight/en/highlight.html)
-export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-source ~/git/fzf-marks/fzf-marks.plugin.bash
+  export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+  source ~/git/fzf-marks/fzf-marks.plugin.bash
+fi
 
 eval "$(direnv hook bash)"
-eval "$(starship init bash)"
+if ! [ "${TERM}" == "dumb" ]; then
+  eval "$(starship init bash)"
+fi
 
 function add_completion() {
   cmd="${1}"
