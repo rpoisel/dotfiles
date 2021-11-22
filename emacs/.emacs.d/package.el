@@ -665,5 +665,7 @@
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
 
+(global-set-key (kbd "M-s") 'shell)
+
 ;; TODO only start if not yet started
 (server-start)
