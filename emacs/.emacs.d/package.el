@@ -660,12 +660,13 @@
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
-(global-set-key (kbd "C-c c b") 'consult-buffer)
+(global-set-key (kbd "C-c c o") 'consult-buffer)
 (global-set-key (kbd "M-o") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
 (global-set-key (kbd "M-l") 'consult-line)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
+(global-set-key (kbd "C-c c b") 'consult-bookmark)
 
 (global-set-key (kbd "M-s") 'shell)
 
