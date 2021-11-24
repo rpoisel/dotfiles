@@ -49,3 +49,5 @@ stash-untracked = "!f() {    \
 	helper = !/usr/bin/gh auth git-credential
 [fetch]
 	prune = true
+[github]
+	user = rpoisel
