@@ -12,19 +12,13 @@ esac
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
-# append to the history file, don't overwrite it
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTCONTROL=ignorespace:ignoredups:erasedups   # leading space hides commands from history
+HISTFILESIZE=10000                              # increase history file size (default is 500)
+HISTSIZE=${HISTFILESIZE}                        # increase history size (default is 500)
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-# alias hh=hstr                    # hh to be alias for hstr
-export HSTR_CONFIG=hicolor       # get more colors
-export HISTCONTROL=ignorespace   # leading space hides commands from history
-export HISTFILESIZE=10000        # increase history file size (default is 500)
-export HISTSIZE=${HISTFILESIZE}  # increase history size (default is 500)
-# if this is interactive shell, then bind hstr to Ctrl-r (for Vi mode check doc)
-# if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
-# if this is interactive shell, then bind 'kill last command' to Ctrl-x k
-# if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -178,8 +172,5 @@ add_completion gh completion -s bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# ensure synchronization between bash memory and history file
-export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 
 goversion 1.17
