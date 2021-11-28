@@ -415,7 +415,13 @@
 (use-package avy
   :ensure
   :init
-  :config)
+  (setq avy-background t)
+  :config
+  (with-eval-after-load 'evil
+    (dolist (state '(motion normal operator visual))
+      :config
+      (let ((map (intern (format "evil-%s-state-map" state))))
+        (bind-key "SPC" #'avy-goto-char-timer map)))))
 
 (use-package treemacs
   :ensure
