@@ -359,6 +359,7 @@
   :ensure)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.gqlgen\\'" . yaml-mode))
 
 (setq rg-custom-type-aliases
   '(("graphql" .    "*.graphqls gqlgen.yml")))
@@ -577,6 +578,7 @@
 (use-package json-mode
   :ensure)
 
+(add-to-list 'auto-mode-alist '("\\.graphqls\\'" . graphql-mode))
 (use-package graphql-mode
   :ensure)
 
