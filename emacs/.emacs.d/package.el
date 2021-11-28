@@ -338,9 +338,6 @@
   :ensure
   :init (setq-default lua-indent-level 4))
 
-(use-package dap-mode
-  :ensure)
-
 (use-package docker
   :ensure t
   :bind ("C-c d" . docker))
