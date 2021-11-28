@@ -679,6 +679,3 @@
 (global-set-key (kbd "C-c c g") 'consult-ripgrep)
 
 (global-set-key (kbd "M-s") 'shell)
-
-;; TODO only start if not yet started
-(server-start)
