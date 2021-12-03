@@ -687,5 +687,7 @@
 (global-set-key (kbd "M-p") 'consult-bookmark)
 (global-set-key (kbd "C-c c f") 'consult-recent-file)
 (global-set-key (kbd "C-c c g") 'consult-ripgrep)
+(global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
+(global-set-key (kbd "C-<next>") 'tab-next) ; page down key
 
 (global-set-key (kbd "M-s") 'shell)
