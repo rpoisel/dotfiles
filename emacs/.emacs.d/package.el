@@ -293,6 +293,9 @@
 (use-package f
   :ensure)
 
+(use-package crux
+  :ensure)
+
 (use-package lsp-mode
   :ensure
   :commands (lsp lsp-deferred)
@@ -698,9 +701,12 @@
   (save-excursion
     (if (region-active-p)
         (progn
-          (indent-region (region-beginning) (region-end)))
+          (indent-region (region-beginning) (region-end))
+          (unless (member major-mode crux-untabify-sensitive-modes)
+            (call-interactively #'untabify)))
       (progn
-        (er-indent-buffer)))))
+        (er-indent-buffer)))
+    (whitespace-cleanup)))
 
 ;; Variables
 
