@@ -14,9 +14,9 @@
 (eval-when-compile
   (require 'use-package))
 
-(add-to-list 'load-path "~/.emacs.d/local/sunrise-commander")
-(require 'sunrise)
-(add-to-list 'auto-mode-alist '("\\.srvm\\'" . sr-virtual-mode))
+;; (add-to-list 'load-path "~/.emacs.d/local/sunrise-commander")
+;; (require 'sunrise)
+;; (add-to-list 'auto-mode-alist '("\\.srvm\\'" . sr-virtual-mode))
 
 (use-package exec-path-from-shell
   :ensure
