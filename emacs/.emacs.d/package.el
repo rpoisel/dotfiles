@@ -290,6 +290,9 @@
 (use-package which-key
   :ensure)
 
+(use-package f
+  :ensure)
+
 (use-package lsp-mode
   :ensure
   :commands (lsp lsp-deferred)
@@ -328,9 +331,6 @@
 
 ;; lua
 ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
-(use-package f
-  :ensure)
-
 (setq lsp-clients-lua-language-server-install-dir (f-join (getenv "HOME") ".vscode/extensions/sumneko.lua-2.4.2/server"); Default: ~/.emacs.d/.cache/lsp/lua-language-server/
       lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/Linux/lua-language-server")
       lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
