@@ -658,6 +658,24 @@
 (use-package guru-mode
   :ensure)
 
+;; Functions
+
+;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
+(defun er-indent-buffer ()
+  "Indent the currently visited buffer."
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
+(defun er-indent-region-or-buffer ()
+  "Indent a region if selected, otherwise the whole buffer."
+  (interactive)
+  (save-excursion
+    (if (region-active-p)
+        (progn
+          (indent-region (region-beginning) (region-end)))
+      (progn
+        (er-indent-buffer)))))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
@@ -689,5 +707,6 @@
 (global-set-key (kbd "C-c c g") 'consult-ripgrep)
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
+(global-set-key (kbd "C-M-\\") #'er-indent-region-or-buffer)
 
 (global-set-key (kbd "M-s") 'shell)
