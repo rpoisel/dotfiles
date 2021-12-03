@@ -128,7 +128,10 @@
 
 (use-package evil-visualstar
   :ensure
-  :config (global-evil-visualstar-mode t))
+  :init
+  (setq evil-visualstar/persistent t)
+  :config
+  (global-evil-visualstar-mode t))
 
 (use-package undo-tree
   :ensure
