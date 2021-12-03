@@ -335,6 +335,10 @@
   (require 'dap-cpptools)
   (yas-global-mode))
 
+;; CMake
+(use-package cmake-mode
+  :ensure)
+
 ;; Python
 (use-package lsp-python-ms
   :ensure
