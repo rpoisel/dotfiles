@@ -740,5 +740,6 @@
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
 (global-set-key (kbd "C-M-\\") #'er-indent-region-or-buffer)
+(global-set-key [remap repeat-complex-command] #'consult-complex-command)
 
 (global-set-key (kbd "M-s") 'shell)
