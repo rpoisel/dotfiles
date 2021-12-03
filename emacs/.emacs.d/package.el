@@ -362,7 +362,7 @@
 (add-to-list 'auto-mode-alist '("\\.gqlgen\\'" . yaml-mode))
 
 (setq rg-custom-type-aliases
-  '(("graphql" .    "*.graphql *.graphqls gqlgen.yml")))
+      '(("graphql" .    "*.graphql *.graphqls gqlgen.yml")))
 (use-package rg
   :demand
   :ensure
