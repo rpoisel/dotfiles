@@ -684,6 +684,7 @@
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
 (global-set-key (kbd "C-c c b") 'consult-bookmark)
+(global-set-key (kbd "M-p") 'consult-bookmark)
 (global-set-key (kbd "C-c c f") 'consult-recent-file)
 (global-set-key (kbd "C-c c g") 'consult-ripgrep)
 
