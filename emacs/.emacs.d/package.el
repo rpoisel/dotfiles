@@ -311,11 +311,13 @@
   :ensure
   :commands lsp-treemacs-errors-list)
 
+;; Python
 (use-package lsp-python-ms
   :ensure
   :init (setq lsp-python-ms-executable "/home/rpoisel/.emacs.d/.cache/lsp/mspyls/Microsoft.Python.LanguageServer"))
 (add-hook 'python-mode-hook 'lsp-deferred)
 
+;; Golang
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
