@@ -728,13 +728,10 @@
 
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c c o") 'consult-buffer)
-(global-set-key (kbd "M-o") 'consult-buffer)
 (global-set-key (kbd "C-c c l") 'consult-line)
-(global-set-key (kbd "M-l") 'consult-line)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-c c y") 'consult-yank-from-kill-ring)
 (global-set-key (kbd "C-c c b") 'consult-bookmark)
-(global-set-key (kbd "M-p") 'consult-bookmark)
 (global-set-key (kbd "C-c c f") 'consult-recent-file)
 (global-set-key (kbd "C-c c g") 'consult-ripgrep)
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
@@ -742,4 +739,9 @@
 (global-set-key (kbd "C-M-\\") #'er-indent-region-or-buffer)
 (global-set-key [remap repeat-complex-command] #'consult-complex-command)
 
+;; ultra-fast keybindinds
+(global-set-key (kbd "M-l") 'consult-line)
+(global-set-key (kbd "M-o") 'consult-buffer)
 (global-set-key (kbd "M-s") 'shell)
+(global-set-key (kbd "M-p") 'consult-bookmark)
+;;; package.el ends here
