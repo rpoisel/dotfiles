@@ -293,6 +293,9 @@
 (use-package f
   :ensure)
 
+(use-package hydra
+  :ensure)
+
 (use-package crux
   :ensure)
 
@@ -315,9 +318,27 @@
   :commands lsp-treemacs-errors-list)
 
 ;; C/C++
-(use-package yasnippet
+
+(setq clang-format-style "file")
+;; https://emacs.stackexchange.com/a/48503/36387
+(defun clang-format-save-hook-for-this-buffer ()
+  "Create a buffer local save hook."
+  (add-hook 'before-save-hook
+            (lambda ()
+              (when (locate-dominating-file "." ".clang-format")
+                (clang-format-buffer))
+              ;; Continue to save.
+              nil)
+            nil
+            ;; Buffer local hook.
+            t))
+(use-package clang-format
   :ensure)
-(use-package hydra
+(add-hook 'c-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+(add-hook 'c++-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+(add-hook 'glsl-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+
+(use-package yasnippet
   :ensure)
 (use-package dap-mode
   :ensure)
