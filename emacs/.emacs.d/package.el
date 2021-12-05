@@ -674,6 +674,9 @@
   :config
   (setq org-ellipsis " ▾"))
 ;; (efs/org-font-setup))
+(add-hook 'org-mode-hook
+          (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
+
 
 (use-package org-bullets
   :ensure
