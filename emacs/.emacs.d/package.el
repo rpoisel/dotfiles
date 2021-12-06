@@ -669,6 +669,8 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
+(setq org-todo-keywords
+      '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED")))
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
   :config
