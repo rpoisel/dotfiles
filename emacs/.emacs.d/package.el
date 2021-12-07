@@ -718,6 +718,17 @@
         (sleep-for 1)
         (vterm-insert "alias ll=\"ls -la --color=always\"")
         (vterm-send-return)))))
+(defun rp/multi-vterm-yank-to-remote-file ()
+  "Write remote file from yank buffer."
+  (interactive)
+  (let ((path (read-string "Enter path: ")))
+  (vterm-insert (format "cat > %s" path))
+  (vterm-send-return)
+  (sit-for 0.3)
+  (vterm-insert (current-kill 0 t))
+  (sit-for 0.3)
+  (vterm-send-C-d)
+  (vterm-send-C-d)))
 
 (use-package drag-stuff
   :ensure t)
