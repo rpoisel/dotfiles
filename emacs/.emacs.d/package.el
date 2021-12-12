@@ -798,11 +798,12 @@
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
   :config
-  (setq org-ellipsis " ▾"))
+  (setq org-ellipsis " ▾")
+  (setq org-agenda-files '("~/git/poisel.info/org/tasks.org")))
+
 ;; (efs/org-font-setup))
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
-
 
 (use-package org-bullets
   :ensure
