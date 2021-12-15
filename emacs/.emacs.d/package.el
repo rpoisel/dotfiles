@@ -112,7 +112,7 @@
   :ensure
   :demand
   :init
-  (setq evil-want-C-u-scroll t)
+  ;; (setq evil-want-C-u-scroll t)
   (setq evil-want-C-w-delete t)
   (setq evil-want-C-i-jump nil)
   :config
