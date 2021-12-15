@@ -866,6 +866,14 @@
         (er-indent-buffer)))
     (whitespace-cleanup)))
 
+(defun copy-current-line-position-to-clipboard ()
+  "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
+  (interactive)
+  (let ((path-with-line-number
+         (concat (buffer-file-name) "::" (number-to-string (line-number-at-pos)))))
+    (kill-new path-with-line-number)
+    (message (concat path-with-line-number " copied to clipboard"))))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
@@ -884,6 +892,7 @@
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
+(global-set-key (kbd "C-c c l") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
