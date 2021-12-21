@@ -799,7 +799,9 @@
   :hook (org-mode . efs/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
-  (setq org-agenda-files '("~/git/poisel.info/org/tasks.org")))
+  (setq org-agenda-files '("~/git/poisel.info/org/tasks.org"))
+  ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
+  (add-to-list 'org-file-apps '(directory . emacs)))
 
 ;; (efs/org-font-setup))
 (add-hook 'org-mode-hook
