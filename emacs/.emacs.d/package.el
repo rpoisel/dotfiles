@@ -567,6 +567,13 @@
   :init
   :config)
 
+(use-package with-editor
+  :ensure)
+(define-key (current-global-map)
+            [remap async-shell-command] 'with-editor-async-shell-command)
+(define-key (current-global-map)
+            [remap shell-command] 'with-editor-shell-command)
+
 (use-package forge
   :ensure
   :after magit)
@@ -639,7 +646,9 @@
   (defun turn-off-chrome ()
     (hl-line-mode -1)
     (display-line-numbers-mode -1))
-  :hook (vterm-mode . turn-off-chrome))
+  :init
+  (add-hook 'vterm-mode-hook 'turn-off-chrome)
+  (add-hook 'vterm-mode-hook 'with-editor-export-editor))
 
 (defun vmacs-auto-exit (buf event)
   ;; buf unused

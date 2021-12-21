@@ -130,7 +130,7 @@ then
 fi
 
 export PATH=${PATH}:${HOME}/go/bin:${HOME}/.local/bin
-export EDITOR="/usr/bin/emacsclient -a emacs_editor.sh"
+export EDITOR="/usr/bin/emacs -nw"
 
 shopt -s globstar
 
