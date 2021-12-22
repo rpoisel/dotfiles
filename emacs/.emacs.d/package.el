@@ -519,7 +519,6 @@
   :ensure t
   :commands (kubernetes-overview))
 
-(require 'kubernetes)
 (evil-set-initial-state 'kubernetes-overview-mode 'emacs)
 
 (use-package yaml-mode
