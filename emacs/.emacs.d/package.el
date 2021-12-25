@@ -502,8 +502,10 @@
       lsp-lua-workspace-preload-file-size 1024; Default: 100, Skip files larger than this value (KB) when preloading.
       )
 ;; https://emacs.stackexchange.com/a/5777/36387
-(add-hook 'lua-mode-hook
-          (lambda () (add-hook 'before-save-hook #'er-indent-region-or-buffer nil 'local)))
+(defun lua-add-before-save-hook ()
+(add-hook 'before-save-hook #'er-indent-region-or-buffer nil 'local))
+(add-hook 'lua-mode-hook #'lua-add-before-save-hook)
+;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
 (use-package lua-mode
   :ensure
   :init (setq-default lua-indent-level 4))
