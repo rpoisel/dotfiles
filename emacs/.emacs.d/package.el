@@ -884,6 +884,11 @@
     (kill-new path-with-line-number)
     (message (concat path-with-line-number " copied to clipboard"))))
 
+(defun bh/switch-to-scratch ()
+  "Switch to the temporary **scratch** buffer."
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
@@ -902,8 +907,9 @@
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
-(global-set-key (kbd "C-c c l") 'copy-current-line-position-to-clipboard)
+(global-set-key (kbd "C-c c b") 'bh/switch-to-scratch)
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
+(global-set-key (kbd "C-c c l") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
