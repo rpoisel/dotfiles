@@ -825,6 +825,10 @@
 (use-package ox-reveal
   :ensure)
 
+(use-package ox-hugo
+  :ensure
+  :after ox)
+
 (defun efs/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
