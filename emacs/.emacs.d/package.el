@@ -817,12 +817,12 @@
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
 
-(use-package org-bullets
+(use-package org-superstar
   :ensure
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  :config
+  (setq org-superstar-special-todo-items t)
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-superstar-mode 1))))
 
 (use-package ox-reveal
   :ensure)
