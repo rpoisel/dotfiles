@@ -805,6 +805,24 @@
 
 (setq org-todo-keywords
       '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED")))
+(setq org-default-notes-file "~/git/poisel.info/org/refile.org")
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/git/poisel.info/org/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/git/poisel.info/org/refile.org")
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/git/poisel.info/org/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/git/poisel.info/org/diary.org")
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file "~/git/poisel.info/org/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("m" "Meeting" entry (file "~/git/poisel.info/org/refile.org")
+               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file "~/git/poisel.info/org/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/git/poisel.info/org/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
   :config
@@ -919,6 +937,7 @@
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
 (global-set-key (kbd "C-c c b") 'bh/switch-to-scratch)
+(global-set-key (kbd "C-c c c") 'org-capture)
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c c l") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
