@@ -813,6 +813,11 @@
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs)))
 
+
+(setq org-latex-pdf-process
+      '("lualatex -shell-escape -interaction nonstopmode %f"
+        "lualatex -shell-escape -interaction nonstopmode %f"))
+
 ;; (efs/org-font-setup))
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
