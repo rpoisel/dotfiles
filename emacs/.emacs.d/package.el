@@ -59,7 +59,8 @@
   :after dired
   :init
   (setq dired-omit-verbose nil)
-  :hook (dired-mode-hook . dired-omit-mode)
+  :hook
+  ;; (dired-mode-hook . dired-omit-mode)
   (dired-mode-hook . dired-hide-details-mode))
 
 (use-package dired-aux
