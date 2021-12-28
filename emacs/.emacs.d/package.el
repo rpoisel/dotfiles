@@ -777,6 +777,8 @@
 (use-package graphql-mode
   :ensure)
 
+(setq revert-without-query '(".pdf"))
+
 ;; not used yet
 (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
