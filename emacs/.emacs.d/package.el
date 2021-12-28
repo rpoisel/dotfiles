@@ -14,13 +14,6 @@
 (eval-when-compile
   (require 'use-package))
 
-;; (add-to-list 'load-path "~/.emacs.d/local/sunrise-commander")
-;; (require 'sunrise)
-;; (add-to-list 'auto-mode-alist '("\\.srvm\\'" . sr-virtual-mode))
-
-;; (use-package zenburn-theme
-;;   :ensure
-;;   :config (load-theme 'zenburn t))
 (use-package dracula-theme
   :ensure
   :config (load-theme 'dracula t))
