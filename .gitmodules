@@ -1,3 +1,0 @@
-[submodule "sunrise-commander"]
-	path = emacs/.emacs.d/local/sunrise-commander
-	url = git@github.com:sunrise-commander/sunrise-commander.git
