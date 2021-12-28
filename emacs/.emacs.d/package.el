@@ -18,6 +18,13 @@
 ;; (require 'sunrise)
 ;; (add-to-list 'auto-mode-alist '("\\.srvm\\'" . sr-virtual-mode))
 
+;; (use-package zenburn-theme
+;;   :ensure
+;;   :config (load-theme 'zenburn t))
+(use-package dracula-theme
+  :ensure
+  :config (load-theme 'dracula t))
+
 (use-package exec-path-from-shell
   :ensure
   :config
@@ -353,13 +360,6 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
-
-;; (use-package zenburn-theme
-;;   :ensure
-;;   :config (load-theme 'zenburn t))
-(use-package dracula-theme
-  :ensure
-  :config (load-theme 'dracula t))
 
 ;; (use-package tree-sitter
 ;;   :ensure)
