@@ -633,10 +633,10 @@
   (editorconfig-mode 1))
 
 (use-package windmove
-  :bind (("S-M-<up>" . windmove-up)
-         ("S-M-<right>" . windmove-right)
-         ("S-M-<down>" . windmove-down)
-         ("S-M-<left>" . windmove-left)))
+  :bind (("s-M-<up>" . windmove-up)
+         ("s-M-<right>" . windmove-right)
+         ("s-M-<down>" . windmove-down)
+         ("s-M-<left>" . windmove-left)))
 
 (use-package vterm
   :ensure
