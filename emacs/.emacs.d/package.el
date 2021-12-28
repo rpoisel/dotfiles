@@ -811,7 +811,7 @@
 (setq org-default-notes-file "~/git/poisel.info/org/refile.org")
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/git/poisel.info/org/refile.org")
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+               "* TODO %?\n%U\n%a\n")
               ("r" "respond" entry (file "~/git/poisel.info/org/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file "~/git/poisel.info/org/refile.org")
@@ -830,7 +830,13 @@
   :hook (org-mode . efs/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
-  (setq org-agenda-files '("~/git/poisel.info/org/tasks.org"))
+  (setq org-agenda-files (mapcar '(lambda (filename)
+                                    (f-join "~/git/poisel.info/org" filename))
+                                 (directory-files "~/git/poisel.info/org" nil "\\.org")))
+  (setq org-refile-targets '((nil :maxlevel . 9)
+                             (org-agenda-files :maxlevel . 9)))
+  (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+  (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs)))
 
