@@ -388,23 +388,66 @@
 (use-package crux
   :ensure)
 
+;; see: https://git.riyyi.com/riyyi/dotfiles/src/branch/master/.config/emacs/config.org
 (use-package lsp-mode
   :ensure
-  :commands (lsp lsp-deferred)
+  :after which-key
+  :commands lsp
   :init
-  (setq lsp-keymap-prefix "C-c l")
-  (setq lsp-file-watch-threshold 10000)
+  (setq lsp-keymap-prefix "C-c l"
+        lsp-file-watch-threshold 10000)
+  ;; :hook ((c-mode c++-mode lua-mode) . lsp)
   :config
+  (setq lsp-clients-lua-language-server-install-dir "/usr/local/lua-language-server/"
+        lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/lua-language-server")
+        lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
+        lsp-lua-workspace-max-preload 2048
+        lsp-lua-workspace-preload-file-size 1024)
+  (setq gc-cons-threshold (* 100 1024 1024)
+        read-process-output-max (* 1024 1024)
+        treemacs-space-between-root-nodes nil
+        company-idle-delay 0.0
+        company-minimum-prefix-length 1
+        lsp-idle-delay 0.1)  ;; clangd is fast
+  (setq lsp-auto-guess-root t)
+  (setq lsp-prefer-flymake nil)
   (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
   :ensure
+  :commands lsp-ui-mode
+  :after (flycheck lsp-mode)
   :init (setq lsp-ui-peek-list-width 80)
+  :config
+  (setq lsp-ui-flycheck-enable t)
+  (setq lsp-ui-flycheck-list-position 'right)
+  (setq lsp-ui-flycheck-live-reporting t)
+  (setq lsp-ui-peek-enable nil)
+  (setq lsp-ui-sideline-enable nil)
+  (setq lsp-ui-sideline-show-symbol nil)
   :hook (lsp-mode . lsp-ui-mode))
 
 (use-package lsp-treemacs
   :ensure
   :commands lsp-treemacs-errors-list)
+
+;; Lua
+
+;; https://emacs.stackexchange.com/a/5777/36387
+;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
+(use-package lua-mode
+  :ensure
+  :mode "\\.lua$"
+  :interpreter "lua"
+  :config
+  (setq lua-indent-level 4
+        lua-indent-string-contents t
+        lua-prefix-key nil))
+(defun lua-add-before-save-hook ()
+  (add-hook 'before-save-hook #'er-indent-region-or-buffer nil 'local))
+(add-hook 'lua-mode-hook #'lua-add-before-save-hook)
+;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
+(add-hook 'lua-mode-hook 'lsp)
 
 ;; C/C++
 
@@ -433,12 +476,6 @@
   :ensure)
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
-(setq gc-cons-threshold (* 100 1024 1024)
-      read-process-output-max (* 1024 1024)
-      treemacs-space-between-root-nodes nil
-      company-idle-delay 0.0
-      company-minimum-prefix-length 1
-      lsp-idle-delay 0.1)  ;; clangd is fast
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
@@ -468,23 +505,6 @@
 ;; (setq lsp-log-io nil) ; if set to true can cause a performance hit
 ;; (setq lsp-print-performance t)
 ;; (setq lsp-auto-guess-root t) ; auto detect workspace and start lang server
-
-;; lua
-;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
-(setq lsp-clients-lua-language-server-install-dir (f-join (getenv "HOME") ".vscode/extensions/sumneko.lua-2.4.2/server"); Default: ~/.emacs.d/.cache/lsp/lua-language-server/
-      lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/Linux/lua-language-server")
-      lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
-      lsp-lua-workspace-max-preload 2048 ; Default: 300, Max preloaded files
-      lsp-lua-workspace-preload-file-size 1024; Default: 100, Skip files larger than this value (KB) when preloading.
-      )
-;; https://emacs.stackexchange.com/a/5777/36387
-(defun lua-add-before-save-hook ()
-(add-hook 'before-save-hook #'er-indent-region-or-buffer nil 'local))
-(add-hook 'lua-mode-hook #'lua-add-before-save-hook)
-;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
-(use-package lua-mode
-  :ensure
-  :init (setq-default lua-indent-level 4))
 
 (use-package docker
   :ensure t
