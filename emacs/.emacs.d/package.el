@@ -18,6 +18,13 @@
   :ensure
   :config (load-theme 'dracula t))
 
+;; Set default font
+(set-face-attribute 'default nil
+                    :family "Source Code Pro"
+                    :height 100
+                    :weight 'normal
+                    :width 'normal)
+
 (use-package exec-path-from-shell
   :ensure
   :config
