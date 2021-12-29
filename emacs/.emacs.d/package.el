@@ -782,11 +782,11 @@
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
 (setq org-todo-keywords
-      '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED")))
+      '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED" "CANCELLED")))
 (setq org-default-notes-file "~/git/poisel.info/org/refile.org")
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/git/poisel.info/org/refile.org")
-               "* TODO %?\n%U\n%a\n")
+               "* TODO %?\n%U\n")
               ("r" "respond" entry (file "~/git/poisel.info/org/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file "~/git/poisel.info/org/refile.org")
@@ -913,6 +913,7 @@
 
 (global-set-key (kbd "C-c c b") 'bh/switch-to-scratch)
 (global-set-key (kbd "C-c c c") 'org-capture)
+(global-set-key (kbd "C-c c t") (lambda () (interactive) (org-capture nil "t")))
 (global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c c l") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
