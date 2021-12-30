@@ -525,8 +525,6 @@
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.gqlgen\\'" . yaml-mode))
 
-(setq rg-custom-type-aliases
-      '(("graphql" .    "*.graphql *.graphqls gqlgen.yml")))
 (use-package rg
   :demand
   :ensure
@@ -534,6 +532,7 @@
   :init
   (setq rg-show-header nil)
   :config
+  (setq rg-custom-type-aliases '("graphql" . "*.graphql *.graphqls gqlgen.yml"))
   (rg-enable-default-bindings)
 
   ;; Redefine searches from transient, hardcode :files to "everything".
