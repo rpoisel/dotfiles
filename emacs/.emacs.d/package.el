@@ -467,15 +467,15 @@
 (use-package clang-format
   :ensure)
 (add-hook 'c-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+(add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+(add-hook 'c++-mode-hook 'lsp)
 (add-hook 'glsl-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
 
 (use-package yasnippet
   :ensure)
 (use-package dap-mode
   :ensure)
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
@@ -822,7 +822,6 @@
               ("h" "Habit" entry (file "~/git/poisel.info/org/refile.org")
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 (use-package org
-  :hook (org-mode . efs/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
   (setq org-agenda-files (mapcar '(lambda (filename)
