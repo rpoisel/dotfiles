@@ -26,6 +26,7 @@
                     :width 'normal)
 
 (use-package svg-tag-mode
+  :hook (org-mode-hook . svg-tag-mode)
   :ensure)
 
 (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
@@ -475,6 +476,9 @@
   :ensure
   :after which-key
   :commands lsp
+  :hook ((lua-mode-hook . lsp)
+         (c-mode-hook . lsp)
+         (c++-mode-hook . lsp))
   :init
   (setq lsp-keymap-prefix "C-c l"
         lsp-file-watch-threshold 10000)
@@ -529,7 +533,6 @@
   (add-hook 'before-save-hook #'er-indent-region-or-buffer nil 'local))
 (add-hook 'lua-mode-hook #'lua-add-before-save-hook)
 ;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
-(add-hook 'lua-mode-hook 'lsp)
 
 ;; C/C++
 
@@ -549,9 +552,7 @@
 (use-package clang-format
   :ensure)
 (add-hook 'c-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
-(add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
-(add-hook 'c++-mode-hook 'lsp)
 (add-hook 'glsl-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
 
 (use-package yasnippet
@@ -917,7 +918,6 @@
   (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs)))
-(add-hook 'org-mode-hook 'svg-tag-mode)
 
 
 (setq org-latex-pdf-process
