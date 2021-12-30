@@ -772,6 +772,9 @@
 (use-package graphql-mode
   :ensure)
 
+(use-package jenkinsfile-mode
+  :ensure)
+
 (setq revert-without-query '(".pdf"))
 
 ;; not used yet
