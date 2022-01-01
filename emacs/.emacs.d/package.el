@@ -530,7 +530,7 @@
         lua-indent-string-contents t
         lua-prefix-key nil))
 (defun lua-add-before-save-hook ()
-  (add-hook 'before-save-hook #'er-indent-region-or-buffer nil 'local))
+  (add-hook 'before-save-hook #'er-indent-and-cleanup-region-or-buffer nil 'local))
 (add-hook 'lua-mode-hook #'lua-add-before-save-hook)
 ;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
 
@@ -971,15 +971,13 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
-(defun er-indent-region-or-buffer ()
+(defun er-indent-and-cleanup-region-or-buffer ()
   "Indent a region if selected, otherwise the whole buffer."
   (interactive)
   (save-excursion
     (if (region-active-p)
         (progn
-          (indent-region (region-beginning) (region-end))
-          (unless (member major-mode crux-untabify-sensitive-modes)
-            (call-interactively #'untabify)))
+          (indent-region (region-beginning) (region-end)))
       (progn
         (er-indent-buffer)))
     (whitespace-cleanup)))
@@ -1023,7 +1021,7 @@
 (global-set-key (kbd "C-c c w") 'whitespace-mode)
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
-(global-set-key (kbd "C-M-\\") #'er-indent-region-or-buffer)
+(global-set-key (kbd "C-M-\\") #'er-indent-and-cleanup-region-or-buffer)
 
 ;; ultra-fast keybindinds
 ;;; package.el ends here
