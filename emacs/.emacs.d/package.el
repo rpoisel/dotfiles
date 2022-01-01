@@ -462,15 +462,6 @@
 (use-package which-key
   :ensure)
 
-(use-package f
-  :ensure)
-
-(use-package hydra
-  :ensure)
-
-(use-package crux
-  :ensure)
-
 ;; see: https://git.riyyi.com/riyyi/dotfiles/src/branch/master/.config/emacs/config.org
 (use-package lsp-mode
   :ensure
