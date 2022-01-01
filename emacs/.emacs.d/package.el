@@ -909,9 +909,9 @@
 (use-package org
   :config
   (setq org-ellipsis " ▾")
-  (setq org-agenda-files (mapcar '(lambda (filename)
-                                    (f-join "~/git/poisel.info/org" filename))
-                                 (directory-files "~/git/poisel.info/org" nil "\\.org")))
+  (custom-set-variables
+   '(org-directory "~/git/poisel.info/org")
+   '(org-agenda-files (list org-directory)))
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
