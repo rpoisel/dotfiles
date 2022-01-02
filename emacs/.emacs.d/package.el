@@ -850,13 +850,13 @@
 
 (setq org-todo-keywords
       '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED" "CANCELLED")))
-(setq org-default-notes-file "~/git/poisel.info/org/refile.org")
-(rpo-load-file-if-exists "~/git/poisel.info/org/capture_templates.el")
+(setq org-default-notes-file "/tmp/refile.org")
+(rpo-load-file-if-exists "~/Sync/org/capture_templates.el")
 (use-package org
   :config
   (setq org-ellipsis " ▾")
   (custom-set-variables
-   '(org-directory "~/git/poisel.info/org")
+   '(org-directory "~/Sync/org")
    '(org-agenda-files (list org-directory)))
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
