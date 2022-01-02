@@ -908,6 +908,10 @@
 (use-package guru-mode
   :ensure)
 
+(use-package bug-reference
+  :ensure)
+(add-hook 'org-mode-hook #'bug-reference-mode)
+
 ;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
