@@ -851,23 +851,7 @@
 (setq org-todo-keywords
       '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED" "CANCELLED")))
 (setq org-default-notes-file "~/git/poisel.info/org/refile.org")
-(setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/git/poisel.info/org/refile.org")
-               "* TODO %?\n%U\n")
-              ("r" "respond" entry (file "~/git/poisel.info/org/refile.org")
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file "~/git/poisel.info/org/refile.org")
-               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/git/poisel.info/org/diary.org")
-               "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "~/git/poisel.info/org/refile.org")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file "~/git/poisel.info/org/refile.org")
-               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file "~/git/poisel.info/org/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file "~/git/poisel.info/org/refile.org")
-               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+(rpo-load-file-if-exists "~/git/poisel.info/org/capture_templates.el")
 (use-package org
   :config
   (setq org-ellipsis " ▾")
@@ -974,12 +958,13 @@
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
-(global-set-key (kbd "C-c c b") 'bh/switch-to-scratch)
-(global-set-key (kbd "C-c c c") 'org-capture)
-(global-set-key (kbd "C-c c t") (lambda () (interactive) (org-capture nil "t")))
-(global-set-key (kbd "C-c c d") 'display-line-numbers-mode)
-(global-set-key (kbd "C-c c l") 'copy-current-line-position-to-clipboard)
-(global-set-key (kbd "C-c c w") 'whitespace-mode)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(global-set-key (kbd "C-c w b") 'bh/switch-to-scratch)
+(global-set-key (kbd "C-c w d") 'display-line-numbers-mode)
+(global-set-key (kbd "C-c w l") 'copy-current-line-position-to-clipboard)
+(global-set-key (kbd "C-c w w") 'whitespace-mode)
+
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
 (global-set-key (kbd "C-M-\\") #'er-indent-and-cleanup-region-or-buffer)

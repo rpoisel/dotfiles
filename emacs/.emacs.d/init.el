@@ -15,10 +15,19 @@
 
 (setq make-backup-files nil)
 
-;; Configure packages
-(let ((package-file (expand-file-name "package.el" user-emacs-directory)))
-  (when (file-exists-p package-file)
+(defun rpo-load-file-if-exists (filename)
+  "Loads a file from the user's emacs directory if it exists."
+  (let ((package-file (expand-file-name filename user-emacs-directory)))
+    (when (file-exists-p package-file)
+      (load package-file))))
+
+(defun rpo-load-file-from-emacs-directory (filename)
+  "Loads a file from the user's emacs directory."
+  (let ((package-file (expand-file-name filename user-emacs-directory)))
     (load package-file)))
+
+;; Configure packages
+(rpo-load-file-from-emacs-directory "package.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
