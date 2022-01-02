@@ -873,6 +873,15 @@
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
 
+(use-package mixed-pitch
+  :ensure
+  :hook
+  (text-mode . mixed-pitch-mode)
+  :config
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono" :height 130)
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono")
+  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans"))
+
 (use-package org-superstar
   :ensure
   :config
