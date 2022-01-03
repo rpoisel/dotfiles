@@ -467,15 +467,17 @@
 (use-package lsp-mode
   :ensure
   :after which-key
-  :commands lsp
-  :hook ((lua-mode-hook . lsp)
-         (c-mode-hook . lsp)
-         (c++-mode-hook . lsp))
-  :init
-  (setq lsp-keymap-prefix "C-c l"
-        lsp-file-watch-threshold 10000)
-  ;; :hook ((c-mode c++-mode lua-mode) . lsp)
+  :commands (lsp lsp-deferred)
+  ;; using :hook does not really work for me, so explictly invoking (add-hook ...) instead
   :config
+  (add-hook 'c-mode-hook #'lsp-deferred)
+  (add-hook 'c++-mode-hook #'lsp-deferred)
+  (add-hook 'lua-mode-hook #'lsp-deferred)
+  (add-hook 'go-mode-hook #'lsp-deferred)
+  (add-hook 'python-mode-hook #'lsp-deferred)
+  (setq lsp-auto-guess-root t
+        lsp-keymap-prefix "C-c l"
+        lsp-file-watch-threshold 10000)
   (setq lsp-clients-lua-language-server-install-dir "/usr/local/lua-language-server/"
         lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/lua-language-server")
         lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
@@ -564,8 +566,7 @@
 ;; Python
 (use-package lsp-python-ms
   :ensure
-  :init (setq lsp-python-ms-executable "/home/rpoisel/.emacs.d/.cache/lsp/mspyls/Microsoft.Python.LanguageServer"))
-(add-hook 'python-mode-hook 'lsp-deferred)
+  :init (setq lsp-python-ms-executable "~/.emacs.d/.cache/lsp/mspyls/Microsoft.Python.LanguageServer"))
 
 ;; Golang
 (defun lsp-go-install-save-hooks ()
@@ -574,7 +575,6 @@
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 (use-package go-mode
   :ensure)
-(add-hook 'go-mode-hook #'lsp-deferred)
 
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
 ;; (setq lsp-log-io nil) ; if set to true can cause a performance hit
@@ -682,9 +682,7 @@
   :config)
 
 (use-package projectile
-  :ensure
-  :init
-  :config)
+  :ensure)
 
 (projectile-mode +1)
 ;; Recommended keymap prefix on macOS
