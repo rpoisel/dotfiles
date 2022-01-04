@@ -3,8 +3,6 @@
 [user]
 	email = rainer.poisel@gmail.com
 	name = Rainer Poisel
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
 [pull]
 	rebase = true
 [diff]
@@ -20,8 +18,6 @@
 	prompt = false
 	# see: https://stackoverflow.com/a/34119867
 	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
-[url "git@github.com:"]
-	insteadOf = https://github.com/
 [sendemail]
 	smtpEncryption = tls
 	smtpServer = smtp.gmail.com
