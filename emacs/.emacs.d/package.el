@@ -461,7 +461,12 @@
   (corfu-global-mode))
 
 (use-package which-key
-  :ensure)
+  :ensure
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 0.5
+        which-key-idle-secondary-delay 0.5)
+  (which-key-setup-side-window-bottom))
 
 ;; see: https://git.riyyi.com/riyyi/dotfiles/src/branch/master/.config/emacs/config.org
 (use-package lsp-mode
