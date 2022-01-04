@@ -515,6 +515,11 @@
   :ensure
   :commands lsp-treemacs-errors-list)
 
+;; Rust
+
+(use-package rustic
+  :ensure)
+
 ;; Lua
 
 ;; https://emacs.stackexchange.com/a/5777/36387
