@@ -472,15 +472,16 @@
   :after which-key
   :commands (lsp lsp-deferred)
   ;; using :hook does not really work for me, so explictly invoking (add-hook ...) instead
+  :init
+  (setq lsp-auto-guess-root t
+        lsp-keymap-prefix "C-c l"
+        lsp-file-watch-threshold 10000)
   :config
   (add-hook 'c-mode-hook #'lsp-deferred)
   (add-hook 'c++-mode-hook #'lsp-deferred)
   (add-hook 'lua-mode-hook #'lsp-deferred)
   (add-hook 'go-mode-hook #'lsp-deferred)
   (add-hook 'python-mode-hook #'lsp-deferred)
-  (setq lsp-auto-guess-root t
-        lsp-keymap-prefix "C-c l"
-        lsp-file-watch-threshold 10000)
   (setq lsp-clients-lua-language-server-install-dir "/usr/local/lua-language-server/"
         lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/lua-language-server")
         lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
