@@ -36,7 +36,9 @@
  ;; If there is more than one, they won't work right.
  '(evil-undo-system 'undo-tree)
  '(ispell-dictionary nil)
+ '(org-agenda-files (list org-directory))
+ '(org-directory "~/Sync/org")
  '(package-selected-packages
-   '(rust-mode ox-hugo ox-reveal org-tree-slide clang-format crux yasnippet marginalia capf-autosuggest multi-vterm visual-fill-column consult dired-subtree dired-collapse lsp-pyright git-timemachine php-mode lsp-ui projectile treemacs-evil evil-visualstar evil-surround undo-tree rgi tree-sitter zenburn-theme vertico use-package orderless evil)))
+   '(rustic ox-hugo ox-reveal org-tree-slide clang-format crux yasnippet marginalia capf-autosuggest multi-vterm visual-fill-column consult dired-subtree dired-collapse lsp-pyright git-timemachine php-mode lsp-ui projectile treemacs-evil evil-visualstar evil-surround undo-tree rgi tree-sitter zenburn-theme vertico use-package orderless evil)))
 
 ;;; init.el ends here
