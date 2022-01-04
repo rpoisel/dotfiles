@@ -245,8 +245,6 @@
               ("M-h" . dw/minibuffer-backward-kill))
   :custom
   (vertico-cycle t)
-  :custom-face
-  (vertico-current ((t (:background "#3a3f5a"))))
   :init
   (vertico-mode))
 
