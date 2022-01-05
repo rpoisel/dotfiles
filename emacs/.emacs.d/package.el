@@ -704,11 +704,6 @@
   :init
   :config)
 
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
-
 (use-package windmove
   :bind (("s-M-<up>" . windmove-up)
          ("s-M-<right>" . windmove-right)
