@@ -821,6 +821,7 @@
   :ensure t)
 (drag-stuff-global-mode 1)
 (drag-stuff-define-keys)
+(add-to-list 'drag-stuff-except-modes 'org-mode)
 
 (use-package markdown-mode
   :ensure t
