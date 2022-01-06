@@ -882,7 +882,7 @@
 (use-package mixed-pitch
   :ensure
   :hook
-  (text-mode . mixed-pitch-mode)
+  (org-mode . mixed-pitch-mode)
   :config
   (set-face-attribute 'default nil :font "Source Code Pro" :height 100)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro")
