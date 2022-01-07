@@ -7,6 +7,7 @@
 (let ((use-package-hook-name-suffix nil)
       (package-enable-at-startup nil))
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
   (package-initialize)
   (eval-when-compile
@@ -871,7 +872,6 @@
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs)))
 
-
 (setq org-latex-pdf-process
       '("lualatex -shell-escape -interaction nonstopmode %f"
         "lualatex -shell-escape -interaction nonstopmode %f"))
@@ -894,6 +894,12 @@
   (setq org-superstar-special-todo-items t)
   (add-hook 'org-mode-hook (lambda ()
                              (org-superstar-mode 1))))
+
+(use-package org-trello
+  :ensure
+  :pin melpa-stable
+  :hook
+  (org-mode . org-trello-mode))
 
 (use-package ox-reveal
   :ensure)
