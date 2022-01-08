@@ -177,7 +177,6 @@
   :ensure
   :demand
   :init
-  ;; (setq evil-want-C-u-scroll t)
   (setq evil-want-C-w-delete t)
   (setq evil-want-C-i-jump nil)
   :config
@@ -234,20 +233,30 @@
     (backward-kill-word arg)))
 
 (use-package vertico
-  ;; :straight '(vertico :host github
-  ;;                     :repo "minad/vertico"
-  ;;                     :branch "main")
   :ensure
   :bind (:map vertico-map
-              ;; ("C-j" . vertico-next)
-              ;; ("C-k" . vertico-previous)
-              ("C-f" . vertico-exit)
+              ("M-n" . vertico-next)
+              ("M-p" . vertico-previous)
+              ("C-m" . vertico-exit)
               :map minibuffer-local-map
               ("M-h" . dw/minibuffer-backward-kill))
   :custom
   (vertico-cycle t)
   :init
   (vertico-mode))
+
+(use-package vertico-multiform
+  :after vertico
+  :ensure nil
+  :init
+  (vertico-multiform-mode))
+(setq vertico-multiform-commands
+      '((consult-ripgrep buffer)
+        (consult-line buffer)
+        (consult-imenu buffer)
+        (t reverse)))
+(setq vertico-multiform-categories
+      '((t reverse)))
 
 (use-package orderless
   :ensure
