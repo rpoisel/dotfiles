@@ -38,7 +38,7 @@
  '(ispell-dictionary nil)
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Sync/org")
- '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
+ '(org-trello-current-prefix-keybinding "C-c o")
  '(package-selected-packages
    '(consult-flycheck dash rustic ox-hugo ox-reveal org-tree-slide clang-format crux yasnippet marginalia capf-autosuggest multi-vterm visual-fill-column consult dired-subtree dired-collapse lsp-pyright git-timemachine php-mode lsp-ui projectile treemacs-evil evil-visualstar evil-surround undo-tree rgi tree-sitter zenburn-theme vertico use-package orderless evil)))
 
