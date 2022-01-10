@@ -15,6 +15,8 @@
 
 (setq make-backup-files nil)
 
+(setq ring-bell-function 'ignore)
+
 (defun rpo-load-file-if-exists (filename)
   "Loads a file from the user's emacs directory if it exists."
   (let ((package-file (expand-file-name filename user-emacs-directory)))
