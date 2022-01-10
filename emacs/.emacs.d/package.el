@@ -254,6 +254,7 @@
       '((consult-ripgrep buffer)
         (consult-line buffer)
         (consult-imenu buffer)
+        (consult-flycheck buffer)
         (t reverse)))
 (setq vertico-multiform-categories
       '((t reverse)))
