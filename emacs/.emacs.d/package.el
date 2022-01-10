@@ -535,6 +535,14 @@
 
 ;; Lua
 
+(defun rpo-lua-format-buffer ()
+  (let ((formatter-cfg-file ".lua-format")
+        (formatter-cfg-dir  (locate-dominating-file "." ".lua-format")))
+    (if formatter-cfg-dir
+        (shell-command-on-region
+         (point-min) (point-max) (concat "lua-format --config=" (expand-file-name (concat formatter-cfg-dir formatter-cfg-file))) nil t)
+      #'er-indent-and-cleanup-region-or-buffer)))
+
 ;; https://emacs.stackexchange.com/a/5777/36387
 ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
 (use-package lua-mode
@@ -545,9 +553,7 @@
   (setq lua-indent-level 4
         lua-indent-string-contents t
         lua-prefix-key nil))
-(defun lua-add-before-save-hook ()
-  (add-hook 'before-save-hook #'er-indent-and-cleanup-region-or-buffer nil 'local))
-(add-hook 'lua-mode-hook #'lua-add-before-save-hook)
+(add-hook 'lua-mode-hook (lambda () (add-hook 'before-save-hook #'rpo-lua-format-buffer nil 'local)))
 ;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
 
 ;; C/C++
