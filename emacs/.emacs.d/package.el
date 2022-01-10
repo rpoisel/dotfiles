@@ -914,12 +914,6 @@
   (add-hook 'org-mode-hook (lambda ()
                              (org-superstar-mode 1))))
 
-(use-package org-trello
-  :ensure
-  :pin melpa-stable
-  :hook
-  (org-mode . org-trello-mode))
-
 (use-package ox-reveal
   :ensure)
 
