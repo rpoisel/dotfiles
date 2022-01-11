@@ -540,8 +540,11 @@
   (let ((formatter-cfg-file ".lua-format")
         (formatter-cfg-dir  (locate-dominating-file "." ".lua-format")))
     (if formatter-cfg-dir
-        (shell-command-on-region
-         (point-min) (point-max) (concat "lua-format --config=" (expand-file-name (concat formatter-cfg-dir formatter-cfg-file))) nil t)
+        (let ((tmp-buffer (get-buffer-create (make-temp-name "tmp"))))
+          (call-shell-region
+           (point-min) (point-max) (concat "lua-format --config=" (expand-file-name (concat formatter-cfg-dir formatter-cfg-file))) nil tmp-buffer)
+          (replace-buffer-contents tmp-buffer 3)
+          (kill-buffer tmp-buffer))
       #'er-indent-and-cleanup-region-or-buffer)))
 
 ;; https://emacs.stackexchange.com/a/5777/36387
