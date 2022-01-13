@@ -991,6 +991,7 @@
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
+(global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 
 (global-set-key (kbd "C-c w b") 'bh/switch-to-scratch)
