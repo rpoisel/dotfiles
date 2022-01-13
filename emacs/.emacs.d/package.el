@@ -879,7 +879,7 @@
 (setq revert-without-query '(".pdf"))
 
 (setq org-todo-keywords
-      '((sequence "TODO" "PREPARE" "ACTIVE" "|" "DONE" "DELEGATED" "CANCELLED")))
+      '((sequence "TODO" "PREPARE" "ACTIVE" "WAITING" "|" "DONE" "DELEGATED" "CANCELLED")))
 (setq org-default-notes-file "/tmp/refile.org")
 (rpo-load-file-if-exists "~/Sync/org/capture_templates.el")
 (use-package org
