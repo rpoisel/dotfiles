@@ -540,9 +540,10 @@
   (let ((formatter-cfg-file ".lua-format")
         (formatter-cfg-dir  (locate-dominating-file "." ".lua-format")))
     (if formatter-cfg-dir
-        (let ((tmp-buffer (get-buffer-create (make-temp-name "tmp"))))
+        (let* ((tmp-buffer-name (make-temp-name "tmp"))
+               (tmp-buffer (get-buffer-create tmp-buffer-name)))
           (if (eq 0 (call-shell-region
-                     (point-min) (point-max) (concat "lua-format --config=" (expand-file-name (concat formatter-cfg-dir formatter-cfg-file))) nil tmp-buffer))
+                     (point-min) (point-max) (concat "lua-format --config=" (expand-file-name (concat formatter-cfg-dir formatter-cfg-file))) nil (list tmp-buffer nil)))
               (replace-buffer-contents tmp-buffer 3)
             (error "lua-format failed."))
           (kill-buffer tmp-buffer))
