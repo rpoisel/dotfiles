@@ -977,6 +977,7 @@
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+(setq compilation-scroll-output t)
 
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
