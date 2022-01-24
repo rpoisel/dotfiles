@@ -173,6 +173,7 @@
              ("i" . dired-subtree-insert)
              ("j" . dired-subtree-remove)))
 
+(setq evil-auto-indent nil)
 (use-package evil
   :ensure
   :demand
@@ -560,6 +561,8 @@
         lua-indent-string-contents t
         lua-prefix-key nil))
 (add-hook 'lua-mode-hook (lambda () (add-hook 'before-save-hook #'rpo-lua-format-buffer nil 'local)))
+(add-hook 'lua-mode-hook 'rpo-turn-on-indent)
+
 ;; (remove-hook 'lua-mode-hook #'lua-add-before-save-hook)
 
 ;; C/C++
@@ -579,9 +582,17 @@
             t))
 (use-package clang-format
   :ensure)
-(add-hook 'c-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
-(add-hook 'c++-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
-(add-hook 'glsl-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+
+(defun rpo-turn-on-indent ()
+  (setq evil-auto-indent t)
+  (make-local-variable 'evil-auto-indent)
+  (electric-indent-local-mode))
+(defun rpo-c-like-lang-mode-hook ()
+  (clang-format-save-hook-for-this-buffer)
+  (rpo-turn-on-indent))
+(add-hook 'c-mode-hook 'rpo-c-like-lang-mode-hook)
+(add-hook 'c++-mode-hook 'rpo-c-like-lang-mode-hook)
+(add-hook 'glsl-mode-hook 'rpo-c-like-lang-mode-hook)
 
 (use-package yasnippet
   :ensure)
@@ -596,17 +607,20 @@
 ;; CMake
 (use-package cmake-mode
   :ensure)
+(add-hook 'cmake-mode-hook 'rpo-turn-on-indent)
 
 ;; Python
 (use-package lsp-python-ms
   :ensure
   :init (setq lsp-python-ms-executable "~/.emacs.d/.cache/lsp/mspyls/Microsoft.Python.LanguageServer"))
+(add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
 ;; Golang
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(add-hook 'go-mode-hook 'rpo-turn-on-indent)
 (use-package go-mode
   :ensure)
 
@@ -978,6 +992,7 @@
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (setq compilation-scroll-output t)
+(electric-indent-mode -1)
 
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
