@@ -24,6 +24,31 @@
                     :weight 'normal
                     :width 'normal)
 
+(setq mu4e-mu-binary "~/.local/bin/mu"
+      mu4e-doc-dir "/home/rpoisel/git/emacs/mu/build/mu4e"
+      user-mail-address "rainer.poisel@gmail.com"
+      message-send-mail-function 'smtpmail-send-it
+      smtpmail-smtp-user "rainer.poisel"
+      smtpmail-local-domain "gmail.com"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+(add-to-list 'load-path "~/git/emacs/mu/build/mu4e")
+
+(require 'mu4e)
+(setq mu4e-contexts
+      `( ,(make-mu4e-context
+           :name "Gmail"
+           :match-func (lambda (msg) (when msg
+                                       (string-prefix-p "/Gmail" (mu4e-message-field msg :maildir))))
+           :vars '(
+                   (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
+                   (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
+                   (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
+                   ;; (mu4e-refile-folder . "/Gmail/[Gmail].Archive")
+                   ))
+         ))
+
 (use-package svg-tag-mode
   :hook (org-mode-hook . svg-tag-mode)
   :ensure)
