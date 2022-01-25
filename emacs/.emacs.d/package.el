@@ -93,6 +93,7 @@
 
         ;; TODO / DONE
         ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :face 'org-todo :inverse t :margin 0))))
+        ("ACTIVE" . ((lambda (tag) (svg-tag-make "ACTIVE" :face 'org-todo :margin 0))))
         ("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'org-done :margin 0))))
 
 
@@ -129,8 +130,6 @@
          (,(format "\\[%s *\\(%s\\]\\)" date-re time-re) .
           ((lambda (tag)
              (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
-
-(svg-tag-mode t)
 
 (use-package exec-path-from-shell
   :ensure
@@ -941,6 +940,7 @@
 
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
+(add-hook 'org-mode-hook 'svg-tag-mode)
 
 (use-package mixed-pitch
   :ensure
