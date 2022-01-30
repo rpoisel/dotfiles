@@ -875,6 +875,24 @@
   (vterm-send-C-d)
   (vterm-send-C-d)))
 
+(use-package shell-pop
+  :ensure
+  :custom
+  ;; This binding toggles popping up a shell, or moving cursour to the shell pop-up.
+  ;; (shell-pop-universal-key "C-t")
+
+  ;; Percentage for shell-buffer window size.
+  (shell-pop-window-size 30)
+
+  (shell-pop-autocd-to-working-dir t)
+
+  ;; Position of the popped buffer: top, bottom, left, right, full.
+  (shell-pop-full-span t)
+  (shell-pop-window-position "bottom")
+
+  ;; Please use an awesome shell.
+  (shell-pop-term-shell "/bin/bash"))
+
 (use-package drag-stuff
   :ensure t)
 (drag-stuff-global-mode 1)
