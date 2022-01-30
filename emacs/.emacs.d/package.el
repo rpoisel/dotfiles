@@ -960,6 +960,10 @@
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
 (add-hook 'org-mode-hook 'svg-tag-mode)
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((C . t)
+                             (python . t)))
+
 (use-package mixed-pitch
   :ensure
   :hook
