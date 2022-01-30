@@ -980,7 +980,7 @@
   (add-hook 'org-mode-hook (lambda ()
                              (org-superstar-mode 1))))
 
-(use-package ox-reveal
+(use-package org-re-reveal
   :ensure)
 
 (use-package ox-hugo
