@@ -943,8 +943,9 @@
   :config
   (setq org-ellipsis " ▾")
   (custom-set-variables
-   '(org-directory "~/Sync/org")
-   '(org-agenda-files (list org-directory)))
+   '(org-agenda-files
+     (directory-files-recursively "~/Sync/org" "[a-zA-z]+\.org$"))
+   '(org-directory "~/Sync/org"))
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
