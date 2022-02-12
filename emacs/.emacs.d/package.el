@@ -965,6 +965,12 @@
  'org-babel-load-languages '((C . t)
                              (python . t)))
 
+(use-package org-appear
+  :config
+  (setq org-appear-autolinks t)
+  :ensure)
+(add-hook 'org-mode-hook 'org-appear-mode)
+
 (use-package mixed-pitch
   :ensure
   :hook
