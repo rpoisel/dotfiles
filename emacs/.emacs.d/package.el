@@ -827,6 +827,7 @@
   (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
   (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
   (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-z")      #'vterm--self-insert)
   (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
   (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
   (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
