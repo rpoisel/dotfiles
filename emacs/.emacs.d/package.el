@@ -628,6 +628,8 @@
   (require 'dap-cpptools)
   (yas-global-mode))
 
+(add-hook 'find-file-hook #'fg/git-gutter-mode)
+
 ;; CMake
 (use-package cmake-mode
   :ensure)
@@ -709,6 +711,26 @@
   :ensure
   :init
   :config)
+
+(use-package git-gutter
+  :ensure
+  :config
+  (setq git-gutter:update-interval 0.25)
+
+  (defun fg/git-gutter-mode ()
+    "Enable git-gutter mode if current buffer's file is under version control."
+    (if (vc-backend (buffer-file-name))
+        (git-gutter-mode 1))))
+
+(use-package git-gutter-fringe
+  :ensure
+  :config
+  (set-face-attribute 'git-gutter-fr:added nil :foreground "#99cc99" :inherit 'fringe)
+  (set-face-attribute 'git-gutter-fr:modified nil :foreground "#9999cc" :inherit 'fringe)
+  (set-face-attribute 'git-gutter-fr:deleted nil :foreground "#cc9999" :inherit 'fringe)
+  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom))
 
 (use-package with-editor
   :ensure)
