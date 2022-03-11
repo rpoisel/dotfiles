@@ -618,15 +618,12 @@
 (add-hook 'c++-mode-hook 'rpo-c-like-lang-mode-hook)
 (add-hook 'glsl-mode-hook 'rpo-c-like-lang-mode-hook)
 
-(use-package yasnippet
-  :ensure)
 (use-package dap-mode
   :ensure)
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  (require 'dap-cpptools)
-  (yas-global-mode))
+  (require 'dap-cpptools))
 
 (add-hook 'find-file-hook #'fg/git-gutter-mode)
 
