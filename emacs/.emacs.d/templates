@@ -47,6 +47,10 @@ eshell-mode
 (unless "unless { " p " } { " p " }")
 (unless-else "unless { " p " } { " p " } { " p " }")
 
+lua-mode
+
+(local-function "local " p " = function(" p ")" n> r> n "end")
+
 text-mode
 
 (cut "--8<---------------cut here---------------start------------->8---" n r n
