@@ -461,14 +461,6 @@
 ;; (use-package tree-sitter-langs
 ;;   :ensure)
 
-(use-package company
-  :ensure
-  :config
-  (setq company-idle-delay 0
-        company-minimum-prefix-length 4
-        company-selection-wrap-around t))
-(global-company-mode)
-
 (use-package corfu
   :ensure
   ;; Optional customizations
