@@ -475,6 +475,8 @@
          ("M-*" . tempel-insert))
 
   :init
+  (defvar-local tempel-buffer-local-templates nil
+    "Buffer-local templates.")
 
   ;; Setup completion at point
   (defun tempel-setup-capf ()
@@ -487,15 +489,22 @@
     (setq-local completion-at-point-functions
                 (cons #'tempel-expand
                       completion-at-point-functions)))
+  :config
+  (add-to-list 'tempel-template-sources 'tempel-buffer-local-templates)
 
-  (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf)
+  :bind (:map tempel-map
+              ("<tab>" . tempel-next)
+              ("<backtab>" . tempel-previous))
+
+  :hook ((prog-mode-hook . tempel-setup-capf)
+         (text-mode-hook . tempel-setup-capf)
+         (org-mode-hook . tempel-setup-capf))
 
   ;; Optionally make the Tempel templates available to Abbrev,
   ;; either locally or globally. `expand-abbrev' is bound to C-x '.
   ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
   ;; (tempel-global-abbrev-mode)
-)
+  )
 
 (use-package corfu
   :ensure
