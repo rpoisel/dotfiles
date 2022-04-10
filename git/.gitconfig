@@ -47,3 +47,5 @@ stash-untracked = "!f() {    \
 	prune = true
 [github]
 	user = rpoisel
+[core]
+	excludesfile = ~/.gitignore
