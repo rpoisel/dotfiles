@@ -597,7 +597,11 @@
 ;; Rust
 
 (use-package rustic
-  :ensure)
+  :ensure t
+  :config
+  (setq
+   rustic-format-on-save t
+   rustic-lsp-format t))
 
 ;; Lua
 
