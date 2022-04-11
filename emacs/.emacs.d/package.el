@@ -461,6 +461,19 @@
 ;; (use-package tree-sitter-langs
 ;;   :ensure)
 
+;; https://company-mode.github.io/manual/Customization.html#Customization
+;; configuration values might be overwritten by modes such as lsp-mode
+(use-package company
+  :ensure t
+  :hook
+  (after-init . global-company-mode)
+  :config
+  (setq company-backends (delete 'company-semantic company-backends)
+        company-idle-delay 0
+        company-minimum-prefix-length 4
+        company-selection-wrap-around t
+        company-tooltip-align-annotations t))
+
 (use-package tempel
   :ensure
   :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
