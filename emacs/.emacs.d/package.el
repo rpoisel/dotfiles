@@ -461,14 +461,6 @@
 ;; (use-package tree-sitter-langs
 ;;   :ensure)
 
-(use-package company
-  :ensure
-  :config
-  (setq company-idle-delay 0
-        company-minimum-prefix-length 4
-        company-selection-wrap-around t))
-(global-company-mode)
-
 (use-package tempel
   :ensure
   :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
@@ -566,8 +558,6 @@
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024)
         treemacs-space-between-root-nodes nil
-        company-idle-delay 0.0
-        company-minimum-prefix-length 1
         lsp-idle-delay 0.1)  ;; clangd is fast
   (setq lsp-auto-guess-root t)
   (setq lsp-prefer-flymake nil)
