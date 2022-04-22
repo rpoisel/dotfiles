@@ -1032,8 +1032,11 @@
 (add-hook 'org-mode-hook 'svg-tag-mode)
 
 (org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)
-                             (python . t)))
+ 'org-babel-load-languages '((awk . t)
+                             (C . t)
+                             (lua . t)
+                             (python . t)
+                             (shell . t)))
 
 (use-package org-appear
   :config
