@@ -198,6 +198,7 @@
              ("j" . dired-subtree-remove)))
 
 (setq evil-auto-indent nil)
+(setq sentence-end-double-space nil)
 (use-package evil
   :ensure
   :demand
