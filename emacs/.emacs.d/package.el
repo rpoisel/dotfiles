@@ -1032,10 +1032,13 @@
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
 (add-hook 'org-mode-hook 'svg-tag-mode)
 
+(setq org-plantuml-jar-path
+      (expand-file-name "/usr/local/plantuml.jar"))
 (org-babel-do-load-languages
  'org-babel-load-languages '((awk . t)
                              (C . t)
                              (lua . t)
+                             (plantuml . t)
                              (python . t)
                              (shell . t)))
 
