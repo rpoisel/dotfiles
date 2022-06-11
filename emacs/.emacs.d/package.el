@@ -309,6 +309,13 @@
 (use-package consult-flycheck
   :ensure)
 
+;;; add missing, deprecated function (can be removed as soon not referenced anymore)
+(defun consult-completing-read-multiple (&rest args)
+  "Deprecated function; call `completing-read-multiple' with ARGS."
+  (advice-remove #'completing-read-multiple #'consult-completing-read-multiple)
+  (run-at-time 0 nil #'message "`consult-completing-read-multiple' has been deprecated")
+  (apply #'completing-read-multiple args))
+
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)
