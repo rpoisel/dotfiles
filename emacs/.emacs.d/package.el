@@ -762,8 +762,7 @@
   :hook ((prog-mode-hook . bug-reference-prog-mode)))
 
 (use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
+  :ensure t)
 
 (use-package magit
   :ensure
