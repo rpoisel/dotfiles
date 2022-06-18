@@ -583,6 +583,8 @@
         lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
         lsp-lua-workspace-max-preload 2048
         lsp-lua-workspace-preload-file-size 1024)
+  (setq lsp-clangd-binary-path "/usr/bin/clangd"
+        lsp-clients-clangd-args '("-j=4" "--header-insertion=iwyu" "--background-index" "--log=error" "--query-driver=/**/cc*,/**/c++*,/**/*g++*,/**/*gcc*,/**/clang*"))
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024)
         treemacs-space-between-root-nodes nil
