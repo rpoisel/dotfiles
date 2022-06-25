@@ -210,6 +210,7 @@
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join))
 (evil-set-initial-state 'dired-mode 'emacs)
+(evil-set-initial-state 'compilation-mode 'emacs)
 
 (use-package evil-surround
   :ensure
