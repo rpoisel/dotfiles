@@ -13,6 +13,15 @@
   (eval-when-compile
     (require 'use-package)))
 
+;; backups
+(setq backup-directory-alist '(("." . "~/.emacs-backups/")))
+(setq backup-by-copying t)
+(setq version-control t)
+(setq delete-old-versions t)
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
+(setq create-lockfiles nil)
+
 (use-package dracula-theme
   :ensure
   :config (load-theme 'dracula t))
