@@ -176,7 +176,14 @@
   (setq dired-omit-verbose nil)
   :hook
   ;; (dired-mode-hook . dired-omit-mode)
-  (dired-mode-hook . dired-hide-details-mode))
+  (dired-mode-hook . dired-hide-details-mode)
+  :config
+  (progn
+    (setq dired-omit-verbose nil)
+    ;; toggle `dired-omit-mode' with C-x M-o
+    (add-hook 'dired-mode-hook #'dired-omit-mode)
+    (setq dired-omit-files
+          (concat dired-omit-files "\\|^.DS_STORE$\\|^.projectile$\\|\\.~undo-tree~$"))))
 
 (use-package dired-aux
   :after dired
