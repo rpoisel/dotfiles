@@ -997,6 +997,7 @@
 (drag-stuff-global-mode 1)
 (drag-stuff-define-keys)
 (add-to-list 'drag-stuff-except-modes 'org-mode)
+(global-auto-revert-mode t)
 
 (use-package markdown-mode
   :ensure t
