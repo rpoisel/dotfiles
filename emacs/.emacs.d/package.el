@@ -1,17 +1,20 @@
 (require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(let ((use-package-hook-name-suffix nil)
-      (package-enable-at-startup nil))
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-  (package-initialize)
-  (eval-when-compile
-    (require 'use-package)))
+(eval-and-compile
+  (setq use-package-enable-imenu-support t)
+  (setq use-package-hook-name-suffix nil))
+
+(setq use-package-compute-statistics t)
+(eval-when-compile
+  (require 'use-package))
 
 ;; backups
 (setq backup-directory-alist '(("." . "~/.emacs-backups/")))
