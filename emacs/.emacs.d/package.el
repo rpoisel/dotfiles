@@ -1167,6 +1167,8 @@ With a prefix ARG, remove start location."
   (with-eval-after-load 'pdf-annot
     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
+(use-package ob-dsq
+  :ensure)
 
 ;; Functions
 
