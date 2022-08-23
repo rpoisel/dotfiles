@@ -161,6 +161,8 @@
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always)
   (setq dired-use-ls-dired nil)
+  ;; see: https://emacs.stackexchange.com/a/5604/36387
+  (setq dired-dwim-target t)
   :config
 
   ;; See https://christiantietze.de/posts/2021/06/emacs-trash-file-macos.
