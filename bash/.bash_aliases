@@ -73,7 +73,7 @@ alias xclip="xclip -selection clipboard"
 alias rpo="rpoisel"
 
 # cluster
-alias dkc="docker-compose"
+alias dkc="docker compose"
 complete -F _complete_alias dkc
 
 alias kc=kubectl
