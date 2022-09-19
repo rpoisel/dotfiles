@@ -774,7 +774,7 @@
   :bind (:map rg-mode-map
               ;; Use the same key-binding that `wdired' uses by default.
               ("C-x C-q" . wgrep-change-to-wgrep-mode))
-  :hook (rg-mode . (lambda () (select-window (display-buffer (current-buffer))))))
+  :hook (rg-mode-hook . (lambda () (select-window (display-buffer (current-buffer))))))
 (evil-set-initial-state 'rg-mode 'emacs)
 
 (use-package prog-mode
