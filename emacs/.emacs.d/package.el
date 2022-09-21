@@ -1182,6 +1182,11 @@ With a prefix ARG, remove start location."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
+;; https://stackoverflow.com/a/2240286/203506
+(defun rpo/format-xml ()
+  (interactive)
+  (shell-command-on-region 1 (point-max) "xmllint --format -" (current-buffer) t))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
