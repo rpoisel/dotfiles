@@ -109,7 +109,7 @@ alias la='exa -la'
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    . "${HOME}/.bash_aliases"
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -123,29 +123,42 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if [ -e ${HOME}/google-cloud-sdk/path.bash.inc ]
-then
-  source ${HOME}/google-cloud-sdk/path.bash.inc
-  source ${HOME}/google-cloud-sdk/completion.bash.inc
-fi
-
-export PATH=${PATH}:${HOME}/go/bin:${HOME}/.local/bin
+# General settings
+export PATH="${PATH}:${HOME}/go/bin:${HOME}/.local/bin"
 export EDITOR="/usr/bin/emacs -nw"
 
 shopt -s globstar
 
+# Terminal configuration
 if ! [ "${TERM}" == "dumb" ]; then
   source /usr/share/doc/fzf/examples/key-bindings.bash
 # Using highlight (http://www.andre-simon.de/doku/highlight/en/highlight.html)
   export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-  source ~/git/fzf-marks/fzf-marks.plugin.bash
+  source "${HOME}/git/fzf-marks/fzf-marks.plugin.bash"
 fi
 
+# Direnv
 eval "$(direnv hook bash)"
 if ! [ "${TERM}" == "dumb" ]; then
   eval "$(starship init bash)"
 fi
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
+
+goversion 1.17
+
+# Google Cloud SDK
+if [ -e "${HOME}/google-cloud-sdk/path.bash.inc" ]
+then
+  source "${HOME}/google-cloud-sdk/path.bash.inc"
+  source "${HOME}/google-cloud-sdk/completion.bash.inc"
+fi
+
+# Shell completion
 function add_completion() {
   cmd="${1}"
   shift
@@ -168,11 +181,3 @@ add_completion k3d
 add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-[ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
-
-goversion 1.17
