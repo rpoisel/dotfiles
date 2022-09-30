@@ -158,6 +158,9 @@ then
   source "${HOME}/google-cloud-sdk/completion.bash.inc"
 fi
 
+# Gradle
+export PATH="${PATH}:${HOME}/.local/opt/gradle/bin"
+
 # Shell completion
 function add_completion() {
   cmd="${1}"
