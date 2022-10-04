@@ -37,8 +37,8 @@
                     :width 'normal)
 
 (use-package svg-tag-mode
-  :hook (org-mode-hook . svg-tag-mode)
   :ensure)
+(add-hook 'org-mode-hook 'svg-tag-mode)
 
 (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
 (defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
@@ -1043,7 +1043,6 @@
 
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
-(add-hook 'org-mode-hook 'svg-tag-mode)
 
 (setq org-plantuml-jar-path
       (expand-file-name "/usr/local/plantuml.jar"))
