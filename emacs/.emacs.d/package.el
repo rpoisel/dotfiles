@@ -1044,12 +1044,15 @@
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
 
+;; for GNU Makefiles
+(setq org-src-preserve-indentation t)
 (setq org-plantuml-jar-path
       (expand-file-name "/usr/local/plantuml.jar"))
 (org-babel-do-load-languages
  'org-babel-load-languages '((awk . t)
                              (C . t)
                              (lua . t)
+                             (makefile . t)
                              (plantuml . t)
                              (python . t)
                              (shell . t)))
