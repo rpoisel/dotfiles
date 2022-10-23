@@ -756,7 +756,8 @@
   :config
   (with-eval-after-load 'evil
     (add-hook 'prog-mode-hook #'evil-normal-state))
-  :hook ((prog-mode-hook . bug-reference-prog-mode)))
+  :hook ((prog-mode-hook . bug-reference-prog-mode)
+         (prog-mode-hook . flycheck-mode)))
 
 (use-package flycheck
   :ensure t)
