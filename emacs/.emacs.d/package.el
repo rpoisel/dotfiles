@@ -724,7 +724,8 @@
 (evil-set-initial-state 'kubernetes-overview-mode 'emacs)
 
 (use-package yaml-mode
-  :ensure)
+  :ensure
+  :hook ((yaml-mode-hook . flycheck-mode)))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.gqlgen\\'" . yaml-mode))
