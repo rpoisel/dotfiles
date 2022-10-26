@@ -1059,7 +1059,7 @@
   :after org
   :init
   (setq org-edit-src-content-indentation 0)
-  (setq org-src-preserve-indentation nil)
+  (setq org-src-preserve-indentation t)
   (setq org-edit-src-persistent-message nil)
   (setq org-src-ask-before-returning-to-edit-buffer nil)
   (setq org-src-tab-acts-natively t)
