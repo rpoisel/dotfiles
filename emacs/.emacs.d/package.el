@@ -231,6 +231,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+(setq tab-always-indent nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ediff                                                                  ;;
@@ -1043,11 +1044,6 @@
       '("lualatex -shell-escape -interaction nonstopmode %f"
         "lualatex -shell-escape -interaction nonstopmode %f"))
 
-(add-hook 'org-mode-hook
-          (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil 'local)))
-
-;; for GNU Makefiles
-(setq org-src-preserve-indentation t)
 (setq org-plantuml-jar-path
       (expand-file-name "/usr/local/plantuml.jar"))
 (org-babel-do-load-languages
@@ -1058,6 +1054,17 @@
                              (plantuml . t)
                              (python . t)
                              (shell . t)))
+
+(use-package org-src
+  :after org
+  :init
+  (setq org-edit-src-content-indentation 0)
+  (setq org-src-preserve-indentation nil)
+  (setq org-edit-src-persistent-message nil)
+  (setq org-src-ask-before-returning-to-edit-buffer nil)
+  (setq org-src-tab-acts-natively t)
+  ;; (setq org-src-window-setup 'current-window)
+  )
 
 (use-package org-appear
   :config
