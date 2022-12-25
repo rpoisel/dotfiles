@@ -83,5 +83,6 @@ org-mode
 (comment "#+begin_comment" n> r> n> "#+end_comment")
 (verse "#+begin_verse" n> r> n> "#+end_verse")
 (src "#+name: " p n> "#+begin_src " p n r n "#+end_src")
+(src_shell "#+begin_src shell :shebang #!/usr/bin/env bash :results code :exports both" n r n "#+end_src")
 (elisp "#+begin_src emacs-lisp" n> r> n "#+end_src"
        :post (progn (tempel-done) (org-edit-src-code)))
