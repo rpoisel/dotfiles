@@ -847,10 +847,12 @@
   :config)
 
 (use-package windmove
-  :bind (("s-M-<up>" . windmove-up)
-         ("s-M-<right>" . windmove-right)
-         ("s-M-<down>" . windmove-down)
-         ("s-M-<left>" . windmove-left)))
+  :bind (("M-s-<up>" . windmove-up)
+         ("M-s-k" . windmove-right)
+         ("M-s-<right>" . windmove-right)
+         ("M-s-<down>" . windmove-down)
+         ("M-s-j" . windmove-left)
+         ("M-s-<left>" . windmove-left)))
 
 (use-package vterm
   :ensure
