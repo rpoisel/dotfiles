@@ -848,10 +848,12 @@
 
 (use-package windmove
   :bind (("M-s-<up>" . windmove-up)
-         ("M-s-k" . windmove-right)
+         ("M-s-k" . windmove-up)
+         ("M-s-l" . windmove-right)
          ("M-s-<right>" . windmove-right)
          ("M-s-<down>" . windmove-down)
-         ("M-s-j" . windmove-left)
+         ("M-s-j" . windmove-down)
+         ("M-s-h" . windmove-left)
          ("M-s-<left>" . windmove-left)))
 
 (use-package vterm
