@@ -1038,6 +1038,7 @@
 (org-babel-do-load-languages
  'org-babel-load-languages '((awk . t)
                              (C . t)
+                             (dot . t)
                              (lua . t)
                              (makefile . t)
                              (plantuml . t)
