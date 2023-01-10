@@ -12,3 +12,4 @@ run nm-applet
 run padevchooser
 run blueman-applet
 run syncthing-gtk
+run nextcloud
