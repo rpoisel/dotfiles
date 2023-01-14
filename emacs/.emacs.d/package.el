@@ -785,10 +785,6 @@
 (define-key (current-global-map)
             [remap shell-command] 'with-editor-shell-command)
 
-(use-package forge
-  :ensure
-  :after magit)
-
 (use-package git-timemachine
   :ensure
   :init
