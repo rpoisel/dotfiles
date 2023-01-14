@@ -125,7 +125,7 @@ fi
 
 # General settings
 export PATH="${PATH}:${HOME}/go/bin:${HOME}/.local/bin"
-export EDITOR="/usr/bin/emacs -nw"
+export EDITOR="emacs -nw"
 
 shopt -s globstar
 
