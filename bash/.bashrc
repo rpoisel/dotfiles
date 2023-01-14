@@ -149,7 +149,7 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
 
-goversion 1.17
+goversion 1.19
 
 # Google Cloud SDK
 if [ -e "${HOME}/google-cloud-sdk/path.bash.inc" ]
