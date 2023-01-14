@@ -711,17 +711,6 @@
 ;; (setq lsp-print-performance t)
 ;; (setq lsp-auto-guess-root t) ; auto detect workspace and start lang server
 
-(use-package docker
-  :ensure t
-  :bind ("C-c d" . docker))
-
-(use-package docker-tramp
-  :ensure)
-
-(use-package kubernetes
-  :ensure t
-  :commands (kubernetes-overview))
-
 (evil-set-initial-state 'kubernetes-overview-mode 'emacs)
 
 (use-package yaml-mode
