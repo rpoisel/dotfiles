@@ -1,0 +1,3 @@
+[submodule "fzf-marks"]
+	path = fzf-marks
+	url = https://github.com/urbainvaes/fzf-marks.git
