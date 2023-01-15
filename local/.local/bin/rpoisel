@@ -1,0 +1,232 @@
+#!/bin/bash
+
+# todo:
+# pactl list source-outputs
+# pactl set-source-output-volume 0 0x6000
+
+if [[ -e "${HOME}/.env-rpoisel" ]]; then
+    source "${HOME}/.env-rpoisel"
+fi
+
+function hostname_matches() {
+    local match="${1}"
+    hostname | grep "${match}"
+}
+
+# this is a workaround function to allow for re-pairing BT devices
+function bt_repair() {
+    local device="${1}"
+
+    sudo rm -rf "/var/lib/bluetooth/34\:02\:86\:D9\:8D\:D8/"
+    sudo systemctl stop bluetooth
+    sleep 2
+    timeout 2s bluetoothctl scan on
+    bluetoothctl trust "${device}"
+    bluetoothctl pair "${device}"
+    bluetoothctl connect "${device}"
+}
+
+if hostname_matches "knirps-03" >/dev/null; then
+    if_wifi="wlp2s0"
+    if_eth="eno1"
+elif hostname_matches "knirps-04" >/dev/null; then
+    if_wifi="wlp0s20f3"
+    if_eth="enp0s31f6"
+fi
+
+function set_default_browser() {
+    local browser="${1}"
+    local altname="${2}"
+
+    xdg-settings set default-web-browser "${browser}".desktop
+    sudo update-alternatives --set x-www-browser /usr/bin/"${altname}"
+    sudo update-alternatives --set gnome-www-browser /usr/bin/"${altname}"
+}
+
+function update_wallpaper() {
+    local size=1920x1080 #size of desktop
+    local terms=nature,coffee,books,architecture,interiors,backgrounds #comma separated list
+    local featured_only=true #limit results to photos included in curated collections
+    local localdir=~/tmp/wallpapers
+    local local=${localdir}/wallpaper #where to store wallpaper locally
+    local remote="https://source.unsplash.com/${size}/?${terms}"
+    local monitors
+
+    monitors=$(xrandr | grep " connected" | awk '{ print $1 }')
+
+    if [ ! -d ${localdir} ]; then
+        mkdir -p ${localdir}
+    fi
+
+    for monitor in ${monitors}; do
+        local localpath="${local}-${monitor}.jpg"
+        if [ "$featured_only" = true ]; then
+            remote="$remote,featured"
+        fi
+
+        if wget -q --spider "${remote}"; then
+            local props
+            local prop
+
+            props=$(xfconf-query -c xfce4-desktop -l | grep last-image | grep "monitor${monitor}")
+
+            wget -O "$localpath" "$remote"
+
+            for prop in $props; do
+                echo "Setting ${prop} to ${localpath}"
+                xfconf-query -c xfce4-desktop -p "${prop}" -s "${localpath}"
+            done
+        fi
+    done
+}
+
+case "${1}" in
+    sleep)
+        sync
+        sudo pm-suspend
+        ;;
+    update)
+        ansible-playbook -i localhost, -e 'ansible_python_interpreter=/usr/bin/python3' -e 'ansible_connection=local' -e 'ansible_user=rpoisel' -vvv ~/git/DevOps/update/main.yml
+        ;;
+    network|nw)
+        case "${2}" in
+            "up")
+                sudo ip link set "${if_eth}" up
+                sudo ip link set "${if_wifi}" up
+                ;;
+            "down")
+                sudo ip link set "${if_eth}" down
+                sudo ip link set "${if_wifi}" down
+                ;;
+            "wifi")
+                sudo ip link set "${if_eth}" down
+                sudo ip link set "${if_wifi}" up
+                ;;
+            "lan")
+                sudo ip link set "${if_eth}" up
+                sudo ip link set "${if_wifi}" down
+                ;;
+            *)
+                >&2 echo "Usage: $0 <network|nw> <up|down|wifi|lan>"
+                exit 1
+                ;;
+        esac
+        ;;
+    bluetooth|bt)
+        case "${2}" in
+            on)
+                sudo systemctl start bluetooth.service
+                sudo rfkill block bluetooth && sleep 0.1 && sudo rfkill unblock bluetooth
+                ;;
+            off)
+                sudo systemctl stop bluetooth.service
+                ;;
+            dis*)
+                bluetoothctl disconnect
+                ;;
+            repair)
+                case "${3}" in
+                    ue)
+                        bt_repair "88:C6:26:B1:E0:72"
+                        ;;
+                    hs)
+                        bt_repair "38:18:4C:17:26:FC"
+                        ;;
+                    *)
+                        bt_repair "${3}"
+                        ;;
+                esac
+                ;;
+            *)
+                >&2 echo "Usage: $0 <bluetooth|bt> <on|off|dis|repair <ue|hs|<mac>>>"
+                exit 1
+                ;;
+        esac
+        ;;
+    usb)
+        case "${2}" in
+            force-usb2)
+                # https://www.systutorials.com/how-to-force-a-usb-3-0-port-to-work-in-usb-2-0-mode-in-linux/
+                lspci -nn | grep USB | cut -d '[' -f3 | cut -d ']' -f1 | xargs -I@ sudo setpci -H1 -d @ d0.l=0
+                ;;
+            restore-mode)
+                lspci -nn | grep USB | cut -d '[' -f3 | cut -d ']' -f1 | xargs -I@ sudo setpci -H1 -d @ d0.l=1
+                ;;
+            *)
+                >&2 echo "Usage: $0 <usb> <force-usb2>"
+                exit 1
+                ;;
+         esac
+        ;;
+    power|pwr)
+        case "${2}" in
+            mic)
+                mosquitto_pub -h "${MQTT_HOST}" -p "${MQTT_PORT}" -u "${MQTT_USER}" -P "${MQTT_PASS}" -t 'cmnd/microphone/Power' -m "${3}"
+                ;;
+            charger)
+                mosquitto_pub -h "${MQTT_HOST}" -p "${MQTT_PORT}" -u "${MQTT_USER}" -P "${MQTT_PASS}" -t 'cmnd/charger/Power' -m "${3}"
+                ;;
+            *)
+                >&2 echo "Usage: $0 <power|pwr> <mic|charger> <on|off>"
+                exit 1
+                ;;
+        esac
+        ;;
+    browser|br)
+        case "${2}" in
+            gc|chrome)
+                set_default_browser google-chrome google-chrome-stable
+                ;;
+            chromium)
+                set_default_browser chromium chromium
+                ;;
+            ff|firefox)
+                set_default_browser firefox firefox
+                ;;
+            *)
+                >&2 echo "Usage: $0 <browser|br> <chrome|chromium|firefox>"
+                exit 1
+                ;;
+        esac
+        ;;
+    screen)
+        # see: https://linuxconfig.org/how-to-configure-your-monitors-with-xrandr-in-linux
+        case "${2}" in
+            1)
+                xrandr \
+                    --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
+                    --output HDMI-1 --off \
+                    --output DP-1-3 --off
+                ;;
+            2)
+                xrandr \
+                    --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
+                    --output HDMI-1 --mode 3440x1440 --pos 0x0 --rate 29.99
+                ;;
+            3)
+                xrandr \
+                    --output eDP-1 --mode 1920x1080 --pos 3600x0 --rate 60.02 \
+                    --output HDMI-1 --mode 1920x1080 --pos 1680x0 --rate 60.00 \
+                    --output DP-1-3 --mode 1680x1050 --pos 0x0 --rate 59.95
+                ;;
+            wallpaper|wp)
+                case "${3}" in
+                    update|up)
+                        update_wallpaper
+                        ;;
+                    *)
+                        >&2 echo "Usage: $0 screen wallpaper update"
+                        ;;
+                esac
+                ;;
+            *)
+                >&2 echo "Usage: $0 <screen> <1|2|3|wallpaper update>"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Usage: $0 <sleep|update|network|bluetooth|power|browser|screen>"
+        exit 1
+        ;;
+esac
