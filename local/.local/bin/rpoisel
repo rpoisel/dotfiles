@@ -17,7 +17,11 @@ function hostname_matches() {
 function bt_repair() {
     local device="${1}"
 
-    sudo rm -rf "/var/lib/bluetooth/34\:02\:86\:D9\:8D\:D8/"
+    if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
+        sudo rm -rf "/var/lib/bluetooth/00\:A5\:54\:19\:3E\:43/"
+    else
+        sudo rm -rf "/var/lib/bluetooth/34\:02\:86\:D9\:8D\:D8/"
+    fi
     sudo systemctl stop bluetooth
     sleep 2
     timeout 2s bluetoothctl scan on
@@ -193,20 +197,27 @@ case "${1}" in
         # see: https://linuxconfig.org/how-to-configure-your-monitors-with-xrandr-in-linux
         case "${2}" in
             1)
-                xrandr \
-                    --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
-                    --output HDMI-1 --off \
-                    --output DP-1-3 --off
+                if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
+                    xrandr \
+                        --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
+                        --output DP-2 --off
+                else
+                    xrandr \
+                        --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
+                        --output HDMI-1 --off \
+                        --output DP-1-3 --off
+                fi
                 ;;
             2)
                 if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
-                    external_display="DP-2"
+                    xrandr \
+                        --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
+                        --output DP-2 --primary --mode 3440x1440 --pos 0x0 --rate 29.99
                 else
-                    external_display="HDMI-1"
+                    xrandr \
+                        --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
+                        --output HDMI-1 --primary --mode 3440x1440 --pos 0x0 --rate 29.99
                 fi
-                xrandr \
-                    --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
-                    --output "${external_display}" --mode 3440x1440 --pos 0x0 --rate 29.99
                 ;;
             3)
                 xrandr \
