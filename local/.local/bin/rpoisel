@@ -200,7 +200,7 @@ case "${1}" in
                 if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
                     xrandr \
                         --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
-                        --output DP-2 --off
+                        --output DP-1 --off
                 else
                     xrandr \
                         --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
@@ -212,7 +212,7 @@ case "${1}" in
                 if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
                     xrandr \
                         --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
-                        --output DP-2 --primary --mode 3440x1440 --pos 0x0 --rate 29.99
+                        --output DP-1 --primary --mode 3440x1440 --pos 0x0 --rate 29.99
                 else
                     xrandr \
                         --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
