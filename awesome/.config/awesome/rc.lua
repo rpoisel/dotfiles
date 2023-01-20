@@ -24,6 +24,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 -- custom widgets
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -235,6 +236,12 @@ awful.screen.connect_for_each_screen(function(s)
             batteryarc_widget({
                 show_current_level = true,
                 arc_thickness = 1,
+            }),
+            cpu_widget({
+                width = 70,
+                step_width = 2,
+                step_spacing = 0,
+                color = '#434c5e'
             }),
             wibox.widget.systray(),
             mytextclock,
