@@ -1,3 +1,6 @@
 [submodule "fzf-marks"]
 	path = fzf-marks
 	url = https://github.com/urbainvaes/fzf-marks.git
+[submodule "awesome/.config/awesome/awesome-wm-widgets"]
+	path = awesome/.config/awesome/awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets
