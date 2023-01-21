@@ -411,6 +411,8 @@ clientkeys = gears.table.join(
         {description = "(un)maximize horizontally", group = "client"})
 )
 
+local last_viewed_tag
+
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -421,8 +423,14 @@ for i = 1, 9 do
                   function ()
                         local screen = awful.screen.focused()
                         local tag = screen.tags[i]
-                        if tag then
-                           tag:view_only()
+                        if tag == screen.selected_tag then
+                            last_viewed_tag:view_only()
+                            last_viewed_tag = tag
+                        else
+                           if tag then
+                              last_viewed_tag = screen.selected_tag
+                              tag:view_only()
+                           end
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
