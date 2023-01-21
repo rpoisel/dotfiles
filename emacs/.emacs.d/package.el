@@ -576,7 +576,7 @@
   (add-hook 'lua-mode-hook #'lsp-deferred)
   (add-hook 'go-mode-hook #'lsp-deferred)
   (add-hook 'python-mode-hook #'lsp-deferred)
-  (setq lsp-clients-lua-language-server-install-dir "/usr/local/lua-language-server/"
+  (setq lsp-clients-lua-language-server-install-dir (expand-file-name "~/.local/opt/lua-language-server/")
         lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/lua-language-server")
         lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
         lsp-lua-workspace-max-preload 2048
