@@ -620,18 +620,21 @@
 
 ;; Lua
 
-(defun rpo-lua-format-buffer ()
-  (let ((formatter-cfg-file ".lua-format")
-        (formatter-cfg-dir  (locate-dominating-file "." ".lua-format")))
-    (if formatter-cfg-dir
-        (let* ((tmp-buffer-name (make-temp-name "tmp"))
+(defun rpo-pipe-and-replace-buffer (cmd)
+  (let* ((tmp-buffer-name (make-temp-name "tmp"))
                (tmp-buffer (get-buffer-create tmp-buffer-name)))
           (if (eq 0 (call-shell-region
-                     (point-min) (point-max) (concat "lua-format --config=" (expand-file-name (concat formatter-cfg-dir formatter-cfg-file))) nil (list tmp-buffer nil)))
+                     (point-min) (point-max) cmd nil (list tmp-buffer nil)))
               (replace-buffer-contents tmp-buffer 3)
-            (error "lua-format failed."))
-          (kill-buffer tmp-buffer))
-      #'er-indent-and-cleanup-region-or-buffer)))
+            (error (concat "pipe and replace buffer failed: " cmd))
+          (kill-buffer tmp-buffer))))
+
+(defun rpo-lua-format-buffer ()
+  (let* ((formatter-cfg-dir (locate-dominating-file "." ".lua-format"))
+        (code-format-cfg-dir (locate-dominating-file "." ".editorconfig")))
+    (if formatter-cfg-dir
+        (rpo-pipe-and-replace-buffer (concat "lua-format --config=" (expand-file-name (f-join formatter-cfg-dir ".lua-format"))))
+      (if code-format-cfg-dir (rpo-pipe-and-replace-buffer (concat "CodeFormat format --config " (expand-file-name (f-join code-format-cfg-dir ".editorconfig")) " --stdin " (number-to-string (* 1024 1024)))) #'er-indent-and-cleanup-region-or-buffer))))
 
 ;; https://emacs.stackexchange.com/a/5777/36387
 ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
