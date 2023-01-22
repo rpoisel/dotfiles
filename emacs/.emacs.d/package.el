@@ -634,7 +634,7 @@
         (code-format-cfg-dir (locate-dominating-file "." ".editorconfig")))
     (if formatter-cfg-dir
         (rpo-pipe-and-replace-buffer (concat "lua-format --config=" (expand-file-name (f-join formatter-cfg-dir ".lua-format"))))
-      (if code-format-cfg-dir (rpo-pipe-and-replace-buffer (concat "CodeFormat format --config " (expand-file-name (f-join code-format-cfg-dir ".editorconfig")) " --stdin " (number-to-string (* 1024 1024)))) #'er-indent-and-cleanup-region-or-buffer))))
+      (if code-format-cfg-dir (rpo-pipe-and-replace-buffer (concat "CodeFormat format --config " (expand-file-name (f-join code-format-cfg-dir ".editorconfig")) " --stdin")) #'er-indent-and-cleanup-region-or-buffer))))
 
 ;; https://emacs.stackexchange.com/a/5777/36387
 ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/
