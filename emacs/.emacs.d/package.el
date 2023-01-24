@@ -695,9 +695,8 @@
 (add-hook 'cmake-mode-hook 'rpo-turn-on-indent)
 
 ;; Python
-(use-package lsp-python-ms
-  :ensure
-  :init (setq lsp-python-ms-executable "~/.emacs.d/.cache/lsp/mspyls/Microsoft.Python.LanguageServer"))
+;; pylsp is used as language server for Python
+;; no additional config required; lsp-mode supports it out of the box
 (add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
 ;; Golang
