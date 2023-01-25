@@ -236,7 +236,7 @@ case "${1}" in
                 esac
                 ;;
             *)
-                >&2 echo "Usage: $0 <screen> <1|2|3|wallpaper update>"
+                >&2 echo "Usage: $0 screen <1|2|3|wallpaper update>"
                 exit 1
                 ;;
         esac
