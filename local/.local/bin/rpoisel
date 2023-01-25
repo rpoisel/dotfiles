@@ -62,26 +62,22 @@ function update_wallpaper() {
         mkdir -p ${localdir}
     fi
 
+    cmdline="feh"
     for monitor in ${monitors}; do
         local localpath="${local}-${monitor}.jpg"
         if [ "$featured_only" = true ]; then
-            remote="$remote,featured"
+            remote="${remote},featured"
         fi
 
         if wget -q --spider "${remote}"; then
             local props
-            local prop
 
-            props=$(xfconf-query -c xfce4-desktop -l | grep last-image | grep "monitor${monitor}")
+            wget -O "${localpath}" "${remote}"
 
-            wget -O "$localpath" "$remote"
-
-            for prop in $props; do
-                echo "Setting ${prop} to ${localpath}"
-                xfconf-query -c xfce4-desktop -p "${prop}" -s "${localpath}"
-            done
+            cmdline+=" --bg-fill ${localpath}"
         fi
     done
+    eval "${cmdline}"
 }
 
 case "${1}" in
