@@ -193,6 +193,30 @@ case "${1}" in
                 ;;
         esac
         ;;
+    sign)
+        case "${2}" in
+            modules)
+                VERSION="$(uname -r)"
+                SHORT_VERSION="$(uname -r | cut -d . -f 1-2)"
+                MODULES_DIR=/lib/modules/$VERSION
+                KBUILD_DIR=/usr/lib/linux-kbuild-$SHORT_VERSION
+                export KBUILD_DIR
+                echo -n "Passphrase for the private key: "
+                read -s KBUILD_SIGN_PIN
+                echo ""
+                export KBUILD_SIGN_PIN
+                (cd "${MODULES_DIR}" \
+                    && for i in $(fdfind 'vbox.*\.ko'); do
+                           echo "Signing ${MODULES_DIR}/${i}."
+                           sudo --preserve-env=KBUILD_SIGN_PIN "${KBUILD_DIR}"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der "$i"
+                       done)
+                ;;
+            *)
+                >&2 echo "Usage: $0 sign modules"
+                exit 1
+                ;;
+        esac
+        ;;
     screen)
         # see: https://linuxconfig.org/how-to-configure-your-monitors-with-xrandr-in-linux
         case "${2}" in
