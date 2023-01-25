@@ -365,7 +365,41 @@ local globalkeys = gears.table.join(
         { description = "lua execute prompt", group = "awesome" }),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-        { description = "show the menubar", group = "launcher" })
+        { description = "show the menubar", group = "launcher" }),
+    -- Arrange clients automatically (WiP)
+    awful.key({ modkey }, "d",
+        function()
+            local file = io.open("/tmp/clients.txt", "w")
+            if not file then error("could not open file") end
+            file:write(os.date("%c", os.time()))
+            file:write("\n\n")
+
+            for _, c in ipairs(client.get()) do
+                file:write(c.name)
+                local screen = awful.screen.focused()
+                if  string.match(c.name, 'Mozilla Firefox') then
+                    local tag = screen.tags[1]
+                    c:move_to_tag(tag)
+                elseif string.match(c.name, 'GNU Emacs') then
+                    local tag = screen.tags[2]
+                    c:move_to_tag(tag)
+                elseif string.match(c.name, 'Mozilla Thunderbird') then
+                    local tag = screen.tags[3]
+                    c:move_to_tag(tag)
+                elseif string.match(c.name, 'Google Chrome') or
+                string.match(c.name, 'Volume Control') then
+                    local tag = screen.tags[4]
+                    c:move_to_tag(tag)
+                elseif string.match(c.name, 'Slack') or string.match(c.name, 'Signal') then
+                    local tag = screen.tags[5]
+                    c:move_to_tag(tag)
+                end
+
+                file:write("\n")
+            end
+            file:close()
+        end,
+        { description = "arrange clients on tags", group = "tag" })
 )
 
 local clientkeys = gears.table.join(
