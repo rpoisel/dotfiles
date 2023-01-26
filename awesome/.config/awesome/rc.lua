@@ -648,5 +648,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 awful.spawn.with_shell([[setxkbmap -layout "us,de" -option "grp:caps_toggle"]])
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("blueman-applet")
-awful.spawn.with_shell("syncthing-gtk -m")
+awful.spawn.with_shell("if ! pgrep -u $(id -u) syncthing-gtk; then syncthing-gtk -m; fi")
 awful.spawn.with_shell("nextcloud --background")
