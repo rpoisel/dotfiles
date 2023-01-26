@@ -25,6 +25,9 @@
 (setq kept-old-versions 2)
 (setq create-lockfiles nil)
 
+(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+
 (use-package dracula-theme
   :ensure
   :config (load-theme 'dracula t))
