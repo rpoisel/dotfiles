@@ -7,7 +7,7 @@ tags:
   2:
     layout: {}
     clients:
-      - GNU Emacs
+      - GNU Emacs at # ignore GNU Emacs manual in browser
       - magit
   3:
     layout: {}
