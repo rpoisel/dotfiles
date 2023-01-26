@@ -26,6 +26,9 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 
+-- declarative config
+local lyaml = require("lyaml")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -369,37 +372,32 @@ local globalkeys = gears.table.join(
     -- Arrange clients automatically (WiP)
     awful.key({ modkey }, "d",
         function()
-            local file = io.open("/tmp/clients.txt", "w")
-            if not file then error("could not open file") end
-            file:write(os.date("%c", os.time()))
-            file:write("\n\n")
-
-            for _, c in ipairs(client.get()) do
-                file:write(c.name)
-                local screen = awful.screen.focused()
-                if  string.match(c.name, 'Mozilla Firefox') then
-                    local tag = screen.tags[1]
-                    c:move_to_tag(tag)
-                elseif string.match(c.name, 'GNU Emacs') then
-                    local tag = screen.tags[2]
-                    c:move_to_tag(tag)
-                elseif string.match(c.name, 'Mozilla Thunderbird') then
-                    local tag = screen.tags[3]
-                    c:move_to_tag(tag)
-                elseif string.match(c.name, 'Google Chrome') or
-                string.match(c.name, 'Volume Control') then
-                    local tag = screen.tags[4]
-                    c:move_to_tag(tag)
-                elseif string.match(c.name, 'Slack') or string.match(c.name, 'Signal') then
-                    local tag = screen.tags[5]
-                    c:move_to_tag(tag)
-                end
-
-                file:write("\n")
+            local status, cfgfile = pcall(io.open,
+                os.getenv("HOME") .. "/.config/awesome/config.yaml", "r")
+            if not status or not cfgfile then
+                return
             end
-            file:close()
+            local content = cfgfile:read("*all")
+            local cfg = lyaml.load(content)
+
+            local screen = awful.screen.focused()
+            for _, c in ipairs(client.get()) do
+                local found = false
+                for tagnum = 1, 9 do
+                    -- careful: the tagnum may not exist in config.yaml
+                    local cfgtag = cfg["tags"][tagnum]
+                    local tag = screen.tags[tagnum]
+                    for _, title in ipairs(cfgtag["clients"]) do
+                        if string.match(c.name, title) then
+                            found = true
+                            c:move_to_tag(tag)
+                        end
+                    end
+                end
+                if not found then c:move_to_tag(screen.tags[8]) end
+            end
         end,
-        { description = "arrange clients on tags", group = "tag" })
+        { description = "automatically arrange clients on tags", group = "awesome" })
 )
 
 local clientkeys = gears.table.join(
