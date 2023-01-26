@@ -1,0 +1,40 @@
+---
+tags:
+  1:
+    layout: {}
+    clients:
+      - Mozilla Firefox
+  2:
+    layout: {}
+    clients:
+      - GNU Emacs
+      - magit
+  3:
+    layout: {}
+    clients:
+      - Mozilla Thunderbird
+  4:
+    layout: {}
+    clients:
+      - Google Chrome
+      - Volume Control
+      - Bluetooth Devices
+  5:
+    layout: {}
+    clients:
+      - Slack
+      - Signal
+  6:
+    layout: {}
+    clients:
+      - Microsoft Teams
+  7:
+    layout: {}
+    clients: []
+  8:
+    layout: {}
+    clients: []
+  9:
+    layout: {}
+    clients: []
+
