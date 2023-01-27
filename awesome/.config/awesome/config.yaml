@@ -7,7 +7,7 @@ tags:
   2:
     layout: {}
     clients:
-      - GNU Emacs at # ignore GNU Emacs manual in browser
+      - GNU Emacs at  # ignore GNU Emacs manual in browser
       - magit
   3:
     layout: {}
@@ -30,11 +30,11 @@ tags:
       - Microsoft Teams
   7:
     layout: {}
-    clients: []
+    clients:
+      - KeePassXC
   8:
     layout: {}
     clients: []
   9:
     layout: {}
     clients: []
-
