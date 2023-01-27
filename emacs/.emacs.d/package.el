@@ -1156,6 +1156,12 @@ With a prefix ARG, remove start location."
 (use-package ob-dsq
   :ensure)
 
+(use-package langtool
+  :ensure
+  :init
+  (setq langtool-http-server-host "localhost")
+  (setq langtool-http-server-port 8010))
+
 ;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
