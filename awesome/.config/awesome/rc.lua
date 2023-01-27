@@ -187,6 +187,25 @@ local function set_wallpaper(s)
     end
 end
 
+local arrange_clients = function(cfg, matcher)
+    local screen = awful.screen.focused()
+    for _, c in ipairs(client.get()) do
+        local found = false
+        for tagnum = 1, 9 do
+            -- careful: the tagnum may not exist in config.yaml
+            local cfgtag = cfg["tags"][tagnum] or cfg["tags"][tostring(tagnum)]
+            local tag = screen.tags[tagnum]
+            for _, id in ipairs(cfgtag["clients"]) do
+                if matcher(c, id) then
+                    found = true
+                    c:move_to_tag(tag)
+                end
+            end
+        end
+        if not found then c:move_to_tag(screen.tags[8]) end
+    end
+end
+
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
@@ -378,26 +397,47 @@ local globalkeys = gears.table.join(
                 return
             end
             local content = cfgfile:read("*all")
+            cfgfile:close()
             local cfg = lyaml.load(content)
 
-            local screen = awful.screen.focused()
-            for _, c in ipairs(client.get()) do
-                local found = false
-                for tagnum = 1, 9 do
-                    -- careful: the tagnum may not exist in config.yaml
-                    local cfgtag = cfg["tags"][tagnum]
-                    local tag = screen.tags[tagnum]
-                    for _, title in ipairs(cfgtag["clients"]) do
-                        if string.match(c.name, title) then
-                            found = true
-                            c:move_to_tag(tag)
-                        end
-                    end
-                end
-                if not found then c:move_to_tag(screen.tags[8]) end
-            end
+
+            arrange_clients(cfg, function(c, id) return string.match(c.name, id) end)
         end,
-        { description = "automatically arrange clients on tags", group = "awesome" })
+        { description = "automatically arrange clients on tags", group = "awesome" }),
+    awful.key({ modkey }, "c",
+        function()
+            local status, clientsfile = pcall(io.open, "/tmp/clients.yaml", "w")
+            if not status or not clientsfile then
+                return
+            end
+            local result = { tags = {} }
+            local screen = awful.screen.focused()
+            for tagnum = 1, 9 do
+                result["tags"][tostring(tagnum)] = { layout = screen.tags[tagnum].layout.name,
+                                                     clients = {} }
+            end
+            for _, c in ipairs(client.get()) do
+                for _, t in ipairs(c:tags()) do
+                    table.insert(result["tags"][t.name]["clients"], c.window)
+                end
+            end
+            clientsfile:write(lyaml.dump({ result }))
+            clientsfile:close()
+        end,
+        { description = "store arrangement of clients", group = "awesome" }),
+    awful.key({ modkey }, "v",
+        function()
+            local status, clientsfile = pcall(io.open, "/tmp/clients.yaml", "r")
+            if not status or not clientsfile then
+                return
+            end
+            local content = clientsfile:read("*all")
+            clientsfile:close()
+            local clientscfg = lyaml.load(content)
+
+            arrange_clients(clientscfg, function(c, id) return c.window == id end)
+        end,
+        { description = "recall arrangement of clients", group = "awesome" })
 )
 
 local clientkeys = gears.table.join(
