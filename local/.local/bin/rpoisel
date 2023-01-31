@@ -219,11 +219,11 @@ case "${1}" in
             1)
                 if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
                     xrandr \
-                        --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
+                        --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rate 60.02 \
                         --output DP-1 --off
                 else
                     xrandr \
-                        --output eDP-1 --mode 1920x1080 --pos 0x0 --rate 60.02 \
+                        --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rate 60.02 \
                         --output HDMI-1 --off \
                         --output DP-1-3 --off
                 fi
