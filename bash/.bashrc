@@ -143,6 +143,24 @@ if ! [ "${TERM}" == "dumb" ]; then
   eval "$(starship init bash)"
 fi
 
+# pyenv
+function setup_pyenv() {
+    if ! [ -d "${HOME}/.pyenv" ]; then
+        git cloner git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
+    fi
+    export PYENV_ROOT="$HOME/.pyenv"
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+
+    local pyenv_virtualenv_dir
+    pyenv_virtualenv_dir="$(pyenv root)/plugins/pyenv-virtualenv"
+    if ! [ -d "${pyenv_virtualenv_dir}" ]; then
+        git clone https://github.com/pyenv/pyenv-virtualenv.git "${pyenv_virtualenv_dir}"
+    fi
+    eval "$(pyenv virtualenv-init -)"
+}
+setup_pyenv
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
