@@ -262,7 +262,7 @@ case "${1}" in
         esac
         ;;
     *)
-        echo "Usage: $0 <sleep|update|network|bluetooth|power|browser|screen>"
+        echo "Usage: $0 <sleep|update|network|bluetooth|power|browser|sign|screen>"
         exit 1
         ;;
 esac
