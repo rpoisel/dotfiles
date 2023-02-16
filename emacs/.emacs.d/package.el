@@ -702,6 +702,14 @@
 ;; no additional config required; lsp-mode supports it out of the box
 (add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
+(defun rpo-python-format-buffer ()
+  (interactive)
+  (rpo-pipe-and-replace-buffer "yapf"))
+(add-hook 'python-mode-hook
+          (lambda () (local-set-key
+                      (kbd "C-c l = =")
+                      #'rpo-python-format-buffer)))
+
 ;; Golang
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
