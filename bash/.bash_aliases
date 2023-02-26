@@ -86,3 +86,6 @@ alias kns="kubens"
 alias ku=kustomize
 alias kub="kustomize build . | yq eval -C"
 alias kubl="kustomize build . | yq eval -C | less -R"
+
+# utilities
+alias bc="bc -l"
