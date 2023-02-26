@@ -14,6 +14,7 @@
 	cmd = meld "$LOCAL" "$REMOTE"
 [merge]
 	tool = meld
+	autostash = true
 [mergetool "meld"]
 	prompt = false
 	# see: https://stackoverflow.com/a/34119867
@@ -49,3 +50,5 @@ stash-untracked = "!f() {    \
 	user = rpoisel
 [core]
 	excludesfile = ~/.gitignore
+[rebase]
+	autostash = true
