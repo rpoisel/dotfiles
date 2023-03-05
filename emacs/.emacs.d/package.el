@@ -705,6 +705,7 @@
 (add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
 (defun rpo-python-format-buffer ()
+  "Format current buffer in `python-mode` with yapf."
   (interactive)
   (rpo-pipe-and-replace-buffer "yapf"))
 (add-hook 'python-mode-hook
