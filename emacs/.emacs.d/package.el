@@ -712,6 +712,7 @@
           (lambda () (local-set-key
                       (kbd "C-c l = =")
                       #'rpo-python-format-buffer)))
+(add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook #'rpo-python-format-buffer nil 'local)))
 
 ;; Golang
 (defun lsp-go-install-save-hooks ()
