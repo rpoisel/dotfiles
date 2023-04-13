@@ -1032,14 +1032,14 @@
 (setq org-todo-keywords
       '((sequence "TODO" "PREPARE" "ACTIVE" "WAITING" "|" "DONE" "DELEGATED" "CANCELLED")))
 (setq org-default-notes-file "/tmp/refile.org")
+(setq org-agenda-files
+     (append (directory-files-recursively "~/Sync/org" "[a-zA-z]+\.org$")
+             (directory-files-recursively "~/Nextcloud/honeytreeLabs" "[a-zA-z]+\.org$")))
+(setq org-directory "~/Sync/org")
 (rpo-load-file-if-exists "~/Sync/org/capture_templates.el")
 (use-package org
   :config
   (setq org-ellipsis " ▾")
-  (custom-set-variables
-   '(org-agenda-files
-     (directory-files-recursively "~/Sync/org" "[a-zA-z]+\.org$"))
-   '(org-directory "~/Sync/org"))
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
