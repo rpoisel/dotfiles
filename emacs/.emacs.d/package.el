@@ -698,12 +698,6 @@
 (add-hook 'cmake-mode-hook 'rpo-turn-on-indent)
 
 ;; Python
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))  ; or lsp-deferred
-;; no additional config required; lsp-mode supports it out of the box
 (add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
 (defun rpo-python-format-buffer ()
