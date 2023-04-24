@@ -1171,6 +1171,9 @@ With a prefix ARG, remove start location."
   (setq langtool-http-server-host "localhost")
   (setq langtool-http-server-port 8010))
 
+(setq initial-scratch-message "")
+(setq initial-major-mode 'text-mode)
+
 ;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
