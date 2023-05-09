@@ -260,6 +260,7 @@ case "${1}" in
                 exit 1
                 ;;
         esac
+        setxkbmap -layout "us,de" -option "grp:caps_toggle"
         ;;
     *)
         echo "Usage: $0 <sleep|update|network|bluetooth|power|browser|sign|screen>"
