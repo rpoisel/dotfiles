@@ -161,7 +161,7 @@ case "${1}" in
     power|pwr)
         case "${2}" in
             mic)
-                mosquitto_pub -h "${MQTT_HOST}" -p "${MQTT_PORT}" -u "${MQTT_USER}" -P "${MQTT_PASS}" -t 'cmnd/microphone/Power' -m "${3}"
+                curl -X POST http://192.168.87.67/relay/0 -d "turn=${3}" 2>/dev/null | jq
                 ;;
             charger)
                 mosquitto_pub -h "${MQTT_HOST}" -p "${MQTT_PORT}" -u "${MQTT_USER}" -P "${MQTT_PASS}" -t 'cmnd/charger/Power' -m "${3}"
