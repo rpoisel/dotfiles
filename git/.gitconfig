@@ -41,6 +41,7 @@ stash-untracked = "!f() {    \
 	st = status
 	dt = difftool
 	cloner = clone --recursive
+    cb = symbolic-ref --short HEAD
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
