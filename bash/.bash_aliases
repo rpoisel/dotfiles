@@ -89,3 +89,4 @@ alias kubl="kustomize build . | yq eval -C | less -R"
 
 # utilities
 alias bc="bc -l"
+alias to_upper="tr a-z A-Z"
