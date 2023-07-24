@@ -193,7 +193,7 @@ case "${1}" in
         case "${2}" in
             modules)
                 VERSION="$(uname -r)"
-                SHORT_VERSION="$(uname -r | cut -d . -f 1-2)"
+                SHORT_VERSION="$(uname -r | cut -d - -f 1-2)"
                 MODULES_DIR=/lib/modules/$VERSION
                 KBUILD_DIR=/usr/lib/linux-kbuild-$SHORT_VERSION
                 export KBUILD_DIR
