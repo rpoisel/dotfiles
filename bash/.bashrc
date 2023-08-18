@@ -73,6 +73,10 @@ case "$TERM" in
         ;;
 esac
 
+# locale settings
+export LC_MEASUREMENT="de_DE.UTF-8"
+export LANGUAGE="en_US.UTF-8"
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
