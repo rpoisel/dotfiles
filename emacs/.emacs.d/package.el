@@ -784,7 +784,7 @@
 
   (defun fg/git-gutter-mode ()
     "Enable git-gutter mode if current buffer's file is under version control."
-    (if (vc-backend (buffer-file-name))
+    (if (and (vc-backend (buffer-file-name)) (not (string-suffix-p ".pdf" buffer-file-name)))
         (git-gutter-mode 1))))
 (add-hook 'find-file-hook #'fg/git-gutter-mode)
 
