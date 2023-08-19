@@ -782,11 +782,14 @@
   :config
   (setq git-gutter:update-interval 0.25)
 
-  (defun fg/git-gutter-mode ()
+  (defun rpo/git-gutter-mode ()
     "Enable git-gutter mode if current buffer's file is under version control."
-    (if (and (vc-backend (buffer-file-name)) (not (string-suffix-p ".pdf" buffer-file-name)))
+    (if (and (buffer-file-name)
+	    (vc-backend (buffer-file-name))
+            (not (cl-some (lambda (suffix) (string-suffix-p suffix (buffer-file-name)))
+                        '(".pdf" ".svg" ".png"))))
         (git-gutter-mode 1))))
-(add-hook 'find-file-hook #'fg/git-gutter-mode)
+(add-hook 'find-file-hook #'rpo/git-gutter-mode)
 
 (use-package git-gutter-fringe
   :ensure
