@@ -1232,6 +1232,8 @@ With a prefix ARG, remove start location."
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-staging)
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-prod)
 
+(global-set-key (kbd "C-c l") 'org-store-link)
+
 (global-set-key (kbd "C-c g b") 'magit-blame-addition)
 (global-set-key (kbd "C-c g f") 'magit-log-buffer-file)
 (global-set-key (kbd "C-c g l") 'git-link)
