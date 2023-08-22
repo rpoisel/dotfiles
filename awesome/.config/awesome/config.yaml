@@ -17,6 +17,7 @@ tags:
     layout: {}
     clients:
       - Google Chrome
+      - Microsoft Teams
       - Volume Control
       - Bluetooth Devices
   5:
@@ -26,8 +27,7 @@ tags:
       - Signal
   6:
     layout: {}
-    clients:
-      - Microsoft Teams
+    clients: []
   7:
     layout: {}
     clients:
