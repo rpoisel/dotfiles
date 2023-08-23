@@ -29,6 +29,8 @@ local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 -- declarative config
 local lyaml = require("lyaml")
 
+local util = require("rc_util")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -184,25 +186,6 @@ local function set_wallpaper(s)
             wallpaper = wallpaper(s)
         end
         gears.wallpaper.maximized(wallpaper, s, true)
-    end
-end
-
-local arrange_clients = function(cfg, matcher)
-    local screen = awful.screen.focused()
-    for _, c in ipairs(client.get()) do
-        local found = false
-        for tagnum = 1, 9 do
-            -- careful: the tagnum may not exist in config.yaml
-            local cfgtag = cfg["tags"][tagnum] or cfg["tags"][tostring(tagnum)]
-            local tag = screen.tags[tagnum]
-            for _, id in ipairs(cfgtag["clients"]) do
-                if matcher(c, id) then
-                    found = true
-                    c:move_to_tag(tag)
-                end
-            end
-        end
-        if not found then c:move_to_tag(screen.tags[8]) end
     end
 end
 
@@ -390,19 +373,7 @@ local globalkeys = gears.table.join(
         { description = "show the menubar", group = "launcher" }),
     -- Arrange clients automatically (WiP)
     awful.key({ modkey }, "d",
-        function()
-            local status, cfgfile = pcall(io.open,
-                os.getenv("HOME") .. "/.config/awesome/config.yaml", "r")
-            if not status or not cfgfile then
-                return
-            end
-            local content = cfgfile:read("*all")
-            cfgfile:close()
-            local cfg = lyaml.load(content)
-
-
-            arrange_clients(cfg, function(c, id) return string.match(c.name, id) end)
-        end,
+        util.arrange_clients_from_layout_config,
         { description = "automatically arrange clients on tags", group = "awesome" }),
     awful.key({ modkey }, "c",
         function()
@@ -435,7 +406,7 @@ local globalkeys = gears.table.join(
             clientsfile:close()
             local clientscfg = lyaml.load(content)
 
-            arrange_clients(clientscfg, function(c, id) return c.window == id end)
+            util.arrange_clients(clientscfg, function(c, id) return c.window == id end)
         end,
         { description = "recall arrangement of clients", group = "awesome" })
 )

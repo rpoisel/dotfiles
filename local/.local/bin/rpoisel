@@ -227,6 +227,7 @@ case "${1}" in
                         --output HDMI-1 --off \
                         --output DP-1-3 --off
                 fi
+                awesome-client '(require("rc_util")).arrange_clients_from_layout_config()'
                 ;;
             2)
                 if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
@@ -238,6 +239,10 @@ case "${1}" in
                         --output eDP-1 --mode 1920x1080 --pos 3440x0 --rate 60.02 \
                         --output HDMI-1 --primary --mode 3440x1440 --pos 0x0 --rate 29.99
                 fi
+                # the following does not work completely stable yet as
+                # I'd like to have my larger screen hard coded to take
+                # my arranged windows
+                awesome-client '(require("rc_util")).arrange_clients_from_layout_config()'
                 ;;
             3)
                 xrandr \
