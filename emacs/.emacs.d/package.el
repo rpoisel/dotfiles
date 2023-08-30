@@ -565,6 +565,14 @@
         which-key-idle-secondary-delay 0.5)
   (which-key-setup-side-window-bottom))
 
+(defun rpo/toggle-lsp-diagnostics-mode ()
+  "Toggle mode-name mode."
+  (interactive)
+  (if lsp-diagnostics-mode
+      (lsp-diagnostics-mode -1)
+    (lsp-diagnostics-mode 1)))
+
+
 ;; see: https://git.riyyi.com/riyyi/dotfiles/src/branch/master/.config/emacs/config.org
 (use-package lsp-mode
   :ensure
@@ -602,9 +610,6 @@
   :after (flycheck lsp-mode)
   :init (setq lsp-ui-peek-list-width 80)
   :config
-  (setq lsp-ui-flycheck-enable t)
-  (setq lsp-ui-flycheck-list-position 'right)
-  (setq lsp-ui-flycheck-live-reporting t)
   (setq lsp-ui-peek-enable nil)
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-sideline-show-symbol nil)
@@ -698,11 +703,6 @@
 (add-hook 'cmake-mode-hook 'rpo-turn-on-indent)
 
 ;; Python
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))
 
 (add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
@@ -1235,13 +1235,12 @@ With a prefix ARG, remove start location."
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-staging)
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-prod)
 
-(global-set-key (kbd "C-c l") 'org-store-link)
-
 (global-set-key (kbd "C-c g b") 'magit-blame-addition)
 (global-set-key (kbd "C-c g f") 'magit-log-buffer-file)
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g B") 'git-link-browse)
 
+(global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 
@@ -1250,6 +1249,7 @@ With a prefix ARG, remove start location."
 (global-set-key (kbd "C-c w l") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "C-c w w") 'whitespace-mode)
 (global-set-key (kbd "C-c w v") 'visual-line-mode)
+(global-set-key (kbd "C-c w f") 'rpo/toggle-lsp-diagnostics-mode)
 
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
