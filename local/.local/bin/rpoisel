@@ -5,6 +5,7 @@
 # pactl set-source-output-volume 0 0x6000
 
 if [[ -e "${HOME}/.env-rpoisel" ]]; then
+    # shellcheck disable=SC1091
     source "${HOME}/.env-rpoisel"
 fi
 
@@ -70,8 +71,6 @@ function update_wallpaper() {
         fi
 
         if wget -q --spider "${remote}"; then
-            local props
-
             wget -O "${localpath}" "${remote}"
 
             cmdline+=" --bg-fill ${localpath}"
@@ -198,7 +197,7 @@ case "${1}" in
                 KBUILD_DIR=/usr/lib/linux-kbuild-$SHORT_VERSION
                 export KBUILD_DIR
                 echo -n "Passphrase for the private key: "
-                read -s KBUILD_SIGN_PIN
+                read -rs KBUILD_SIGN_PIN
                 echo ""
                 export KBUILD_SIGN_PIN
                 (cd "${MODULES_DIR}" \
