@@ -787,7 +787,7 @@
     (if (and (buffer-file-name)
 	    (vc-backend (buffer-file-name))
             (not (cl-some (lambda (suffix) (string-suffix-p suffix (buffer-file-name)))
-                        '(".pdf" ".svg" ".png"))))
+                        '(".pdf" ".svg" ".png" "*.odt" "*.ods" "*.docx" "*.xlsx"))))
         (git-gutter-mode 1))))
 (add-hook 'find-file-hook #'rpo/git-gutter-mode)
 
