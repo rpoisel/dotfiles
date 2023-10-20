@@ -31,6 +31,10 @@ local lyaml = require("lyaml")
 
 local util = require("rc_util")
 
+local lain                   = require("lain")
+lain.layout.termfair.nmaster = 3
+lain.layout.termfair.ncol    = 1
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -90,6 +94,7 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
+    lain.layout.termfair,
 }
 -- }}}
 
