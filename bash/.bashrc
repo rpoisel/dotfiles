@@ -204,3 +204,5 @@ add_completion k3d
 add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
+
+. "$HOME/.cargo/env"
