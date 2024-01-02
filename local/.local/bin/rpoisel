@@ -188,9 +188,9 @@ case "${1}" in
                 ;;
         esac
         ;;
-    sign)
+    modules)
         case "${2}" in
-            modules)
+            sign)
                 VERSION="$(uname -r)"
                 SHORT_VERSION="$(uname -r | cut -d - -f 1-2)"
                 MODULES_DIR=/lib/modules/$VERSION
@@ -206,8 +206,12 @@ case "${1}" in
                            sudo --preserve-env=KBUILD_SIGN_PIN "${KBUILD_DIR}"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der "$i"
                        done)
                 ;;
+            load)
+                sudo modprobe vboxdrv vboxnetadp vboxnetflt vboxsf
+                sudo systemctl restart virtualbox
+                ;;
             *)
-                >&2 echo "Usage: $0 sign modules"
+                >&2 echo "Usage: $0 modules <sign|load>"
                 exit 1
                 ;;
         esac
