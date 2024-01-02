@@ -192,9 +192,8 @@ case "${1}" in
         case "${2}" in
             sign)
                 VERSION="$(uname -r)"
-                SHORT_VERSION="$(uname -r | cut -d - -f 1-2)"
-                MODULES_DIR=/lib/modules/$VERSION
-                KBUILD_DIR=/usr/lib/linux-kbuild-$SHORT_VERSION
+                MODULES_DIR="/lib/modules/$VERSION"
+                KBUILD_DIR="/usr/src/linux-headers-${VERSION}"
                 export KBUILD_DIR
                 echo -n "Passphrase for the private key: "
                 read -rs KBUILD_SIGN_PIN
@@ -203,7 +202,9 @@ case "${1}" in
                 (cd "${MODULES_DIR}" \
                     && for i in $(fdfind 'vbox.*\.ko'); do
                            echo "Signing ${MODULES_DIR}/${i}."
-                           sudo --preserve-env=KBUILD_SIGN_PIN "${KBUILD_DIR}"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der "$i"
+                           sudo xz -d "${i}"
+                           sudo --preserve-env=KBUILD_SIGN_PIN "${KBUILD_DIR}/scripts/sign-file" sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der "${i/.ko.xz/.ko}"
+                           sudo xz -f "${i/.ko.xz/.ko}"
                        done)
                 ;;
             load)
