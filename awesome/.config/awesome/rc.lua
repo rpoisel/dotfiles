@@ -35,6 +35,8 @@ local lain                   = require("lain")
 lain.layout.termfair.nmaster = 3
 lain.layout.termfair.ncol    = 1
 
+local notify_suspended = false
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -356,6 +358,22 @@ local globalkeys = gears.table.join(
             end
         end,
         { description = "restore minimized", group = "client" }),
+
+    -- Notifications
+    awful.key({ modkey, "Shift" }, "s",
+        function()
+            -- TODO: move to external widget with icon
+            if naughty.is_suspended() then
+                notify_suspended = false
+                naughty.resume()
+            else
+                notify_suspended = true
+                naughty.suspend()
+            end
+        end, { description = "enabled/disable notifications", group = "awesome" }),
+
+    awful.key({ modkey, "Shift" }, "d", naughty.destroy_all_notifications,
+        { description = "clear notifications", group = "awesome" }),
 
     -- Prompt
     awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end,
