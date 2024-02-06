@@ -1050,8 +1050,8 @@
       '((sequence "TODO" "PREPARE" "ACTIVE" "WAITING" "PROJ" "|" "DONE" "DELEGATED" "CANCELLED")))
 (setq org-default-notes-file "/tmp/refile.org")
 (setq org-agenda-files
-     (append (directory-files-recursively "~/Sync/org" "[a-zA-z]+\.org$")
-             (directory-files-recursively "~/Nextcloud/honeytreeLabs" "[a-zA-z]+\.org$")))
+     (append (directory-files-recursively "~/Sync/org" "[a-zA-Z]+\.org$")
+             (directory-files-recursively "~/Nextcloud/honeytreeLabs" "[a-zA-Z]+\.org$")))
 (setq org-directory "~/Sync/org")
 (rpo-load-file-if-exists "~/Sync/org/capture_templates.el")
 (use-package org
