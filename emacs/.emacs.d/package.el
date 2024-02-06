@@ -1195,6 +1195,9 @@ With a prefix ARG, remove start location."
 (setq initial-scratch-message "")
 (setq initial-major-mode 'text-mode)
 
+(use-package gptel
+  :ensure)
+
 ;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
