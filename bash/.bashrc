@@ -165,10 +165,6 @@ function setup_pyenv() {
 }
 setup_pyenv
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
 
 # Google Cloud SDK
@@ -204,5 +200,9 @@ add_completion k3d
 add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 . "$HOME/.cargo/env"
