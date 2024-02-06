@@ -1047,7 +1047,7 @@
 (setq revert-without-query '(".pdf"))
 
 (setq org-todo-keywords
-      '((sequence "TODO" "PREPARE" "ACTIVE" "WAITING" "|" "DONE" "DELEGATED" "CANCELLED")))
+      '((sequence "TODO" "PREPARE" "ACTIVE" "WAITING" "PROJ" "|" "DONE" "DELEGATED" "CANCELLED")))
 (setq org-default-notes-file "/tmp/refile.org")
 (setq org-agenda-files
      (append (directory-files-recursively "~/Sync/org" "[a-zA-z]+\.org$")
