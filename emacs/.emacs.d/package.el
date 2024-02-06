@@ -777,29 +777,39 @@
   :init
   :config)
 
-(use-package git-gutter
+;; (use-package git-gutter
+;;   :ensure
+;;   :config
+;;   (setq git-gutter:update-interval 0.25)
+
+;;   (defun rpo/git-gutter-mode ()
+;;     "Enable git-gutter mode if current buffer's file is under version control."
+;;     (if (and (buffer-file-name)
+;; 	    (vc-backend (buffer-file-name))
+;;             (not (cl-some (lambda (suffix) (string-suffix-p suffix (buffer-file-name)))
+;;                         '(".pdf" ".svg" ".png" ".jpg" ".odt" ".ods" ".docx" ".xlsx"))))
+;;         (git-gutter-mode 1))))
+;; (add-hook 'find-file-hook #'rpo/git-gutter-mode)
+
+;; (use-package git-gutter-fringe
+;;   :ensure
+;;   :config
+;;   (set-face-attribute 'git-gutter-fr:added nil :foreground "#99cc99" :inherit 'fringe)
+;;   (set-face-attribute 'git-gutter-fr:modified nil :foreground "#9999cc" :inherit 'fringe)
+;;   (set-face-attribute 'git-gutter-fr:deleted nil :foreground "#cc9999" :inherit 'fringe)
+;;   (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+;;   (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
+;;   (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom))
+
+(use-package diff-hl
   :ensure
   :config
-  (setq git-gutter:update-interval 0.25)
+  (diff-hl-flydiff-mode 1)
+  :hook
+  ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
+   (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
+(global-diff-hl-mode)
 
-  (defun rpo/git-gutter-mode ()
-    "Enable git-gutter mode if current buffer's file is under version control."
-    (if (and (buffer-file-name)
-	    (vc-backend (buffer-file-name))
-            (not (cl-some (lambda (suffix) (string-suffix-p suffix (buffer-file-name)))
-                        '(".pdf" ".svg" ".png" ".jpg" ".odt" ".ods" ".docx" ".xlsx"))))
-        (git-gutter-mode 1))))
-(add-hook 'find-file-hook #'rpo/git-gutter-mode)
-
-(use-package git-gutter-fringe
-  :ensure
-  :config
-  (set-face-attribute 'git-gutter-fr:added nil :foreground "#99cc99" :inherit 'fringe)
-  (set-face-attribute 'git-gutter-fr:modified nil :foreground "#9999cc" :inherit 'fringe)
-  (set-face-attribute 'git-gutter-fr:deleted nil :foreground "#cc9999" :inherit 'fringe)
-  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom))
 
 (use-package with-editor
   :ensure)
