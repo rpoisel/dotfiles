@@ -141,6 +141,9 @@ if ! [ "${TERM}" == "dumb" ]; then
   source "${HOME}/.dotfiles/fzf-marks/fzf-marks.plugin.bash"
 fi
 
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
+  source "$EAT_SHELL_INTEGRATION_DIR/bash"
+
 # Direnv
 eval "$(direnv hook bash)"
 if ! [ "${TERM}" == "dumb" ]; then
