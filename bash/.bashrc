@@ -203,6 +203,7 @@ add_completion k3d
 add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
+add_completion podman
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

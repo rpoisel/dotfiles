@@ -76,6 +76,8 @@ alias rpo="rpoisel"
 # cluster
 alias dkc="docker compose"
 complete -F _complete_alias dkc
+alias pkc="podman compose"
+complete -F _complete_alias pkc
 
 alias kc=kubectl
 complete -F __start_kubectl kc
