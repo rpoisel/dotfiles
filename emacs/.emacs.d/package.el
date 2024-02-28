@@ -889,6 +889,12 @@
   (add-hook 'vterm-mode-hook 'turn-off-chrome)
   (add-hook 'vterm-mode-hook 'with-editor-export-editor))
 
+(use-package eat
+  :ensure
+  :config
+  (setq eat-term-name "xterm-256color"))
+(evil-set-initial-state 'Eat 'emacs)
+
 (defun vmacs-auto-exit (buf event)
   ;; buf unused
   ;; event unused
