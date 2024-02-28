@@ -190,7 +190,7 @@ function add_completion() {
   fi
 
   if (( "$#" )); then
-    source <("${cmd}" ${@})
+    source <("${cmd}" "${@}")
   else
     source <("${cmd}" completion bash)
   fi
