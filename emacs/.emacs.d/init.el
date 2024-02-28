@@ -18,13 +18,13 @@
 (setq ring-bell-function 'ignore)
 
 (defun rpo-load-file-if-exists (filename)
-  "Loads a file from the user's emacs directory if it exists."
+  "Load a file FILENAME from the user's Emacs directory if it exists."
   (let ((package-file (expand-file-name filename user-emacs-directory)))
     (when (file-exists-p package-file)
       (load package-file))))
 
 (defun rpo-load-file-from-emacs-directory (filename)
-  "Loads a file from the user's emacs directory."
+  "Load a file FILENAME from the user's Emacs directory."
   (let ((package-file (expand-file-name filename user-emacs-directory)))
     (load package-file)))
 
