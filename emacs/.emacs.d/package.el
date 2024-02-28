@@ -890,10 +890,9 @@
   (add-hook 'vterm-mode-hook 'with-editor-export-editor))
 
 (use-package eat
-  :ensure
-  :config
-  (setq eat-term-name "xterm-256color"))
-(evil-set-initial-state 'Eat 'emacs)
+  :ensure t
+  :init
+  (add-hook 'eat-mode-hook 'turn-off-evil-mode))
 
 (defun vmacs-auto-exit (buf event)
   ;; buf unused
