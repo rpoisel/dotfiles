@@ -890,9 +890,8 @@
   (add-hook 'vterm-mode-hook 'with-editor-export-editor))
 
 (use-package eat
-  :ensure t
-  :init
-  (add-hook 'eat-mode-hook 'turn-off-evil-mode))
+  :ensure t)
+(evil-set-initial-state 'eat-mode 'emacs)
 
 (defun vmacs-auto-exit (buf event)
   ;; buf unused
