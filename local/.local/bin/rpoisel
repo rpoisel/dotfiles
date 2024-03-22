@@ -223,6 +223,17 @@ case "${1}" in
                 ;;
         esac
         ;;
+    packages)
+        case "${2}" in
+            purge)
+                sudo apt purge "$(dpkg -l | grep ^rc | awk '{print $2}' | xargs)"
+                ;;
+            *)
+                >&2 echo "Usage: $0 packages <purge>"
+                exit 1
+                ;;
+        esac
+        ;;
     screen)
         # see: https://linuxconfig.org/how-to-configure-your-monitors-with-xrandr-in-linux
         case "${2}" in
