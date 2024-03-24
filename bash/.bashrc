@@ -128,7 +128,7 @@ if ! shopt -oq posix; then
 fi
 
 # General settings
-export PATH="${PATH}:${HOME}/go/bin:${HOME}/.local/bin"
+export PATH="${HOME}/.local/bin:${PATH}:${HOME}/go/bin"
 export EDITOR="emacs -nw"
 
 shopt -s globstar
