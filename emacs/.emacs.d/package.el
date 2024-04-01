@@ -203,6 +203,7 @@
   (setq evil-want-C-i-jump nil))
 (add-hook 'prog-mode-hook 'evil-local-mode)
 (add-hook 'text-mode-hook 'evil-local-mode)
+(add-hook 'conf-mode-hook 'evil-local-mode)
 
 (use-package undo-tree
   :ensure
