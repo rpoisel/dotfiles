@@ -1201,10 +1201,26 @@ With a prefix ARG, remove start location."
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
 (global-set-key (kbd "C-M-\\") #'er-indent-and-cleanup-region-or-buffer)
 
-(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "S-C-<down>") 'shrink-window)
-(global-set-key (kbd "S-C-<up>") 'enlarge-window)
+(global-set-key (kbd "S-C-<left>") (lambda ()
+                                     (interactive)
+                                     (if (window-in-direction 'left)
+                                         (enlarge-window-horizontally 5)
+                                       (shrink-window-horizontally 5))))
+(global-set-key (kbd "S-C-<right>") (lambda ()
+                                      (interactive)
+                                      (if (window-in-direction 'right)
+                                          (enlarge-window-horizontally 5)
+                                        (shrink-window-horizontally 5))))
+(global-set-key (kbd "S-C-<up>") (lambda ()
+                                   (interactive)
+                                   (if (window-in-direction 'above)
+                                       (enlarge-window 5)
+                                     (shrink-window 5))))
+(global-set-key (kbd "S-C-<down>") (lambda ()
+                                     (interactive)
+                                     (if (window-in-direction 'below)
+                                         (enlarge-window 5)
+                                       (shrink-window 5))))
 
 ;; ultra-fast keybindinds
 ;;; package.el ends here
