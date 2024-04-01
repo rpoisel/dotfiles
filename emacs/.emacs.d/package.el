@@ -953,14 +953,14 @@
   (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
   (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
-(defun rp/multi-vterm-split-vertically ()
+(defun rp/terminal-split-vertically ()
   (interactive)
   (select-window (split-window-vertically))
-  (multi-vterm))
-(defun rp/multi-vterm-split-horizontally ()
+  (eat nil (list nil)))
+(defun rp/terminal-split-horizontally ()
   (interactive)
   (select-window (split-window-horizontally))
-  (multi-vterm))
+  (eat nil (list nil)))
 (defun rp/multi-vterm-jump-device ()
   (interactive)
   (let ((split (read-multiple-choice "Choose splitting"
@@ -971,8 +971,8 @@
                                             (?p "jump")))))
       (let ((mac (read-string "Enter MAC: ")))
         (cond
-         ((eq (nth 0 split) ?h) (rp/multi-vterm-split-horizontally))
-         ((eq (nth 0 split) ?v) (rp/multi-vterm-split-vertically)))
+         ((eq (nth 0 split) ?h) (rp/terminal-split-horizontally))
+         ((eq (nth 0 split) ?v) (rp/terminal-split-vertically)))
         (vterm-insert (format "ssh %s %s" (nth 1 jumphost) mac))
         (vterm-send-return)
         (sleep-for 1)
@@ -1253,9 +1253,9 @@ With a prefix ARG, remove start location."
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
 
-(global-set-key (kbd "C-c t") 'multi-vterm)
-(global-set-key (kbd "C-c 2") 'rp/multi-vterm-split-vertically)
-(global-set-key (kbd "C-c 3") 'rp/multi-vterm-split-horizontally)
+(global-set-key (kbd "C-c t") (lambda () (interactive) (eat nil (list nil))))
+(global-set-key (kbd "C-c 2") 'rp/terminal-split-vertically)
+(global-set-key (kbd "C-c 3") 'rp/terminal-split-horizontally)
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-staging)
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-prod)
 
