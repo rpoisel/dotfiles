@@ -31,7 +31,7 @@
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
 
 (use-package dracula-theme
-  :ensure
+  :ensure t
   :config (load-theme 'dracula t))
 
 ;; Set default font
