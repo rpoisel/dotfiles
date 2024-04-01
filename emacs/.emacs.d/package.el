@@ -567,59 +567,38 @@
         which-key-idle-secondary-delay 0.5)
   (which-key-setup-side-window-bottom))
 
-(defun rpo/toggle-lsp-diagnostics-mode ()
-  "Toggle mode-name mode."
-  (interactive)
-  (if lsp-diagnostics-mode
-      (lsp-diagnostics-mode -1)
-    (lsp-diagnostics-mode 1)))
 
-
-;; see: https://git.riyyi.com/riyyi/dotfiles/src/branch/master/.config/emacs/config.org
-(use-package lsp-mode
-  :ensure
-  :after which-key
-  :commands (lsp lsp-deferred)
-  ;; using :hook does not really work for me, so explictly invoking (add-hook ...) instead
-  :init
-  (setq lsp-auto-guess-root t
-        lsp-keymap-prefix "C-c l"
-        lsp-file-watch-threshold 10000)
+(use-package eglot
+  :ensure t
   :config
-  (add-hook 'c-mode-hook #'lsp-deferred)
-  (add-hook 'c++-mode-hook #'lsp-deferred)
-  (add-hook 'lua-mode-hook #'lsp-deferred)
-  (add-hook 'go-mode-hook #'lsp-deferred)
-  (add-hook 'python-mode-hook #'lsp-deferred)
-  (setq lsp-clients-lua-language-server-install-dir (expand-file-name "~/.local/opt/lua-language-server/")
-        lsp-clients-lua-language-server-bin (f-join lsp-clients-lua-language-server-install-dir "bin/lua-language-server")
-        lsp-clients-lua-language-server-main-location (f-join lsp-clients-lua-language-server-install-dir "main.lua")
-        lsp-lua-workspace-max-preload 2048
-        lsp-lua-workspace-preload-file-size 1024)
-  (setq lsp-clangd-binary-path "/usr/bin/clangd"
-        lsp-clients-clangd-args '("-j=4" "--header-insertion=iwyu" "--background-index" "--log=error" "--query-driver=/**/cc*,/**/c++*,/**/*g++*,/**/*gcc*,/**/clang*"))
-  (setq gc-cons-threshold (* 100 1024 1024)
-        read-process-output-max (* 1024 1024)
-        treemacs-space-between-root-nodes nil
-        lsp-idle-delay 0.1)  ;; clangd is fast
-  (setq lsp-auto-guess-root t)
-  (setq lsp-prefer-flymake nil)
-  (lsp-enable-which-key-integration t))
+  (progn (add-to-list 'eglot-server-programs
+                      '(python-mode . ("pyright-langserver" "--stdio")))
+         (add-to-list 'eglot-server-programs
+                      '((c-mode c++-mode)
+                        . ("clangd"
+                           "-j=8"
+                           "--log=error"
+                           "--malloc-trim"
+                           "--background-index"
+                           "--clang-tidy"
+                           "--cross-file-rename"
+                           "--completion-style=detailed"
+                           "--pch-storage=memory"
+                           "--header-insertion=never"
+                           "--header-insertion-decorators=0"
+                           "--query-driver=/**/cc*,/**/c++*,/**/*g++*,/**/*gcc*,/**/clang*")))
+         (define-key eglot-mode-map (kbd "C-c l r r") 'eglot-rename)))
+(add-hook 'python-mode-hook #'eglot-ensure)
+(add-hook 'c-mode-hook #'eglot-ensure)
+(add-hook 'c++-mode-hook #'eglot-ensure)
+(add-hook 'rustic-mode-hook #'eglot-ensure)
 
-(use-package lsp-ui
-  :ensure
-  :commands lsp-ui-mode
-  :after (flycheck lsp-mode)
-  :init (setq lsp-ui-peek-list-width 80)
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
   :config
-  (setq lsp-ui-peek-enable nil)
-  (setq lsp-ui-sideline-enable nil)
-  (setq lsp-ui-sideline-show-symbol nil)
-  :hook (lsp-mode . lsp-ui-mode))
+  (global-flycheck-eglot-mode 1))
 
-(use-package lsp-treemacs
-  :ensure
-  :commands lsp-treemacs-errors-list)
 
 ;; Rust
 
@@ -627,8 +606,7 @@
   :ensure t
   :config
   (setq
-   rustic-format-on-save t
-   rustic-lsp-format t))
+   rustic-format-on-save t))
 
 ;; Lua
 
@@ -691,13 +669,6 @@
 (add-hook 'c++-mode-hook 'rpo-c-like-lang-mode-hook)
 (add-hook 'glsl-mode-hook 'rpo-c-like-lang-mode-hook)
 
-(use-package dap-mode
-  :ensure)
-
-(with-eval-after-load 'lsp-mode
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  (require 'dap-cpptools))
-
 ;; CMake
 (use-package cmake-mode
   :ensure)
@@ -718,20 +689,10 @@
 (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook #'rpo-python-format-buffer nil 'local)))
 
 ;; Golang
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-(add-hook 'go-mode-hook 'rpo-turn-on-indent)
 (use-package go-mode
-  :ensure)
-
-;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-;; (setq lsp-log-io nil) ; if set to true can cause a performance hit
-;; (setq lsp-print-performance t)
-;; (setq lsp-auto-guess-root t) ; auto detect workspace and start lang server
-
-(evil-set-initial-state 'kubernetes-overview-mode 'emacs)
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook 'rpo-turn-on-indent))
 
 (use-package yaml-mode
   :ensure
@@ -1272,7 +1233,6 @@ With a prefix ARG, remove start location."
 (global-set-key (kbd "C-c w l") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "C-c w w") 'whitespace-mode)
 (global-set-key (kbd "C-c w v") 'visual-line-mode)
-(global-set-key (kbd "C-c w f") 'rpo/toggle-lsp-diagnostics-mode)
 
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
