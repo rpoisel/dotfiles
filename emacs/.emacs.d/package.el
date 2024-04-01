@@ -184,12 +184,7 @@
   :hook (dired-mode-hook . dired-async-mode))
 
 (use-package wdired
-  :after dired
-  :config
-  (with-eval-after-load 'evil
-    (add-hook 'wdired-mode-hook #'evil-normal-state))
-  (dolist (fn '(wdired-finish-edit wdired-abort-changes wdired-exit))
-    (advice-add fn :after (lambda () (evil-local-mode -1)))))
+  :after dired)
 
 (use-package dired-subtree
   :ensure
@@ -205,25 +200,9 @@
   :demand
   :init
   (setq evil-want-C-w-delete t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join))
-(evil-set-initial-state 'dired-mode 'emacs)
-(evil-set-initial-state 'compilation-mode 'emacs)
-
-(use-package evil-surround
-  :ensure
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-visualstar
-  :ensure
-  :init
-  (setq evil-visualstar/persistent t)
-  :config
-  (global-evil-visualstar-mode t))
+  (setq evil-want-C-i-jump nil))
+(add-hook 'prog-mode-hook 'evil-local-mode)
+(add-hook 'text-mode-hook 'evil-local-mode)
 
 (use-package undo-tree
   :ensure
@@ -722,12 +701,8 @@
               ;; Use the same key-binding that `wdired' uses by default.
               ("C-x C-q" . wgrep-change-to-wgrep-mode))
   :hook (rg-mode-hook . (lambda () (select-window (display-buffer (current-buffer))))))
-(evil-set-initial-state 'rg-mode 'emacs)
 
 (use-package prog-mode
-  :config
-  (with-eval-after-load 'evil
-    (add-hook 'prog-mode-hook #'evil-normal-state))
   :hook ((prog-mode-hook . bug-reference-prog-mode)
          (prog-mode-hook . flycheck-mode)))
 
@@ -784,7 +759,6 @@
   :ensure
   :init
   :config)
-(evil-set-initial-state 'git-timemachine-mode 'emacs)
 
 (use-package dockerfile-mode
   :ensure
@@ -794,20 +768,9 @@
 (use-package avy
   :ensure
   :init
-  (setq avy-background t)
-  :config
-  (with-eval-after-load 'evil
-    (dolist (state '(motion normal operator visual))
-      :config
-      (let ((map (intern (format "evil-%s-state-map" state))))
-        (bind-key "SPC" #'avy-goto-char-timer map)))))
+  (setq avy-background t))
 
 (use-package treemacs
-  :ensure
-  :init
-  :config)
-
-(use-package treemacs-evil
   :ensure
   :init
   :config)
