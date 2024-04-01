@@ -682,8 +682,7 @@
   :ensure)
 
 (defun rpo-turn-on-indent ()
-  (setq evil-auto-indent t)
-  (make-local-variable 'evil-auto-indent)
+  (setq-local evil-auto-indent t)
   (electric-indent-local-mode))
 (defun rpo-c-like-lang-mode-hook ()
   (clang-format-save-hook-for-this-buffer)
