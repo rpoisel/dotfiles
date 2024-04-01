@@ -890,8 +890,12 @@
   (add-hook 'vterm-mode-hook 'with-editor-export-editor))
 
 (use-package eat
-  :ensure t)
-(evil-set-initial-state 'eat-mode 'emacs)
+  :ensure t
+  :config
+  (setq eat-minimum-latency 0)
+  (setopt eat-shell-prompt-annotation-delay 0)
+  (setopt eat-very-visible-cursor-type '(t nil nil))
+  (setopt eat-default-cursor-type '(t nil nil)))
 
 (defun vmacs-auto-exit (buf event)
   ;; buf unused
