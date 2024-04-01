@@ -1131,6 +1131,10 @@ With a prefix ARG, remove start location."
 (use-package gptel
   :ensure)
 
+(use-package envrc
+  :ensure t)
+(envrc-global-mode)
+
 ;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
