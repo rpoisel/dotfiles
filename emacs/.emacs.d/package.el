@@ -34,6 +34,9 @@
   :ensure t
   :config (load-theme 'dracula t))
 
+(use-package standard-themes
+  :ensure t)
+
 ;; Set default font
 (set-face-attribute 'default nil
                     :family "Source Code Pro"
