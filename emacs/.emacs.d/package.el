@@ -1135,6 +1135,11 @@ With a prefix ARG, remove start location."
 (use-package gptel
   :ensure)
 
+(use-package chatgpt-shell
+  :ensure t
+  :init
+  (setq chatgpt-shell-openai-key gptel-api-key))
+
 (use-package envrc
   :ensure t)
 (envrc-global-mode)
