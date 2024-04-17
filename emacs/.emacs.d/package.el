@@ -1215,6 +1215,8 @@ With a prefix ARG, remove start location."
   :ensure t)
 (envrc-global-mode)
 
+(add-hook 'nxml-mode-hook (lambda () (setq-local vc-handled-backends nil)))
+
 ;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
