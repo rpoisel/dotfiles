@@ -37,6 +37,9 @@
 (use-package standard-themes
   :ensure t)
 
+(use-package modus-themes
+  :ensure t)
+
 (setq fontaine-latest-state-file
       (locate-user-emacs-file "fontaine-latest-state.eld"))
 (setq fontaine-presets
