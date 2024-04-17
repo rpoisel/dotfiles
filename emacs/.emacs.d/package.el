@@ -37,12 +37,51 @@
 (use-package standard-themes
   :ensure t)
 
-;; Set default font
-(set-face-attribute 'default nil
-                    :family "Source Code Pro"
-                    :height 100
-                    :weight 'normal
-                    :width 'normal)
+(setq fontaine-latest-state-file
+      (locate-user-emacs-file "fontaine-latest-state.eld"))
+(setq fontaine-presets
+      '((tiny
+         :default-family "Iosevka Comfy Wide Fixed"
+         :default-height 70)
+        (small
+         :default-family "Iosevka Comfy Fixed"
+         ;; :default-family "Iosevka Comfy"
+         :default-height 90)
+        (regular
+         :default-height 100)
+        (medium
+         :default-height 110)
+        (large
+         :default-weight semilight
+         :default-height 140
+         :bold-weight extrabold)
+        (presentation
+         :default-weight semilight
+         :default-height 170
+         :bold-weight extrabold)
+        (t
+         ;; I keep all properties for didactic purposes, but most can be
+         ;; omitted.  See the fontaine manual for the technicalities:
+         ;; <https://protesilaos.com/emacs/fontaine>.
+         :default-family "Iosevka Comfy"
+         :default-weight regular
+         :default-height 100
+         :fixed-pitch-family nil ; falls back to :default-family
+         :fixed-pitch-weight nil ; falls back to :default-weight
+         :fixed-pitch-height 1.0
+         :variable-pitch-family "Iosevka Comfy Duo"
+         :variable-pitch-weight nil
+         :variable-pitch-height 1.0
+         :bold-family nil ; use whatever the underlying face has
+         :bold-weight bold
+         :italic-family nil
+         :italic-slant italic
+         :line-spacing nil)))
+(use-package fontaine
+  :ensure t)
+(fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+(fontaine-mode 1)
+
 
 (use-package svg-tag-mode
   :ensure)
@@ -1207,6 +1246,8 @@ With a prefix ARG, remove start location."
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
+
+(define-key global-map (kbd "C-c f") #'fontaine-set-preset)
 
 (global-set-key (kbd "C-c w b") 'bh/switch-to-scratch)
 (global-set-key (kbd "C-c w d") 'display-line-numbers-mode)
