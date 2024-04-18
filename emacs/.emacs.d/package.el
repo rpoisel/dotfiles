@@ -48,7 +48,6 @@
          :default-height 70)
         (small
          :default-family "Iosevka Comfy Fixed"
-         ;; :default-family "Iosevka Comfy"
          :default-height 90)
         (regular
          :default-height 100)
