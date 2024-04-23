@@ -664,7 +664,7 @@
   (let* ((tmp-buffer-name (make-temp-name "tmp"))
                (tmp-buffer (get-buffer-create tmp-buffer-name)))
           (if (eq 0 (call-shell-region
-                     (point-min) (point-max) cmd nil (list tmp-buffer nil)))
+                     (point-min) (point-max) cmd nil tmp-buffer))
               (replace-buffer-contents tmp-buffer 3)
             (error (concat "pipe and replace buffer failed: " cmd))
           (kill-buffer tmp-buffer))))
