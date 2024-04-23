@@ -1214,6 +1214,7 @@ With a prefix ARG, remove start location."
   :ensure t)
 (envrc-global-mode)
 
+;; Functions
 (defun rpo/dape-command-safe-p (value)
   "Check if the VALUE is a safe structure for dape-command."
   (and (listp value)                          ; Is it a list?
@@ -1222,8 +1223,6 @@ With a prefix ARG, remove start location."
 (put 'dape-command 'safe-local-variable 'rpo/dape-command-safe-p)
 
 (add-hook 'nxml-mode-hook (lambda () (setq-local vc-handled-backends nil)))
-
-;; Functions
 
 ;; https://emacsredux.com/blog/2013/03/27/indent-region-or-buffer/
 (defun er-indent-buffer ()
