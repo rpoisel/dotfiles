@@ -1214,6 +1214,13 @@ With a prefix ARG, remove start location."
   :ensure t)
 (envrc-global-mode)
 
+(defun rpo/dape-command-safe-p (value)
+  "Check if the VALUE is a safe structure for dape-command."
+  (and (listp value)                          ; Is it a list?
+       (> (length value) 0)                   ; Does it have elements?
+       (memq (car value) '(debugpy debugpy-module))))    ; Does it start with `debugpy` or `debugpy-module`?
+(put 'dape-command 'safe-local-variable 'rpo/dape-command-safe-p)
+
 (add-hook 'nxml-mode-hook (lambda () (setq-local vc-handled-backends nil)))
 
 ;; Functions
