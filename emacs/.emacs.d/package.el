@@ -731,7 +731,7 @@
 (defun rpo-python-format-buffer ()
   "Format current buffer in `python-mode` with yapf."
   (interactive)
-  (rpo-pipe-and-replace-buffer "yapf"))
+  (rpo-pipe-and-replace-buffer "ruff format -"))
 (add-hook 'python-mode-hook
           (lambda () (local-set-key
                       (kbd "C-c l = =")
