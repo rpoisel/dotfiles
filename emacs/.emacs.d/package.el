@@ -1219,6 +1219,12 @@ With a prefix ARG, remove start location."
 (envrc-global-mode)
 
 ;; Functions
+(defun rpo/set-project-dir-variables ()
+  "Sets a custom variable `my-current-project-dir` to the current buffer's directory."
+  (setq rpo-current-project-dir (projectile-project-root))
+  (setq rpo-current-project-parent-dir (f-join (projectile-project-root) "..")))
+(add-hook 'find-file-hook #'rpo/set-project-dir-variables)
+
 (defun rpo/dape-command-safe-p (value)
   "Check if the VALUE is a safe structure for dape-command."
   (and (listp value)                          ; Is it a list?
