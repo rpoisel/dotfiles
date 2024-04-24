@@ -1207,6 +1207,10 @@ With a prefix ARG, remove start location."
   :init
   (setq chatgpt-shell-openai-key gptel-api-key))
 
+;; the following package is required by chatgpt-shell in order to parse the awesome prompts
+(use-package pcsv
+  :ensure t)
+
 (use-package dape
   :ensure t)
 
