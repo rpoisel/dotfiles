@@ -82,7 +82,7 @@ function update_wallpaper() {
 case "${1}" in
     sleep)
         sync
-        sudo pm-suspend
+        sudo systemctl suspend
         ;;
     update)
         ansible-playbook -i localhost, -e 'ansible_python_interpreter=/usr/bin/python3' -e 'ansible_connection=local' -e 'ansible_user=rpoisel' -vvv ~/git/DevOps/update/main.yml
