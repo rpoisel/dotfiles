@@ -1218,6 +1218,10 @@ With a prefix ARG, remove start location."
   :ensure t)
 (envrc-global-mode)
 
+;; compilation mode
+(setq compilation-scroll-output t)
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
 ;; Functions
 (defun rpo/set-project-dir-variables ()
   "Sets a custom variable `my-current-project-dir` to the current buffer's directory."
@@ -1272,7 +1276,6 @@ With a prefix ARG, remove start location."
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
-(setq compilation-scroll-output t)
 (electric-indent-mode -1)
 
 ;; global key map
