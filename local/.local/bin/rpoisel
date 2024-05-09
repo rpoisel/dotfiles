@@ -226,7 +226,9 @@ case "${1}" in
     packages)
         case "${2}" in
             purge)
-                sudo apt purge "$(dpkg -l | grep ^rc | awk '{print $2}' | xargs)"
+                sudo apt clean \
+                     && sudo apt autoremove -yy \
+                     && sudo apt purge "$(dpkg -l | grep ^rc | awk '{print $2}' | xargs)"
                 ;;
             *)
                 >&2 echo "Usage: $0 packages <purge>"
