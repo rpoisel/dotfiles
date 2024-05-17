@@ -254,7 +254,9 @@
   :hook (dired-mode-hook . dired-async-mode))
 
 (use-package wdired
-  :after dired)
+  :after dired
+  :config
+  (setq dired-vc-rename-file t))
 
 (use-package dired-subtree
   :ensure
