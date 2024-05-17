@@ -1225,18 +1225,16 @@ With a prefix ARG, remove start location."
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 ;; Functions
-(defun rpo/set-project-dir-variables ()
-  "Sets a custom variable `my-current-project-dir` to the current buffer's directory."
-  (setq rpo-current-project-dir (projectile-project-root))
-  (setq rpo-current-project-parent-dir (f-join (projectile-project-root) "..")))
-(add-hook 'find-file-hook #'rpo/set-project-dir-variables)
+(setq enable-local-eval :maybe)
+(setq enable-local-variables :safe)
+(setq enable-dir-local-variables t)
 
 (defun rpo/dape-command-safe-p (value)
   "Check if the VALUE is a safe structure for dape-command."
-  (and (listp value)                          ; Is it a list?
-       (> (length value) 0)                   ; Does it have elements?
-       (memq (car value) '(debugpy debugpy-module))))    ; Does it start with `debugpy` or `debugpy-module`?
-(put 'dape-command 'safe-local-variable 'rpo/dape-command-safe-p)
+  (and (listp value)
+       (> (length value) 0)
+       (memq (car value) '(debugpy debugpy-module))))
+(put 'dape-command 'safe-local-variable #'rpo/dape-command-safe-p)
 
 (add-hook 'nxml-mode-hook (lambda () (setq-local vc-handled-backends nil)))
 
