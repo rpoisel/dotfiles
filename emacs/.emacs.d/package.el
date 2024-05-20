@@ -1014,7 +1014,9 @@
 (use-package markdown-mode
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown"))
+  :init (setq markdown-command "multimarkdown")
+  :config (add-to-list 'auto-mode-alist
+                       '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\|qmd\\)\\'" . markdown-mode)))
 
 (use-package multiple-cursors
   :ensure t
