@@ -270,8 +270,8 @@ case "${1}" in
             2a)
                 if sudo dmidecode -s processor-version | grep -q "i7-1270P"; then
                     xrandr \
-                        --output eDP-1 --primary --mode 1920x1080 --pos 1920x0 --rate 60.02 \
-                        --output HDMI-1 --mode 1920x1080 --pos 0x0 --rate 29.99
+                        --output eDP-1 --mode 1920x1080 --pos 1920x0 --rate 60.02 \
+                        --output HDMI-1 --primary --mode 1920x1080 --pos 0x0 --rate 29.99
                 fi
                 # the following does not work completely stable yet as
                 # I'd like to have my larger screen hard coded to take
