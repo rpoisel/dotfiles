@@ -1286,6 +1286,16 @@ With a prefix ARG, remove start location."
   (interactive)
   (shell-command-on-region 1 (point-max) "xmllint --format -" (current-buffer) t))
 
+(defun rpo/pwr-mic (state)
+  "Toggle the power of the mic to STATE, either \\='on\\=' or \\='off\\='."
+  (interactive
+   (list (completing-read "State (on/off): " '("on" "off") nil t)))
+  (if (member state '("on" "off"))
+      (request "http://192.168.87.67/relay/0"
+        :type "POST"
+        :data `(("turn" . ,state)))
+    (error "Invalid state: %s. State must be either 'on' or 'off'" state)))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
