@@ -1320,6 +1320,19 @@ With a prefix ARG, remove start location."
         :data `(("turn" . ,state)))
     (error "Invalid state: %s. State must be either 'on' or 'off'" state)))
 
+(defvar rpo/screen-settings
+  '(("1" . ("rpoisel screen 1"))
+    ("2" . ("rpoisel screen 2"))
+    ("2a" . ("rpoisel screen 2a")))
+  "Screen settings: name . (shell-command)")
+
+(defun rpo/screen (setting command)
+  "Set number of screens and their resolutions."
+  (interactive
+   (assoc (completing-read "Setting: " rpo/screen-settings) rpo/screen-settings))
+  (message "Setting screen to %s" setting)
+  (shell-command command))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
