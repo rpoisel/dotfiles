@@ -1320,18 +1320,12 @@ With a prefix ARG, remove start location."
         :data `(("turn" . ,state)))
     (error "Invalid state: %s. State must be either 'on' or 'off'" state)))
 
-(defvar rpo/screen-settings
-  '(("1" . ("rpoisel screen 1"))
-    ("2" . ("rpoisel screen 2"))
-    ("2a" . ("rpoisel screen 2a")))
-  "Screen settings: name . (shell-command)")
-
-(defun rpo/screen (setting command)
+(defun rpo/screen (setting)
   "Set number of screens and their resolutions."
   (interactive
-   (assoc (completing-read "Setting: " rpo/screen-settings) rpo/screen-settings))
+   (list (completing-read "Setting (1|2|2a): " '("1" "2" "2a") nil t)))
   (message "Setting screen to %s" setting)
-  (shell-command command))
+  (shell-command (format "rpoisel screen %s" setting)))
 
 ;; Variables
 
