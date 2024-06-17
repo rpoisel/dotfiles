@@ -1308,7 +1308,7 @@ With a prefix ARG, remove start location."
 ;; https://stackoverflow.com/a/2240286/203506
 (defun rpo/format-xml ()
   (interactive)
-  (shell-command-on-region 1 (point-max) "xmllint --format -" (current-buffer) t))
+  (shell-command-on-region (point-min) (point-max) "xmllint --format -" (current-buffer) t))
 
 (defun rpo/pwr-mic (state)
   "Toggle the power of the mic to STATE, either \\='on\\=' or \\='off\\='."
