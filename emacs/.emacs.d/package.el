@@ -1262,6 +1262,7 @@ With a prefix ARG, remove start location."
                         (goto-char (point-min))
                         )))))
 
+(require 'dwim-shell-commands)
 
 ;; compilation mode
 (setq compilation-scroll-output t)
