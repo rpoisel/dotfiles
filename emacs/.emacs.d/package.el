@@ -1255,7 +1255,13 @@ With a prefix ARG, remove start location."
     (dwim-shell-command-on-marked-files
      "Extract X.509 certificate details"
      "openssl x509 -in '<<f>>' -text -noout"
-     :utils "openssl")))
+     :utils "openssl"
+     :focus-now t
+     :on-completion (lambda (buffer _process)
+                      (with-current-buffer buffer
+                        (goto-char (point-min))
+                        )))))
+
 
 ;; compilation mode
 (setq compilation-scroll-output t)
