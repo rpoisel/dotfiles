@@ -1334,6 +1334,11 @@ With a prefix ARG, remove start location."
   (message "Setting screen to %s" setting)
   (shell-command (format "rpoisel screen %s" setting)))
 
+(defun rpo/sleep ()
+  "Put computer in power save mode."
+  (interactive)
+  (shell-command "rpoisel sleep"))
+
 ;; Variables
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
