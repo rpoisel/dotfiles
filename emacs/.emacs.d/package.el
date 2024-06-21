@@ -1249,6 +1249,17 @@ With a prefix ARG, remove start location."
      "Convert to gif"
      "ffmpeg -loglevel quiet -stats -y -i '<<f>>' -pix_fmt rgb24 -r 15 '<<fne>>.gif'"
      :utils "ffmpeg"))
+  (defun rpo/dwim-shell-command-filetype ()
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Determine the filetype"
+     "file '<<f>>'"
+     :utils "file"
+     :focus-now t
+     :on-completion (lambda (buffer _process)
+                      (with-current-buffer buffer
+                        (goto-char (point-min))
+                        ))))
   (defun rpo/dwim-shell-command-x509-text ()
     "Extract X.509 certificate details from marked file(s)."
     (interactive)
