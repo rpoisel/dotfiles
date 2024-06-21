@@ -1070,6 +1070,7 @@
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
   (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
   (setq org-clock-idle-time 15)
+  (setq org-duration-format 'h:mm)
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs))
   (define-key org-mode-map (kbd "C-c C-x C-r") 'org-clock-report))
