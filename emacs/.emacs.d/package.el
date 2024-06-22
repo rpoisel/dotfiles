@@ -1357,11 +1357,12 @@ With a prefix ARG, remove start location."
   (interactive)
   (shell-command-on-region (point-min) (point-max) "xmllint --format -" (current-buffer) t))
 
-(defun rpo/pwr-mic (state)
+(defun rpo/pwr (endpoint state)
   "Toggle the power of the mic to STATE, either \\='on\\=' or \\='off\\='."
   (interactive
-   (list (completing-read "State (on/off): " '("on" "off") nil t)))
-  (shell-command (format "rpoisel power mic %s" state)))
+   (list (completing-read "Endpoint (mic/other): " '("mic" "other") nil t)
+         (completing-read "State (on/off): " '("on" "off") nil t)))
+  (shell-command (format "rpoisel power %s %s" endpoint state)))
 
 (defun rpo/screen (setting)
   "Set number of screens and their resolutions."
