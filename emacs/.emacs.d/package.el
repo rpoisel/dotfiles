@@ -1361,11 +1361,7 @@ With a prefix ARG, remove start location."
   "Toggle the power of the mic to STATE, either \\='on\\=' or \\='off\\='."
   (interactive
    (list (completing-read "State (on/off): " '("on" "off") nil t)))
-  (if (member state '("on" "off"))
-      (request "http://192.168.87.67/relay/0"
-        :type "POST"
-        :data `(("turn" . ,state)))
-    (error "Invalid state: %s. State must be either 'on' or 'off'" state)))
+  (shell-command (format "rpoisel power mic %s" state)))
 
 (defun rpo/screen (setting)
   "Set number of screens and their resolutions."
