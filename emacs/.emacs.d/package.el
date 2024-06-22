@@ -1367,7 +1367,6 @@ With a prefix ARG, remove start location."
   "Set number of screens and their resolutions."
   (interactive
    (list (completing-read "Setting (1|2|2a): " '("1" "2" "2a") nil t)))
-  (message "Setting screen to %s" setting)
   (shell-command (format "rpoisel screen %s" setting)))
 
 (defun rpo/sleep ()
