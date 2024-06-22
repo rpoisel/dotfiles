@@ -1256,6 +1256,11 @@ With a prefix ARG, remove start location."
 (use-package request
   :ensure t)
 
+(defun rpo/goto-point-min (buffer _process)
+  "Goto (point-min) in BUFFER."
+  (with-current-buffer buffer
+    (goto-char (point-min))))
+
 (use-package dwim-shell-command
   :ensure t
   :bind (([remap shell-command] . dwim-shell-command)
@@ -1278,10 +1283,15 @@ With a prefix ARG, remove start location."
      "file '<<f>>'"
      :utils "file"
      :focus-now t
-     :on-completion (lambda (buffer _process)
-                      (with-current-buffer buffer
-                        (goto-char (point-min))
-                        ))))
+     :on-completion #'rpo/goto-point-min))
+  (defun rpo/dwim-shell-command-vm-hdinfo ()
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Obtain virtual machine image info"
+     "VBoxManage showhdinfo '<<f>>'"
+     :utils "VBoxManage"
+     :focus-now t
+     :on-completion #'rpo/goto-point-min))
   (defun rpo/dwim-shell-command-x509-text ()
     "Extract X.509 certificate details from marked file(s)."
     (interactive)
@@ -1290,10 +1300,7 @@ With a prefix ARG, remove start location."
      "openssl x509 -in '<<f>>' -text -noout"
      :utils "openssl"
      :focus-now t
-     :on-completion (lambda (buffer _process)
-                      (with-current-buffer buffer
-                        (goto-char (point-min))
-                        )))))
+     :on-completion #'rpo/goto-point-min)))
 
 (require 'dwim-shell-commands)
 
