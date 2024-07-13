@@ -678,8 +678,8 @@
 (use-package rustic
   :ensure t
   :config
-  (setq
-   rustic-format-on-save t))
+  (setq rustic-format-on-save t)
+  (setq rustic-lsp-client 'eglot))
 
 ;; Lua
 
