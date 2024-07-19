@@ -1037,7 +1037,9 @@
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown")
-  :bind (("C-c C-c a" . #'markdown-table-align))
+  :bind (("C-c C-c a" . #'markdown-table-align)
+         ("S-<right>" . #'markdown-demote-list-item)
+         ("S-<left>" . #'markdown-promote-list-item))
   :config (add-to-list 'auto-mode-alist
                        '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\|qmd\\)\\'" . markdown-mode)))
 
