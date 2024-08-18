@@ -1273,13 +1273,27 @@ With a prefix ARG, remove start location."
          ([remap dired-do-shell-command] . dwim-shell-command)
          ([remap dired-smart-shell-command] . dwim-shell-command))
   :config
+  (defun my/dwim-shell-command-ffmpeg-to-gif ()
+    "Convert all marked videos to optimized gif(s)."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Convert to gif with ffmpeg"
+     "ffmpeg -loglevel quiet -stats -y -i '<<f>>' -pix_fmt rgb24 -r 15 '<<fne>>.gif'"
+     :utils "ffmpeg"))
   (defun my/dwim-shell-command-convert-to-gif ()
     "Convert all marked videos to optimized gif(s)."
     (interactive)
     (dwim-shell-command-on-marked-files
-     "Convert to gif"
-     "ffmpeg -loglevel quiet -stats -y -i '<<f>>' -pix_fmt rgb24 -r 15 '<<fne>>.gif'"
-     :utils "ffmpeg"))
+     "Convert to gif with imagemagick"
+     "convert '<<f>>' '<<fne>>.gif'"
+     :utils "convert"))
+  (defun my/dwim-shell-command-convert-to-jpg ()
+    "Convert all marked videos to optimized gif(s)."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Convert to jpg with imagemagick"
+     "convert '<<f>>' '<<fne>>.jpg'"
+     :utils "convert"))
   (defun rpo/dwim-shell-command-filetype ()
     (interactive)
     (dwim-shell-command-on-marked-files
@@ -1304,7 +1318,13 @@ With a prefix ARG, remove start location."
      "openssl x509 -in '<<f>>' -text -noout"
      :utils "openssl"
      :focus-now t
-     :on-completion #'rpo/goto-point-min)))
+     :on-completion #'rpo/goto-point-min))
+   (defun rpo/dwim-shell-command-convert-to-pdf ()
+     (interactive)
+     (dwim-shell-command-on-marked-files
+      "Convert to pdf using inkscape"
+      "inkscape --export-area-drawing --export-filename='<<fne>>.pdf' '<<f>>'"
+      :utils "inkscape")))
 
 (require 'dwim-shell-commands)
 
