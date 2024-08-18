@@ -738,9 +738,10 @@
 (defun rpo-c-like-lang-mode-hook ()
   (clang-format-save-hook-for-this-buffer)
   (rpo-turn-on-indent))
-(add-hook 'c-mode-hook 'rpo-c-like-lang-mode-hook)
-(add-hook 'c++-mode-hook 'rpo-c-like-lang-mode-hook)
-(add-hook 'glsl-mode-hook 'rpo-c-like-lang-mode-hook)
+(add-hook 'c-mode-hook #'rpo-c-like-lang-mode-hook)
+(add-hook 'c++-mode-hook #'rpo-c-like-lang-mode-hook)
+(add-hook 'glsl-mode-hook #'rpo-c-like-lang-mode-hook)
+(add-hook 'csharp-mode-hook #'rpo-turn-on-indent)
 
 ;; CMake
 (use-package cmake-mode
