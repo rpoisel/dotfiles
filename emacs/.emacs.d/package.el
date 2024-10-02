@@ -900,82 +900,15 @@
          ("M-s-h" . windmove-left)
          ("M-s-<left>" . windmove-left)))
 
-(use-package vterm
-  :ensure
-  :commands vterm
-  :config
-  (setq vterm-max-scrollback 10000)
-  ;; (setq vterm-kill-buffer-on-exit t)
-  (defun turn-off-chrome ()
-    (hl-line-mode -1)
-    (display-line-numbers-mode -1))
-  :init
-  (add-hook 'vterm-mode-hook 'turn-off-chrome)
-  (add-hook 'vterm-mode-hook 'with-editor-export-editor))
-
 (use-package eat
   :ensure t
   :config
   (setq eat-minimum-latency 0)
   (setopt eat-shell-prompt-annotation-delay 0)
   (setopt eat-very-visible-cursor-type '(t nil nil))
+  (setopt eat-term-scrollback-size nil)
   (setopt eat-default-cursor-type '(t nil nil)))
 (add-hook `eat-mode-hook (lambda () (setq-local scroll-conservatively 10000)))
-
-(defun vmacs-auto-exit (buf event)
-  ;; buf unused
-  ;; event unused
-  (kill-buffer-and-window))
-
-;; (add-hook 'vterm-exit-functions (lambda (buf event)
-;;                                (message "Called.")
-;;                                (delete-window)))
-
-(add-hook 'vterm-exit-functions #'vmacs-auto-exit)
-
-(use-package vterm-toggle
-  :ensure)
-
-(use-package multi-vterm
-  :ensure t
-  :config
-  (add-hook 'vterm-mode-hook
-            (lambda ()
-              (setq-local evil-insert-state-cursor 'box)
-              (evil-insert-state)))
-  (define-key vterm-mode-map [return]                      #'vterm-send-return)
-
-  (setq vterm-keymap-exceptions nil)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-q")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-z")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
-  (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-  (evil-define-key 'normal vterm-mode-map (kbd "<escape>") #'vterm--self-insert)
-  (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
-  (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-vterm-next)
-  (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev)
-  (evil-define-key 'normal vterm-mode-map (kbd "C-c 2")    #'rp/multi-vterm-split-vertically)
-  (evil-define-key 'normal vterm-mode-map (kbd "C-c 3")    #'rp/multi-vterm-split-horizontally)
-  (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
-  (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
-  (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
 (defun rp/terminal-split-vertically ()
   (interactive)
@@ -985,34 +918,6 @@
   (interactive)
   (select-window (split-window-horizontally))
   (eat nil (list nil)))
-(defun rp/multi-vterm-jump-device ()
-  (interactive)
-  (let ((split (read-multiple-choice "Choose splitting"
-                                     '((?h "horizontal")
-                                       (?v "vertical")))))
-    (let ((jumphost (read-multiple-choice "Choose jumphost"
-                                          '((?s "jumpstaging")
-                                            (?p "jump")))))
-      (let ((mac (read-string "Enter MAC: ")))
-        (cond
-         ((eq (nth 0 split) ?h) (rp/terminal-split-horizontally))
-         ((eq (nth 0 split) ?v) (rp/terminal-split-vertically)))
-        (vterm-insert (format "ssh %s %s" (nth 1 jumphost) mac))
-        (vterm-send-return)
-        (sleep-for 1)
-        (vterm-insert "alias ll=\"ls -la --color=always\"")
-        (vterm-send-return)))))
-(defun rp/multi-vterm-yank-to-remote-file ()
-  "Write remote file from yank buffer."
-  (interactive)
-  (let ((path (read-string "Enter path: ")))
-  (vterm-insert (format "cat > %s" path))
-  (vterm-send-return)
-  (sit-for 0.3)
-  (vterm-insert (current-kill 0 t))
-  (sit-for 0.3)
-  (vterm-send-C-d)
-  (vterm-send-C-d)))
 
 (use-package shell-pop
   :ensure
