@@ -722,7 +722,7 @@
   "Create a buffer local save hook."
   (add-hook 'before-save-hook
             (lambda ()
-              (when (locate-dominating-file "." ".clang-format")
+              (when (and rpo-format-on-save (locate-dominating-file "." ".clang-format"))
                 (clang-format-buffer))
               ;; Continue to save.
               nil)
@@ -733,6 +733,7 @@
   :ensure)
 
 (defun rpo-turn-on-indent ()
+  (interactive)
   (setq-local evil-auto-indent t)
   (electric-indent-local-mode))
 (defun rpo-c-like-lang-mode-hook ()
@@ -755,8 +756,11 @@
 (defun rpo-python-format-buffer ()
   "Format current buffer in `python-mode` with yapf."
   (interactive)
-  (rpo-pipe-and-replace-buffer "ruff check --select I --fix --silent -")
-  (rpo-pipe-and-replace-buffer "ruff format -"))
+  (when rpo-format-on-save
+    (progn
+        (rpo-pipe-and-replace-buffer "ruff check --select I --fix --silent -")
+        (rpo-pipe-and-replace-buffer "ruff format -"))))
+
 (add-hook 'python-mode-hook
           (lambda () (local-set-key
                       (kbd "C-c l = =")
@@ -772,6 +776,7 @@
 (use-package yaml-mode
   :ensure
   :hook ((yaml-mode-hook . flycheck-mode)))
+(add-hook 'yaml-mode-hook (lambda () (add-hook 'before-save-hook (lambda () (when (and rpo-format-on-save (locate-dominating-file "." ".yamlfmt")) (rpo-pipe-and-replace-buffer "yamlfmt -")) nil) nil 'local)))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.gqlgen\\'" . yaml-mode))
@@ -1332,10 +1337,15 @@ With a prefix ARG, remove start location."
 (setq compilation-scroll-output t)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
-;; Functions
+;; Varialbes and Functions
 (setq enable-local-eval :maybe)
 (setq enable-local-variables :safe)
 (setq enable-dir-local-variables t)
+(defvar-local rpo-format-on-save t "Non-nil if format on save is enabled for this buffer.")
+(defun rpo-toggle-format-on-save ()
+  (interactive)
+  (setq rpo-format-on-save (not rpo-format-on-save))
+  (message "Format on save is now %s." (if rpo-format-on-save "enabled" "disabled")))
 
 (defun rpo/dape-command-safe-p (value)
   "Check if the VALUE is a safe structure for dape-command."
@@ -1427,6 +1437,7 @@ With a prefix ARG, remove start location."
 (global-set-key (kbd "C-c w b") 'bh/switch-to-scratch)
 (global-set-key (kbd "C-c w d") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c w l") 'copy-current-line-position-to-clipboard)
+(global-set-key (kbd "C-c w t") #'rpo-toggle-format-on-save)
 (global-set-key (kbd "C-c w w") 'whitespace-mode)
 (global-set-key (kbd "C-c w v") 'visual-line-mode)
 
@@ -1457,3 +1468,4 @@ With a prefix ARG, remove start location."
 
 ;; ultra-fast keybindinds
 ;;; package.el ends here
+
