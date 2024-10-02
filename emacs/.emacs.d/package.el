@@ -1441,6 +1441,8 @@ With a prefix ARG, remove start location."
 (global-set-key (kbd "C-c w w") 'whitespace-mode)
 (global-set-key (kbd "C-c w v") 'visual-line-mode)
 
+(global-set-key (kbd "C-c e b") 'ediff-buffers)
+
 (global-set-key (kbd "C-<prior>") 'tab-previous) ; page up key
 (global-set-key (kbd "C-<next>") 'tab-next) ; page down key
 (global-set-key (kbd "C-M-\\") #'er-indent-and-cleanup-region-or-buffer)
