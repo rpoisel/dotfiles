@@ -96,9 +96,9 @@ fi
 
 # source /usr/share/bash-completion/completions/git
 # source /usr/share/bash-completion/completions/docker-compose
-if [ -d ~/.bash_completion.d ]; then
-  for i in $(ls ${HOME}/.bash_completion.d | sort); do
-    source "${HOME}/.bash_completion.d/${i}"
+if [ -d "${HOME}/.bash_completion.d" ]; then
+  for i in $(find "${HOME}/.bash_completion.d/" -type f | sort); do
+    source "${i}"
   done
 fi
 
