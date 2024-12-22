@@ -669,6 +669,7 @@
 (add-hook 'c-mode-hook #'eglot-ensure)
 (add-hook 'c++-mode-hook #'eglot-ensure)
 (add-hook 'rustic-mode-hook #'eglot-ensure)
+(add-hook 'go-mode-hook 'eglot-ensure)
 
 (use-package flycheck-eglot
   :ensure t
@@ -772,10 +773,38 @@
 (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook #'rpo-python-format-buffer nil 'local)))
 
 ;; Golang
+(setq-default eglot-workspace-configuration
+    '((:gopls .
+        ((staticcheck . t)
+         (matcher . "CaseSensitive")))))
+
+(add-hook 'before-save-hook
+    (lambda ()
+        (call-interactively 'eglot-code-action-organize-imports))
+    nil t)
+
+(require 'project)
+
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+
+(add-hook 'project-find-functions #'project-find-go-module)
+
 (use-package go-mode
   :ensure t
   :config
   (add-hook 'go-mode-hook 'rpo-turn-on-indent))
+
+;; Optional: install eglot-format-buffer as a save hook.
+;; The depth of -10 places this before eglot's willSave notification,
+;; so that that notification reports the actual contents that will be saved.
+(defun eglot-format-buffer-before-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+(add-hook 'go-mode-hook #'eglot-format-buffer-before-save)
 
 (use-package yaml-mode
   :ensure
