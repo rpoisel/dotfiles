@@ -303,6 +303,10 @@
   :config
   (with-eval-after-load 'evil
     (custom-set-variables '(evil-undo-system 'undo-tree))) ;; requires use of custom-set; setq doesn't work here
+  (let ((undo-dir (expand-file-name "~/.emacs.d/undo")))
+    (unless (file-directory-p undo-dir)
+      (make-directory undo-dir t))
+    (setq undo-tree-history-directory-alist `(("." . ,undo-dir))))
   (global-undo-tree-mode))
 
 ;;; general editting
