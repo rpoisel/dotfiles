@@ -1273,6 +1273,13 @@ With a prefix ARG, remove start location."
      :utils "openssl"
      :focus-now t
      :on-completion #'rpo/goto-point-min))
+  (defun rpo/dwim-shell-command-convert-to-png ()
+    "Convert marked file(s) to png using inkscape."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Convert to png using inkscape"
+     "inkscape --export-area-drawing --export-filename='<<fne>>.png' '<<f>>'"
+     :utils "inkscape"))
    (defun rpo/dwim-shell-command-convert-to-pdf ()
      (interactive)
      (dwim-shell-command-on-marked-files
