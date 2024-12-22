@@ -806,10 +806,21 @@
   (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
 (add-hook 'go-mode-hook #'eglot-format-buffer-before-save)
 
+(defvar-local rpo-format-on-save t "Non-nil if format on save is enabled for this buffer.")
+(defun rpo-toggle-format-on-save ()
+  (interactive)
+  (setq rpo-format-on-save (not rpo-format-on-save))
+  (message "Format on save is now %s." (if rpo-format-on-save "enabled" "disabled")))
+
 (use-package yaml-mode
   :ensure
-  :hook ((yaml-mode-hook . flycheck-mode)))
-(add-hook 'yaml-mode-hook (lambda () (add-hook 'before-save-hook (lambda () (when (and rpo-format-on-save (locate-dominating-file "." ".yamlfmt")) (rpo-pipe-and-replace-buffer "yamlfmt -")) nil) nil 'local)))
+  :hook ((yaml-mode-hook . flycheck-mode)
+         (yaml-mode-hook . (lambda ()
+                             (add-hook 'before-save-hook
+                                       (lambda ()
+                                         (when (and rpo-format-on-save (locate-dominating-file "." ".yamlfmt"))
+                                           (rpo-pipe-and-replace-buffer "yamlfmt -")))
+                                       nil 'local)))))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.gqlgen\\'" . yaml-mode))
@@ -1279,12 +1290,6 @@ With a prefix ARG, remove start location."
 (setq enable-local-eval :maybe)
 (setq enable-local-variables :safe)
 (setq enable-dir-local-variables t)
-(defvar-local rpo-format-on-save t "Non-nil if format on save is enabled for this buffer.")
-(defun rpo-toggle-format-on-save ()
-  (interactive)
-  (setq rpo-format-on-save (not rpo-format-on-save))
-  (message "Format on save is now %s." (if rpo-format-on-save "enabled" "disabled")))
-
 (defun rpo/dape-command-safe-p (value)
   "Check if the VALUE is a safe structure for dape-command."
   (and (listp value)
