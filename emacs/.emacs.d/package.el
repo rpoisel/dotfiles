@@ -758,7 +758,7 @@
 (add-hook 'python-mode-hook 'rpo-turn-on-indent)
 
 (defun rpo-python-format-buffer ()
-  "Format current buffer in `python-mode` with yapf."
+  "Format current buffer in `python-mode` with ruff."
   (interactive)
   (when rpo-format-on-save
     (progn
