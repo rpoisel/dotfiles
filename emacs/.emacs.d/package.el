@@ -1052,7 +1052,8 @@
   (setq org-duration-format 'h:mm)
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs))
-  (define-key org-mode-map (kbd "C-c C-x C-r") 'org-clock-report))
+  (define-key org-mode-map (kbd "C-c C-x C-r") 'org-clock-report)
+  (add-hook 'org-mode-hook (lambda () (setq-local tab-width 8))))
 
 (setq org-latex-pdf-process
       '("lualatex -shell-escape -interaction nonstopmode %f"
@@ -1197,8 +1198,13 @@ With a prefix ARG, remove start location."
 
 (use-package chatgpt-shell
   :ensure t
-  :init
-  (setq chatgpt-shell-openai-key gptel-api-key))
+  :custom
+  (chatgpt-shell-openai-key gptel-api-key)
+  (chatgpt-shell-system-prompt
+   "You are now acting as Rainer Poisel, a professional software developer with 20 years of experience in software development and cybersecurity. Provide responses that are technically sound and insightful, leveraging expertise in these domains.")
+  :config
+  (add-hook 'chatgpt-shell-mode-hook
+            (lambda () (setq-local tab-width 8))))
 
 ;; the following package is required by chatgpt-shell in order to parse the awesome prompts
 (use-package pcsv
