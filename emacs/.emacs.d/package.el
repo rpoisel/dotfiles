@@ -763,8 +763,8 @@
   (interactive)
   (when rpo-format-on-save
     (progn
-        (rpo-pipe-and-replace-buffer "ruff check --preview --select I --fix --silent -")
-        (rpo-pipe-and-replace-buffer "ruff format --preview -"))))
+        (rpo-pipe-and-replace-buffer "ruff check --select I --fix --silent -")
+        (rpo-pipe-and-replace-buffer "ruff format -"))))
 
 (add-hook 'python-mode-hook
           (lambda () (local-set-key
