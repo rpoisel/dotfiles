@@ -1279,6 +1279,15 @@ With a prefix ARG, remove start location."
      :utils "openssl"
      :focus-now t
      :on-completion #'rpo/goto-point-min))
+  (defun rpo/dwim-shell-command-csr-text ()
+    "Extract X.509 CSR details from marked file(s)."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Extract X.509 CSR details"
+     "openssl req -in '<<f>>' -text -noout"
+     :utils "openssl"
+     :focus-now t
+     :on-completion #'rpo/goto-point-min))
   (defun rpo/dwim-shell-command-convert-to-png ()
     "Convert marked file(s) to png using inkscape."
     (interactive)
