@@ -10,18 +10,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTCONTROL=ignorespace:ignoredups:erasedups   # leading space hides commands from history
-HISTFILESIZE=10000                              # increase history file size (default is 500)
-HISTSIZE=${HISTFILESIZE}                        # increase history size (default is 500)
-shopt -s histappend
-
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -118,6 +106,10 @@ if [ -f "${HOME}/.bash_aliases" ]; then
     . "${HOME}/.bash_aliases"
 fi
 
+if [ -f "${HOME}/.rpo_functions" ]; then
+    . "${HOME}/.rpo_functions"
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -151,6 +143,13 @@ if ! [ "${TERM}" == "dumb" ]; then
   eval "$(starship init bash)"
 fi
 
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTCONTROL=ignorespace:erasedups               # leading space hides commands from history
+HISTFILESIZE=10000                              # increase history file size (default is 500)
+HISTSIZE=${HISTFILESIZE}                        # increase history size (default is 500)
+HISTIGNORE="la:ll:ls:cd:pwd:exit"               # will never make it into shell history
+shopt -s histappend                             # append on shell exit
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 
 [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
 

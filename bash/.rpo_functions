@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+strip() {
+    local var="$1"
+    var="${var#"${var%%[![:space:]]*}"}"
+    var="${var%"${var##*[![:space:]]}"}"
+    printf '%s' "$var"
+}
+
+smite() {
+    local command_number
+    local command_to_delete
+
+    set -o pipefail
+    shopt -s lastpipe
+
+    if [[ -n $1 ]]; then
+        echo "usage: smite [-a]" >&2
+        return 1
+    fi
+
+    local selected_lines
+    mapfile -t selected_lines < <(fc -l 1 | fzf --no-sort --tac --multi)
+
+    for (( i=${#selected_lines[@]}-1 ; i>=0 ; i-- )); do
+        local line="${selected_lines[i]}"
+        command_number=$(strip "${line%%[[:space:]]*}")
+        command_to_delete=$(strip "${line#*[[:space:]]}")
+        echo "Removing history entry: ${command_to_delete} (command number: ${command_number})"
+        history -d "$command_number"
+    done
+
+    history -w
+}
