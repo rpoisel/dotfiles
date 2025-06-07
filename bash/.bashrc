@@ -114,7 +114,7 @@ alias la='exa -la'
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
+if [ -f "${HOME}/.bash_aliases" ]; then
     . "${HOME}/.bash_aliases"
 fi
 
@@ -146,7 +146,6 @@ fi
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
   source "$EAT_SHELL_INTEGRATION_DIR/bash"
 
-# Direnv
 eval "$(direnv hook bash)"
 if ! [ "${TERM}" == "dumb" ]; then
   eval "$(starship init bash)"
