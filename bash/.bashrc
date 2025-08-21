@@ -123,7 +123,7 @@ fi
 
 # General settings
 export PATH="${HOME}/.local/bin:${PATH}:${HOME}/go/bin"
-export EDITOR="emacs -nw"
+export EDITOR="emacsclient"
 
 shopt -s globstar
 
