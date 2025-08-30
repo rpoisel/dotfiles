@@ -143,13 +143,17 @@ if ! [ "${TERM}" == "dumb" ]; then
   eval "$(starship init bash)"
 fi
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTCONTROL=ignorespace:erasedups               # leading space hides commands from history
-HISTFILESIZE=10000                              # increase history file size (default is 500)
-HISTSIZE=${HISTFILESIZE}                        # increase history size (default is 500)
-HISTIGNORE="la:ll:ls:cd:pwd:exit"               # will never make it into shell history
-shopt -s histappend                             # append on shell exit
-PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+HISTCONTROL=ignoreboth:erasedups
+HISTFILESIZE=10000
+HISTSIZE=${HISTFILESIZE}
+HISTIGNORE="la:ll:ls:ls *:cd:cd *:pwd:exit:clear:history:h:which *"
+shopt -s histappend
+
+if [ -z "$PROMPT_COMMAND" ]; then
+    PROMPT_COMMAND="history -a; history -c; history -r"
+else
+    PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+fi
 
 # Gradle
 export PATH="${PATH}:${HOME}/.local/opt/gradle/bin"
