@@ -154,6 +154,14 @@ PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 # Gradle
 export PATH="${PATH}:${HOME}/.local/opt/gradle/bin"
 
+# nvm => mise
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# cargo => mise
+# [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
+
 # Shell completion
 function add_completion() {
   cmd="${1}"
@@ -178,9 +186,3 @@ add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
 add_completion podman
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-. "$HOME/.cargo/env"
