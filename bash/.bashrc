@@ -69,7 +69,7 @@ export LANGUAGE="en_US.UTF-8"
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    (test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)") || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -86,6 +86,7 @@ fi
 # source /usr/share/bash-completion/completions/docker-compose
 if [ -d "${HOME}/.bash_completion.d" ]; then
   for i in $(find "${HOME}/.bash_completion.d/" -type f | sort); do
+    # shellcheck disable=SC1090
     source "${i}"
   done
 fi
@@ -136,7 +137,7 @@ if ! [ "${TERM}" == "dumb" ]; then
 fi
 
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
-  source "$EAT_SHELL_INTEGRATION_DIR/bash"
+  source "${EAT_SHELL_INTEGRATION_DIR}/bash"
 
 eval "$(direnv hook bash)"
 if ! [ "${TERM}" == "dumb" ]; then
@@ -179,8 +180,10 @@ function add_completion() {
   fi
 
   if (( "$#" )); then
+    # shellcheck disable=SC1090
     source <("${cmd}" "${@}")
   else
+    # shellcheck disable=SC1090
     source <("${cmd}" completion bash)
   fi
 }
