@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+set -euo pipefail
+
+# Create a temporary PNG file
+filename="$(mktemp).png"
+
+# Ensure the file is deleted on script exit (success or failure)
+trap 'rm -f "${filename}"' EXIT
+
+# Launch flameshot GUI and save screenshot
+flameshot gui -p "${filename}"
+
+# Copy the image to clipboard with correct MIME type
+xclip -selection clipboard -t image/png -i "${filename}"

@@ -431,7 +431,10 @@ local globalkeys = gears.table.join(
 
             util.arrange_clients(clientscfg, function(c, id) return c.window == id end)
         end,
-        { description = "recall arrangement of clients", group = "awesome" })
+        { description = "recall arrangement of clients", group = "awesome" }),
+    awful.key({ modkey }, "z",
+        function() awful.spawn("/home/rpoisel/.local/bin/flameshot-workaround") end,
+        { description = "Take screenshot with flameshot", group = "awesome" })
 )
 
 local clientkeys = gears.table.join(
