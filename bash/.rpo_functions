@@ -37,3 +37,8 @@ dedup() {
     cp "${HOME}/.bash_history" "${HOME}/.bash_history.backup" \
        && awk '!seen[$0]++' "${HOME}/.bash_history.backup" > "${HOME}/.bash_history"
 }
+
+apurge() {
+    # shellcheck disable=SC2046
+    sudo apt purge $(dpkg -l | grep ^rc | awk '{ print $2 }' | xargs)
+}
