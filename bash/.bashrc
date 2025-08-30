@@ -151,14 +151,6 @@ HISTIGNORE="la:ll:ls:cd:pwd:exit"               # will never make it into shell 
 shopt -s histappend                             # append on shell exit
 PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 
-[ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
-
-# Google Cloud SDK
-if [ -e "${HOME}/google-cloud-sdk/path.bash.inc" ]; then
-    source "${HOME}/google-cloud-sdk/path.bash.inc"
-    source "${HOME}/google-cloud-sdk/completion.bash.inc"
-fi
-
 # Gradle
 export PATH="${PATH}:${HOME}/.local/opt/gradle/bin"
 
