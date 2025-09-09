@@ -42,3 +42,10 @@ apurge() {
     # shellcheck disable=SC2046
     sudo apt purge $(dpkg -l | grep ^rc | awk '{ print $2 }' | xargs)
 }
+
+aupgrade() {
+    sudo apt --update full-upgrade || return $?
+    sudo apt clean
+    sudo apt autoremove
+    apurge
+}
