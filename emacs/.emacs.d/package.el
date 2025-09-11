@@ -1300,7 +1300,13 @@ With a prefix ARG, remove start location."
      (dwim-shell-command-on-marked-files
       "Convert to pdf using inkscape"
       "inkscape --export-area-drawing --export-filename='<<fne>>.pdf' '<<f>>'"
-      :utils "inkscape")))
+      :utils "inkscape"))
+   (defun rpo/dwim-shell-command-convert-xml-to-json ()
+     (interactive)
+     (dwim-shell-command-on-marked-files
+      "Convert from xml to json using yq"
+      "yq -p xml -o json '<<f>>' > '<<fne>>.json'"
+      :utils "yq")))
 
 (require 'dwim-shell-commands)
 
