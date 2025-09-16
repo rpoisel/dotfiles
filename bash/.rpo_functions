@@ -34,8 +34,18 @@ smite() {
 }
 
 dedup() {
+    # Implement similar deduplication rules as this setting:
+    # HISTIGNORE="la:ll:ls:ls *:cd:cd *:pwd:exit:clear:history:h:which *"
     cp "${HOME}/.bash_history" "${HOME}/.bash_history.backup" \
-       && awk '!seen[$0]++' "${HOME}/.bash_history.backup" > "${HOME}/.bash_history"
+       && awk '!seen[$0]++' "${HOME}/.bash_history.backup" \
+              | sed \
+                    -e '/^la\([[:space:]].\+\|\)$/d' \
+                    -e '/^ll\([[:space:]].\+\|\)$/d' \
+                    -e '/^ls\([[:space:]].\+\|\)$/d' \
+                    -e '/^cd\([[:space:]].\+\|\)$/d' \
+                    -e '/^pwd$/d' \
+                    -e '/^history$/d' \
+                        > "${HOME}/.bash_history"
 }
 
 apurge() {
