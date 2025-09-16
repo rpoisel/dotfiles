@@ -147,7 +147,10 @@ fi
 HISTCONTROL=ignoreboth:erasedups
 HISTFILESIZE=10000
 HISTSIZE=${HISTFILESIZE}
-HISTIGNORE="la:ll:ls:ls *:cd:cd *:pwd:exit:clear:history:h:which *"
+# Hint: not using HISTIGNORE as it would not recall usages
+# of la, ll, ls, cd, etc. in the current shell-session which is awkward.
+# In order to get rid of these entries in the bash history, call `dedup`.
+# HISTIGNORE="la:ll:ls:ls *:cd:cd *:pwd:exit:clear:history:h:which *"
 shopt -s histappend
 
 if [ -z "$PROMPT_COMMAND" ]; then
