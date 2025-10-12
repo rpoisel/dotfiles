@@ -54,7 +54,14 @@ apurge() {
 }
 
 aupgrade() {
-    sudo apt --update full-upgrade || return $?
+    local instr
+    instr="${1}"
+
+    case "${instr}" in
+        plan)   sudo apt update && TERM=xterm-256color sudo apt list --upgradable; return 0 ;;
+        apply)  sudo apt -yy full-upgrade ;;
+        *)      >&2 echo "Unknown command. Usage: aupgrade <plan | apply>"; return 1 ;;
+    esac
     sudo apt clean
     sudo apt autoremove
     apurge
