@@ -1295,12 +1295,18 @@ With a prefix ARG, remove start location."
      "Convert to png using inkscape"
      "inkscape --export-area-drawing --export-filename='<<fne>>.png' '<<f>>'"
      :utils "inkscape"))
-   (defun rpo/dwim-shell-command-convert-to-pdf ()
+   (defun rpo/dwim-shell-command-convert-inkscape-to-pdf ()
      (interactive)
      (dwim-shell-command-on-marked-files
       "Convert to pdf using inkscape"
       "inkscape --export-area-drawing --export-filename='<<fne>>.pdf' '<<f>>'"
       :utils "inkscape"))
+   (defun rpo/dwim-shell-command-convert-libreoffice-to-pdf ()
+     (interactive)
+     (dwim-shell-command-on-marked-files
+      "Convert to pdf using libreoffice"
+      "libreoffice --headless --convert-to pdf '<<f>>'"
+      :utils "libreoffice"))
    (defun rpo/dwim-shell-command-convert-xml-to-json ()
      (interactive)
      (dwim-shell-command-on-marked-files
