@@ -644,32 +644,36 @@
         which-key-idle-secondary-delay 0.5)
   (which-key-setup-side-window-bottom))
 
-
 (use-package eglot
   :ensure t
   :config
-  (progn (add-to-list 'eglot-server-programs
-                      '(python-mode . ("pyright-langserver" "--stdio")))
-         (add-to-list 'eglot-server-programs
-                      '((c-mode c++-mode)
-                        . ("clangd"
-                           "-j=8"
-                           "--log=error"
-                           "--malloc-trim"
-                           "--background-index"
-                           "--clang-tidy"
-                           "--cross-file-rename"
-                           "--completion-style=detailed"
-                           "--pch-storage=memory"
-                           "--header-insertion=never"
-                           "--header-insertion-decorators=0"
-                           "--query-driver=/**/cc*,/**/c++*,/**/*g++*,/**/*gcc*,/**/clang*")))
-         (define-key eglot-mode-map (kbd "C-c l r r") 'eglot-rename)))
-(add-hook 'python-mode-hook #'eglot-ensure)
-(add-hook 'c-mode-hook #'eglot-ensure)
-(add-hook 'c++-mode-hook #'eglot-ensure)
-(add-hook 'rustic-mode-hook #'eglot-ensure)
-(add-hook 'go-mode-hook 'eglot-ensure)
+  (defun my/mise-then-eglot ()
+    "Update mise environment, then start eglot after brief delay."
+    (mise--update)
+    (run-with-timer 0.1 nil #'eglot-ensure))
+  (add-hook 'python-mode-hook #'my/mise-then-eglot)
+  (add-hook 'c-mode-hook #'my/mise-then-eglot)
+  (add-hook 'c++-mode-hook #'my/mise-then-eglot)
+  (add-hook 'rustic-mode-hook #'my/mise-then-eglot)
+  (add-hook 'go-mode-hook #'my/mise-then-eglot)
+
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode)
+                 . ("clangd"
+                    "-j=8"
+                    "--log=error"
+                    "--malloc-trim"
+                    "--background-index"
+                    "--clang-tidy"
+                    "--cross-file-rename"
+                    "--completion-style=detailed"
+                    "--pch-storage=memory"
+                    "--header-insertion=never"
+                    "--header-insertion-decorators=0"
+                    "--query-driver=/**/cc*,/**/c++*,/**/*g++*,/**/*gcc*,/**/clang*")))
+  (define-key eglot-mode-map (kbd "C-c l r r") 'eglot-rename))
 
 (use-package flycheck-eglot
   :ensure t
@@ -1315,6 +1319,14 @@ With a prefix ARG, remove start location."
       :utils "yq")))
 
 (require 'dwim-shell-commands)
+
+(use-package mise
+  :ensure t
+  :config
+  (add-hook 'find-file-hook #'mise--update)
+  (defun my/dired-mise-update ()
+    (run-with-timer 0.05 nil #'mise--update))
+  (add-hook 'dired-mode-hook #'my/dired-mise-update))
 
 ;; compilation mode
 (setq compilation-scroll-output t)
