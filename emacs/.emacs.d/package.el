@@ -861,7 +861,8 @@
 (use-package magit
   :ensure
   :init
-  :config)
+  :config
+  (setq magit-auto-revert-mode -1))
 
 ;; (use-package git-gutter
 ;;   :ensure
