@@ -1210,6 +1210,27 @@ With a prefix ARG, remove start location."
   (add-hook 'chatgpt-shell-mode-hook
             (lambda () (setq-local tab-width 8))))
 
+(use-package agent-shell
+  :ensure t
+  ;; :init
+  ;; (add-to-list 'exec-path "/home/rpoisel/<some-dir>/node_modules/.bin")
+  ;; :custom
+  ;; (setq agent-shell-anthropic-authentication
+  ;;       (agent-shell-anthropic-make-authentication :api-key anthropic-api-key))
+  ;; (setq agent-shell-anthropic-authentication
+  ;;     (agent-shell-anthropic-make-authentication :login t))
+  :config
+  ;; Unset proxy environment variables for agent-shell and its submodes
+  (defun rpo/agent-shell-unset-proxy-vars ()
+    "Unset HTTP/HTTPS proxy environment variables for agent-shell."
+    (setq-local process-environment
+                (seq-filter (lambda (var)
+                              (not (string-match-p
+                                    "^\\(HTTP_PROXY\\|HTTPS_PROXY\\|http_proxy\\|https_proxy\\)="
+                                    var)))
+                            process-environment)))
+  (add-hook 'agent-shell-ui-mode-hook #'rpo/agent-shell-unset-proxy-vars))
+
 ;; the following package is required by chatgpt-shell in order to parse the awesome prompts
 (use-package pcsv
   :ensure t)
