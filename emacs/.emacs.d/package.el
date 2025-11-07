@@ -1332,6 +1332,12 @@ With a prefix ARG, remove start location."
       "Convert to pdf using libreoffice"
       "libreoffice --headless --convert-to pdf '<<f>>'"
       :utils "libreoffice"))
+   (defun rpo/dwim-shell-command-convert-libreoffice-to-odt ()
+     (interactive)
+     (dwim-shell-command-on-marked-files
+      "Convert to pdf using libreoffice"
+      "libreoffice --headless --convert-to odt '<<f>>'"
+      :utils "libreoffice"))
    (defun rpo/dwim-shell-command-convert-xml-to-json ()
      (interactive)
      (dwim-shell-command-on-marked-files
