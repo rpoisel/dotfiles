@@ -1430,6 +1430,8 @@ With a prefix ARG, remove start location."
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (electric-indent-mode -1)
+(setq native-comp-async-report-warnings-errors 'silent) ;; https://www.reddit.com/r/emacs/comments/11a4jz4/emacs_automatically_switches_to_warnings_how_to/
+(setq warning-minimum-level :error)
 
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
