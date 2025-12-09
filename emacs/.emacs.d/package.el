@@ -1211,16 +1211,67 @@ With a prefix ARG, remove start location."
   (add-hook 'chatgpt-shell-mode-hook
             (lambda () (setq-local tab-width 8))))
 
+(defun rpo/agent-shell-get-devcontainer-workspace-path (cwd)
+  "Return devcontainer workspaceFolder for CWD, or default value if none found.
+
+If .devcontainer/devcontainer.json is missing, fall back to
+\"/workspaces/<project-name>\".
+
+See https://containers.dev for more information on devcontainers."
+  (let* ((devcontainer-config-file-name
+          (expand-file-name ".devcontainer/devcontainer.json" cwd))
+         (default-workspace-folder
+           (concat "/workspaces/"
+                   (file-name-nondirectory (directory-file-name cwd)))))
+    (condition-case _err
+        (map-elt (json-read-file devcontainer-config-file-name)
+                 'workspaceFolder
+                 default-workspace-folder)
+      ;; Missing file => just use default.
+      (file-missing default-workspace-folder)
+      ;; Other problems => still hard errors.
+      (permission-denied
+       (error "Not readable: %s" devcontainer-config-file-name))
+      (json-string-format
+       (error "No valid JSON: %s" devcontainer-config-file-name)))))
+
+(defun rpo/agent-shell-resolve-devcontainer-path (path)
+  "Resolve PATH between local filesystem and devcontainer workspace.
+
+Examples:
+
+- /workspace/README.md
+    => /home/xenodium/projects/kitchen-sink/README.md
+- /home/xenodium/projects/kitchen-sink/README.md
+    => /workspace/README.md"
+  (let* ((cwd (agent-shell-cwd))
+         (devcontainer-path (rpo/agent-shell-get-devcontainer-workspace-path cwd)))
+    (if (string-prefix-p cwd path)
+        ;; Local -> devcontainer
+        (string-replace cwd devcontainer-path path)
+      ;; Devcontainer -> local (with safety checks)
+      (if agent-shell-text-file-capabilities
+          (if-let* ((is-dev-container (string-prefix-p devcontainer-path path))
+                    (local-path (expand-file-name
+                                 (string-replace devcontainer-path cwd path))))
+              (or
+               (and (file-in-directory-p local-path cwd) local-path)
+               (error "Resolves to path outside of working directory: %s" path))
+            (error "Unexpected path outside of workspace folder: %s" path))
+        (error "Refuse to resolve to local filesystem with text file capabilities disabled: %s" path)))))
+
 (use-package agent-shell
   :ensure t
   ;; :init
   ;; (add-to-list 'exec-path "/home/rpoisel/<some-dir>/node_modules/.bin")
-  ;; :custom
   ;; (setq agent-shell-anthropic-authentication
   ;;       (agent-shell-anthropic-make-authentication :api-key anthropic-api-key))
   ;; (setq agent-shell-anthropic-authentication
   ;;     (agent-shell-anthropic-make-authentication :login t))
   :config
+  (setq acp-logging-enabled t)
+  (setq agent-shell-container-command-runner '("devcontainer" "exec" "--workspace-folder" "."))
+  (setq agent-shell-path-resolver-function #'rpo/agent-shell-resolve-devcontainer-path)
   ;; Unset proxy environment variables for agent-shell and its submodes
   (defun rpo/agent-shell-unset-proxy-vars ()
     "Unset HTTP/HTTPS proxy environment variables for agent-shell."
