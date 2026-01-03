@@ -52,14 +52,21 @@
 (add-to-list 'ispell-skip-region-alist '("---" . "---"))
 
 (use-package dracula-theme
+  :ensure t)
+
+(use-package emacs-material-theme
   :ensure t
-  :config (load-theme 'dracula t))
+  :vc (:url "https://github.com/xenodium/emacs-materialized-theme")
+  :no-require t)
 
 (use-package standard-themes
   :ensure t)
 
 (use-package modus-themes
   :ensure t)
+
+;; (load-theme 'dracula t)
+(load-theme 'materialized t)
 
 (setq fontaine-latest-state-file
       (locate-user-emacs-file "fontaine-latest-state.eld"))
