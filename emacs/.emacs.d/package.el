@@ -665,7 +665,7 @@
   (add-hook 'go-mode-hook #'my/mise-then-eglot)
 
   (add-to-list 'eglot-server-programs
-               '(python-mode . ("pyright-langserver" "--stdio")))
+               '(python-mode . ("ty" "server")))
   (add-to-list 'eglot-server-programs
                '((c-mode c++-mode)
                  . ("clangd"
