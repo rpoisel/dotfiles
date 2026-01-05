@@ -844,6 +844,7 @@
   (setq rg-show-header nil)
   :config
   (setq rg-custom-type-aliases '(("graphql" . "*.graphql *.graphqls gqlgen.yml")))
+  (setq rg-command-line-flags '("--hidden"))
   (rg-enable-default-bindings)
 
   ;; Redefine searches from transient, hardcode :files to "everything".
