@@ -1494,6 +1494,7 @@ Examples:
 (setq enable-local-variables t)
 (setq enable-local-eval t)
 (setq hack-dir-local-variables-non-file-buffer t)
+(add-to-list 'auto-mode-alist '("\\.env\\(\\..*\\)?\\'" . conf-mode))
 
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
