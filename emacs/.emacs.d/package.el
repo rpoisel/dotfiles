@@ -1491,6 +1491,9 @@ Examples:
 (electric-indent-mode -1)
 (setq native-comp-async-report-warnings-errors 'silent) ;; https://www.reddit.com/r/emacs/comments/11a4jz4/emacs_automatically_switches_to_warnings_how_to/
 (setq warning-minimum-level :error)
+(setq enable-local-variables t)
+(setq enable-local-eval t)
+(setq hack-dir-local-variables-non-file-buffer t)
 
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
