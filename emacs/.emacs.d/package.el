@@ -1496,6 +1496,11 @@ Examples:
 (setq hack-dir-local-variables-non-file-buffer t)
 (add-to-list 'auto-mode-alist '("\\.env\\(\\..*\\)?\\'" . conf-mode))
 
+;; Clipboard settings
+(setq select-enable-clipboard t)
+(setq select-enable-primary t)
+(setq save-interprogram-paste-before-kill 8192)
+
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
 
