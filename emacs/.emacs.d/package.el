@@ -1280,6 +1280,10 @@ selects the matching `docker compose exec` service, defaulting to
 (use-package request
   :ensure t)
 
+(use-package nix-mode
+  :ensure t
+  :mode "\\.nix\\'")
+
 (defun rpo/goto-point-min (buffer _process)
   "Goto (point-min) in BUFFER."
   (with-current-buffer buffer
