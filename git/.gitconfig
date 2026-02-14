@@ -1,8 +1,9 @@
 [cola]
 	spellcheck = false
 [user]
-	email = rainer.poisel@gmail.com
+	email = rainer@embedded-focus.com
 	name = Rainer Poisel
+	signingkey = /home/rpoisel/.ssh/id_ed25519.pub
 [pull]
 	rebase = true
 [diff]
@@ -42,14 +43,19 @@ stash-untracked = "!f() {    \
 	dt = difftool
 	cloner = clone --recursive
     cb = symbolic-ref --short HEAD
-[credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
 [fetch]
 	prune = true
+	pruneTags = true
+	all = true
 [github]
 	user = rpoisel
 [core]
 	excludesfile = ~/.gitignore
 [rebase]
 	autostash = true
+[gpg]
+	format = ssh
+[commit]
+	gpgSign = true
+[gpg "ssh"]
+	allowedSignersFile = /home/rpoisel/.ssh/allowed_signers
