@@ -93,3 +93,6 @@ alias kubl="kustomize build . | yq eval -C | less -R"
 alias bc="bc -l"
 alias to_upper="tr a-z A-Z"
 alias lgc="labgrid-client"
+
+# AI
+alias ac="agent-circus"
