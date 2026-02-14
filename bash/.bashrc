@@ -159,12 +159,6 @@ else
     PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 fi
 
-# Gradle
-export PATH="${PATH}:${HOME}/.local/opt/gradle/bin"
-
-# mise
-eval "$("${HOME}/.local/bin/mise" activate bash)"
-
 # nvm => mise
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -199,4 +193,3 @@ add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
 add_completion podman
-add_completion mise

@@ -635,16 +635,6 @@
 (use-package eglot
   :ensure t
   :config
-  (defun my/mise-then-eglot ()
-    "Update mise environment, then start eglot after brief delay."
-    (mise--update)
-    (run-with-timer 0.1 nil #'eglot-ensure))
-  (add-hook 'python-mode-hook #'my/mise-then-eglot)
-  (add-hook 'c-mode-hook #'my/mise-then-eglot)
-  (add-hook 'c++-mode-hook #'my/mise-then-eglot)
-  (add-hook 'rustic-mode-hook #'my/mise-then-eglot)
-  (add-hook 'go-mode-hook #'my/mise-then-eglot)
-
   (add-to-list 'eglot-server-programs
                '(python-mode . ("ty" "server")))
   (add-to-list 'eglot-server-programs
@@ -1404,14 +1394,6 @@ selects the matching `docker compose exec` service, defaulting to
       :utils "yq")))
 
 (require 'dwim-shell-commands)
-
-(use-package mise
-  :ensure t
-  :config
-  (add-hook 'find-file-hook #'mise--update)
-  (defun my/dired-mise-update ()
-    (run-with-timer 0.05 nil #'mise--update))
-  (add-hook 'dired-mode-hook #'my/dired-mise-update))
 
 ;; compilation mode
 (setq compilation-scroll-output t)
