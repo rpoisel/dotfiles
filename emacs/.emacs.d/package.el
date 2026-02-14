@@ -1276,7 +1276,6 @@ selects the matching `docker compose exec` service, defaulting to
 
 (use-package envrc
   :ensure t)
-(envrc-global-mode)
 
 (use-package request
   :ensure t)
@@ -1534,6 +1533,8 @@ selects the matching `docker compose exec` service, defaulting to
                                      (if (window-in-direction 'below)
                                          (enlarge-window 5)
                                        (shrink-window 5))))
+
+(envrc-global-mode)
 
 ;; ultra-fast keybindinds
 ;;; package.el ends here
