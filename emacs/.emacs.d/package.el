@@ -1249,6 +1249,28 @@ Examples:
             (error "Unexpected path outside of workspace folder: %s" path))
         (error "Refuse to resolve to local filesystem with text file capabilities disabled: %s" path)))))
 
+(defun rpo/agent-shell-devcontainer-runner-multi (buffer)
+  "Return the devcontainer command prefix to run for BUFFER's agent.
+
+  Looks up the agent identifier in BUFFER's `agent-shell' config and
+  selects the matching `devcontainer exec' invocation, defaulting to
+  a plain workspace exec when no identifier-specific override is found."
+  (pcase (map-elt (agent-shell-get-config buffer) :identifier)
+    ('claude-code
+     '("npx" "@devcontainers/cli@0.83.0" "exec" "--workspace-folder" "."
+       "--override-config" ".agent-circus/devcontainer.json"
+       "--id-label" "io.devcontainer.exec-target=claude-code"))
+    ('codex
+     '("npx" "@devcontainers/cli@0.83.0" "exec" "--workspace-folder" "."
+       "--config" ".agent-circus/devcontainer.json"
+       "--override-config" ".agent-circus/devcontainer.json"
+       "--id-label" "io.devcontainer.exec-target=codex"))
+    ('mistral-vibe
+     '("npx" "@devcontainers/cli@0.83.0" "exec" "--workspace-folder" "."
+       "--override-config" ".agent-circus/devcontainer.json"
+       "--id-label" "io.devcontainer.exec-target=mistral-vibe"))
+    (_ '("npx" "@devcontainers/cli@0.83.0" "exec" "--workspace-folder" "."))))
+
 (use-package agent-shell
   :ensure t
   ;; :init
@@ -1259,7 +1281,7 @@ Examples:
   ;;     (agent-shell-anthropic-make-authentication :login t))
   :config
   (setq acp-logging-enabled t)
-  (setq agent-shell-container-command-runner '("devcontainer" "exec" "--workspace-folder" "."))
+  (setq agent-shell-container-command-runner #'rpo/agent-shell-devcontainer-runner-multi)
   (setq agent-shell-path-resolver-function #'rpo/agent-shell-resolve-devcontainer-path)
   ;; Unset proxy environment variables for agent-shell and its submodes
   (defun rpo/agent-shell-unset-proxy-vars ()
