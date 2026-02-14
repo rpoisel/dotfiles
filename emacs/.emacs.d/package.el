@@ -1388,7 +1388,19 @@ selects the matching `docker compose exec` service, defaulting to
      (interactive)
      (dwim-shell-command-on-marked-files
       "Convert from xml to json using yq"
-      "yq -p xml -o json '<<f>>' > '<<fne>>.json'"
+      "yq -pxml -P -o json '<<f>>' > '<<fne>>.json'"
+      :utils "yq"))
+   (defun rpo/dwim-shell-command-convert-json-to-yaml ()
+     (interactive)
+     (dwim-shell-command-on-marked-files
+      "Convert from json to yaml using yq"
+      "yq -pjson -P -oyaml '<<f>>' > '<<fne>>.yaml'"
+      :utils "yq"))
+   (defun rpo/dwim-shell-command-convert-yaml-to-json ()
+     (interactive)
+     (dwim-shell-command-on-marked-files
+      "Convert from yaml to json using yq"
+      "yq -pyaml -P -ojson '<<f>>' > '<<fne>>.json'"
       :utils "yq")))
 
 (require 'dwim-shell-commands)
