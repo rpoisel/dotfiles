@@ -1273,26 +1273,14 @@ Examples:
 
 (use-package agent-shell
   :ensure t
-  ;; :init
-  ;; (add-to-list 'exec-path "/home/rpoisel/<some-dir>/node_modules/.bin")
-  ;; (setq agent-shell-anthropic-authentication
-  ;;       (agent-shell-anthropic-make-authentication :api-key anthropic-api-key))
-  ;; (setq agent-shell-anthropic-authentication
-  ;;     (agent-shell-anthropic-make-authentication :login t))
   :config
   (setq acp-logging-enabled t)
   (setq agent-shell-container-command-runner #'rpo/agent-shell-devcontainer-runner-multi)
   (setq agent-shell-path-resolver-function #'rpo/agent-shell-resolve-devcontainer-path)
-  ;; Unset proxy environment variables for agent-shell and its submodes
-  (defun rpo/agent-shell-unset-proxy-vars ()
-    "Unset HTTP/HTTPS proxy environment variables for agent-shell."
-    (setq-local process-environment
-                (seq-filter (lambda (var)
-                              (not (string-match-p
-                                    "^\\(HTTP_PROXY\\|HTTPS_PROXY\\|http_proxy\\|https_proxy\\)="
-                                    var)))
-                            process-environment)))
-  (add-hook 'agent-shell-ui-mode-hook #'rpo/agent-shell-unset-proxy-vars))
+  (add-hook 'agent-shell-mode-hook
+            (lambda ()
+              (local-set-key (kbd "C-<tab>")
+                             #'agent-shell-cycle-session-mode))))
 
 ;; the following package is required by chatgpt-shell in order to parse the awesome prompts
 (use-package pcsv
