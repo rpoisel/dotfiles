@@ -1275,6 +1275,11 @@ selects the matching `docker compose exec` service, defaulting to
   (setq acp-logging-enabled t)
   (setq agent-shell-container-command-runner #'rpo/agent-shell-compose-runner-multi)
   (setq agent-shell-path-resolver-function #'rpo/agent-shell--resolve-container-path)
+  ;; (setq agent-shell-mcp-servers
+  ;;     '(((name . "grafana")
+  ;;        (type . "sse")
+  ;;        (headers . [])
+  ;;        (url . "http://mcp-grafana:8000/sse"))))
   (setq agent-shell-file-completion-enabled t))
 
 ;; the following package is required by chatgpt-shell in order to parse the awesome prompts
