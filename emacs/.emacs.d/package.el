@@ -1274,13 +1274,10 @@ Examples:
 (use-package agent-shell
   :ensure t
   :config
+  (define-key agent-shell-mode-map (kbd "C-c C-g") #'agent-shell-cycle-session-mode)
   (setq acp-logging-enabled t)
   (setq agent-shell-container-command-runner #'rpo/agent-shell-devcontainer-runner-multi)
-  (setq agent-shell-path-resolver-function #'rpo/agent-shell-resolve-devcontainer-path)
-  (add-hook 'agent-shell-mode-hook
-            (lambda ()
-              (local-set-key (kbd "C-<tab>")
-                             #'agent-shell-cycle-session-mode))))
+  (setq agent-shell-path-resolver-function #'rpo/agent-shell-resolve-devcontainer-path))
 
 ;; the following package is required by chatgpt-shell in order to parse the awesome prompts
 (use-package pcsv
