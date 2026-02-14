@@ -1270,6 +1270,8 @@ selects the matching `docker compose exec` service, defaulting to
   :ensure t
   :config
   (define-key agent-shell-mode-map (kbd "C-c C-g") #'agent-shell-cycle-session-mode)
+  (setq agent-shell-mistral-authentication
+        (agent-shell-mistral-make-authentication :api-key "ignored"))
   (setq acp-logging-enabled t)
   (setq agent-shell-container-command-runner #'rpo/agent-shell-compose-runner-multi)
   (setq agent-shell-path-resolver-function #'rpo/agent-shell--resolve-container-path)
