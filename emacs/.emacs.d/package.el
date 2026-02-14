@@ -1200,49 +1200,27 @@ With a prefix ARG, remove start location."
   (add-hook 'chatgpt-shell-mode-hook
             (lambda () (setq-local tab-width 8))))
 
-(defun rpo/agent-shell-get-devcontainer-workspace-path (cwd)
-  "Return devcontainer workspaceFolder for CWD, or default value if none found.
+(defconst rpo/agent-shell--container-workspace-path "/workspace/"
+  "The workspace path inside agent containers.")
 
-If .devcontainer/devcontainer.json is missing, fall back to
-\"/workspaces/<project-name>\".
+(defun rpo/agent-shell--resolve-container-path (path)
+  "Resolve PATH between local filesystem and container workspace.
 
-See https://containers.dev for more information on devcontainers."
-  (let* ((devcontainer-config-file-name
-          (expand-file-name ".devcontainer/devcontainer.json" cwd))
-         (default-workspace-folder
-           (concat "/workspaces/"
-                   (file-name-nondirectory (directory-file-name cwd)))))
-    (condition-case _err
-        (map-elt (json-read-file devcontainer-config-file-name)
-                 'workspaceFolder
-                 default-workspace-folder)
-      ;; Missing file => just use default.
-      (file-missing default-workspace-folder)
-      ;; Other problems => still hard errors.
-      (permission-denied
-       (error "Not readable: %s" devcontainer-config-file-name))
-      (json-string-format
-       (error "No valid JSON: %s" devcontainer-config-file-name)))))
-
-(defun rpo/agent-shell-resolve-devcontainer-path (path)
-  "Resolve PATH between local filesystem and devcontainer workspace.
-
-Examples:
+For example:
 
 - /workspace/README.md
     => /home/xenodium/projects/kitchen-sink/README.md
 - /home/xenodium/projects/kitchen-sink/README.md
     => /workspace/README.md"
-  (let* ((cwd (agent-shell-cwd))
-         (devcontainer-path (rpo/agent-shell-get-devcontainer-workspace-path cwd)))
+  (let ((cwd (agent-shell-cwd)))
     (if (string-prefix-p cwd path)
-        ;; Local -> devcontainer
-        (string-replace cwd devcontainer-path path)
-      ;; Devcontainer -> local (with safety checks)
+        ;; Local -> container
+        (string-replace cwd rpo/agent-shell--container-workspace-path path)
+      ;; Container -> local
       (if agent-shell-text-file-capabilities
-          (if-let* ((is-dev-container (string-prefix-p devcontainer-path path))
+          (if-let* ((_ (string-prefix-p rpo/agent-shell--container-workspace-path path))
                     (local-path (expand-file-name
-                                 (string-replace devcontainer-path cwd path))))
+                                 (string-replace rpo/agent-shell--container-workspace-path cwd path))))
               (or
                (and (file-in-directory-p local-path cwd) local-path)
                (error "Resolves to path outside of working directory: %s" path))
@@ -1271,13 +1249,31 @@ Examples:
        "--id-label" "io.devcontainer.exec-target=mistral-vibe"))
     (_ '("npx" "@devcontainers/cli@0.83.0" "exec" "--workspace-folder" "."))))
 
+(defun rpo/agent-shell-compose-runner-multi (buffer)
+  "Return the docker compose command prefix to run for BUFFER's agent.
+
+Looks up the agent identifier in BUFFER's `agent-shell' config and
+selects the matching `docker compose exec` service, defaulting to
+\"claude-code\" when no identifier-specific override is found."
+  (let* ((cfg (agent-shell-get-config buffer))
+         (id  (map-elt cfg :identifier))
+         (service
+          (pcase id
+            ('claude-code "claude-code")
+            ('codex "codex")
+            ('mistral-vibe "mistral-vibe")
+            (_ "claude-code")))
+         (prefix '("docker" "compose" "-f" ".agent-circus/compose.yaml" "exec" "-ti")))
+    (append prefix (list service))))
+
 (use-package agent-shell
   :ensure t
   :config
   (define-key agent-shell-mode-map (kbd "C-c C-g") #'agent-shell-cycle-session-mode)
   (setq acp-logging-enabled t)
-  (setq agent-shell-container-command-runner #'rpo/agent-shell-devcontainer-runner-multi)
-  (setq agent-shell-path-resolver-function #'rpo/agent-shell-resolve-devcontainer-path))
+  (setq agent-shell-container-command-runner #'rpo/agent-shell-compose-runner-multi)
+  (setq agent-shell-path-resolver-function #'rpo/agent-shell--resolve-container-path)
+  (setq agent-shell-file-completion-enabled t))
 
 ;; the following package is required by chatgpt-shell in order to parse the awesome prompts
 (use-package pcsv
