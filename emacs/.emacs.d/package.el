@@ -1256,6 +1256,24 @@ selects the matching `docker compose exec` service, defaulting to
          (prefix '("docker" "compose" "-f" ".agent-circus/compose.yaml" "exec" "-ti")))
     (append prefix (list service))))
 
+(defun rpo/agent-shell-circus-runner-multi (buffer)
+  "Return the agent-circus exec command prefix to run for BUFFER's agent.
+
+Looks up the agent identifier in BUFFER's `agent-shell' config and
+selects the matching `agent-circus exec` service, defaulting to
+\"claude-code\" when no identifier-specific override is found.
+
+Works in both instant mode and deploy mode."
+  (let* ((cfg (agent-shell-get-config buffer))
+         (id  (map-elt cfg :identifier))
+         (service
+          (pcase id
+            ('claude-code "claude-code")
+            ('codex "codex")
+            ('mistral-vibe "mistral-vibe")
+            (_ "claude-code"))))
+    (list "agent-circus" "exec" service "--")))
+
 (use-package agent-shell
   :ensure t
   :config
@@ -1263,7 +1281,7 @@ selects the matching `docker compose exec` service, defaulting to
   (setq agent-shell-mistral-authentication
         (agent-shell-mistral-make-authentication :api-key "ignored"))
   (setq acp-logging-enabled t)
-  (setq agent-shell-container-command-runner #'rpo/agent-shell-compose-runner-multi)
+  (setq agent-shell-container-command-runner #'rpo/agent-shell-circus-runner-multi)
   (setq agent-shell-path-resolver-function #'rpo/agent-shell--resolve-container-path)
   (setq agent-shell-file-completion-enabled t))
 
