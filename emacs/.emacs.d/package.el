@@ -1394,7 +1394,28 @@ selects the matching `docker compose exec` service, defaulting to
      (dwim-shell-command-on-marked-files
       "Convert from yaml to json using yq"
       "yq -pyaml -P -ojson '<<f>>' > '<<fne>>.json'"
-      :utils "yq")))
+      :utils "yq"))
+   (defun rpo/dwim-shell-command-retroify (preset)
+  "Apply retro pixel effect to marked images using ImageMagick.
+PRESET must be one of: cga, ega, vga, gameboy."
+  (interactive
+   (list
+    (completing-read "Retro preset: " '("cga" "ega" "vga" "gameboy") nil t)))
+  (let* ((cmd
+          (pcase preset
+            ("cga"
+             "magick '<<f>>' -resize 40x25 -colors 4 -dither FloydSteinberg -scale 640x400 '<<fne>>-retro-cga.png'")
+            ("ega"
+             "magick '<<f>>' -resize 64x64 -colors 16 -dither FloydSteinberg -scale 512x512 '<<fne>>-retro-ega.png'")
+            ;; vga default resolution: 160x120
+            ("vga"
+             "magick '<<f>>' -resize 320x240 -colors 256 -dither FloydSteinberg -scale 640x480 '<<fne>>-retro-vga.png'")
+            ("gameboy"
+             "magick '<<f>>' -colorspace gray -resize 128x112 -colors 4 -dither FloydSteinberg -scale 512x448 '<<fne>>-retro-gb.png'"))))
+    (dwim-shell-command-on-marked-files
+     (format "Retroify image (%s)" preset)
+     cmd
+     :utils "magick"))))
 
 (require 'dwim-shell-commands)
 
