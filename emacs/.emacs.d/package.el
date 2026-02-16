@@ -870,6 +870,7 @@
 (use-package diff-hl
   :ensure
   :config
+  (setq diff-hl-fallback-to-margin nil)
   (diff-hl-flydiff-mode 1)
   :hook
   ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
