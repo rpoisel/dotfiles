@@ -1302,6 +1302,18 @@ Works in both instant mode and deploy mode."
   :ensure t
   :mode "\\.nix\\'")
 
+(use-package xref
+  :ensure nil
+  :init
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
+
+(use-package dumb-jump
+  :ensure t
+  :init
+  (setq dumb-jump-force-searcher 'rg)
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
 (defun rpo/goto-point-min (buffer _process)
   "Goto (point-min) in BUFFER."
   (with-current-buffer buffer
