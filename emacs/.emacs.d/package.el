@@ -634,6 +634,7 @@
 
 (use-package eglot
   :ensure t
+  :hook ((python-mode-hook . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
                '(python-mode . ("ty" "server")))
