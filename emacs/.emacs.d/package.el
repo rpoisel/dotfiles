@@ -1595,4 +1595,3 @@ PRESET must be one of: cga, ega, vga, gameboy."
 
 ;; ultra-fast keybindinds
 ;;; package.el ends here
-
