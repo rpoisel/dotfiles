@@ -1503,6 +1503,23 @@ PRESET must be one of: cga, ega, vga, gameboy."
   (interactive)
   (shell-command-on-region (point-min) (point-max) "xmllint --format -" (current-buffer) t))
 
+(defun rpo/dired-copy-project-relative-path (orig-fun &optional arg)
+  "Extend `dired-copy-filename-as-kill`.
+
+With prefix argument C-u, copy the file path relative to the project root."
+  (if (equal arg '(4)) ;; C-u
+      (let* ((file (dired-get-file-for-visit))
+             (project (project-current nil file)))
+        (if project
+            (let ((relative (file-relative-name file (project-root project))))
+              (kill-new relative)
+              (message "%s" relative))
+          (funcall orig-fun arg)))
+    (funcall orig-fun arg)))
+
+(advice-add 'dired-copy-filename-as-kill :around
+            #'rpo/dired-copy-project-relative-path)
+
 (defun rpo/pwr (endpoint state)
   "Toggle the power of the mic to STATE, either \\='on\\=' or \\='off\\='."
   (interactive
