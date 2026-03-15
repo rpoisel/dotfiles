@@ -1283,7 +1283,7 @@ Works in both instant mode and deploy mode."
   (setq agent-shell-mistral-authentication
         (agent-shell-mistral-make-authentication :api-key "ignored"))
   (setq acp-logging-enabled t)
-  (setq agent-shell-container-command-runner #'rpo/agent-shell-circus-runner-multi)
+  (setq agent-shell-command-prefix #'rpo/agent-shell-circus-runner-multi)
   (setq agent-shell-path-resolver-function #'rpo/agent-shell--resolve-container-path)
   (setq agent-shell-file-completion-enabled t))
 
