@@ -193,3 +193,4 @@ add_completion hugo
 add_completion yq shell-completion bash
 add_completion gh completion -s bash
 add_completion podman
+eval "$(rpoisel --show-completion bash)"
