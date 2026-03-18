@@ -839,10 +839,21 @@
   :ensure t)
 
 (use-package magit
-  :ensure
+  :ensure t
+  :preface
+  (defun rpo/magit-copy-current-branch-name ()
+    "Copy the current Git branch name or commit hash."
+    (interactive)
+    (let ((name (or (magit-get-current-branch)
+                    (magit-rev-parse "--short" "HEAD"))))
+      (kill-new name)
+      (message "%s" name)))
   :init
   :config
-  (setq magit-auto-revert-mode -1))
+  (setq magit-auto-revert-mode -1)
+
+  (define-key magit-mode-map (kbd "C-c w")
+              #'rpo/magit-copy-current-branch-name))
 
 ;; (use-package git-gutter
 ;;   :ensure
