@@ -652,6 +652,8 @@
                     "--header-insertion=never"
                     "--header-insertion-decorators=0"
                     "--query-driver=/**/cc*,/**/c++*,/**/*g++*,/**/*gcc*,/**/clang*")))
+  (add-to-list 'eglot-server-programs
+               '(bash-ts-mode . ("bash-language-server" "start")))
   (define-key eglot-mode-map (kbd "C-c l r r") 'eglot-rename))
 
 (use-package flycheck-eglot
