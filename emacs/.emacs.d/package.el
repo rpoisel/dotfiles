@@ -637,7 +637,7 @@
   :hook ((python-mode-hook . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
-               '(python-mode . ("ty" "server")))
+               '(python-mode . ("uv" "run" "ty" "server")))
   (add-to-list 'eglot-server-programs
                '((c-mode c++-mode)
                  . ("clangd"
@@ -748,8 +748,8 @@
   (interactive)
   (when rpo-format-on-save
     (progn
-        (rpo-pipe-and-replace-buffer "ruff check --select I --fix --silent -")
-        (rpo-pipe-and-replace-buffer "ruff format -"))))
+        (rpo-pipe-and-replace-buffer "uv run ruff check --select I --fix --silent -")
+        (rpo-pipe-and-replace-buffer "uv run ruff format -"))))
 
 (add-hook 'python-mode-hook
           (lambda () (local-set-key
