@@ -1045,6 +1045,7 @@
 (rpo-load-file-if-exists "~/Sync/org/capture_templates.el")
 (use-package org
   :config
+  (require 'org-element)
   (setq org-ellipsis " ▾")
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
@@ -1055,7 +1056,52 @@
   ;; open directory links in emacs (see: https://emacs.stackexchange.com/a/10696/36387)
   (add-to-list 'org-file-apps '(directory . emacs))
   (define-key org-mode-map (kbd "C-c C-x C-r") 'org-clock-report)
-  (add-hook 'org-mode-hook (lambda () (setq-local tab-width 8))))
+  (define-key org-mode-map (kbd "C-c C-x s") #'rpo/org-clock-continue)
+  (add-hook 'org-mode-hook (lambda () (setq-local tab-width 8)))
+
+  (defun rpo/org-clock--timestamp-from-end (timestamp)
+    "Return inactive Org timestamp string from end of TIMESTAMP."
+    (let* ((year   (org-element-property :year-end timestamp))
+           (month  (org-element-property :month-end timestamp))
+           (day    (org-element-property :day-end timestamp))
+           (hour   (org-element-property :hour-end timestamp))
+           (minute (org-element-property :minute-end timestamp))
+           (time   (encode-time 0 minute hour day month year)))
+      (format-time-string "[%Y-%m-%d %a %H:%M]" time)))
+
+  (defun rpo/org-insert-clock-line (start end &optional duration)
+    "Insert an Org CLOCK line from START to END.
+Return the buffer position of the minutes field of END."
+    (insert "CLOCK: " start "--")
+    (let ((end-ts-start (point)))
+      (insert end " =>  " (or duration "0:00"))
+
+      (save-excursion
+        (goto-char end-ts-start)
+        (search-forward ":" (+ end-ts-start (length end)))
+        (point))))
+
+  (defun rpo/org-clock-continue ()
+    "Insert a new CLOCK entry above the current one.
+
+The new entry starts and ends at the end timestamp of the current
+CLOCK entry. Point is moved to the end timestamp of the new line."
+    (interactive)
+    (unless (derived-mode-p 'org-mode)
+      (user-error "Not in Org mode"))
+
+    (let ((element (org-element-context)))
+      (unless (eq (org-element-type element) 'clock)
+        (user-error "Point is not on a CLOCK entry"))
+
+      (let* ((timestamp (org-element-property :value element))
+             (end-stamp (rpo/org-clock--timestamp-from-end timestamp))
+             end-ts-pos)
+        (goto-char (org-element-property :begin element))
+        (setq end-ts-pos
+              (rpo/org-insert-clock-line end-stamp end-stamp "0:00"))
+        (insert "\n")
+        (goto-char end-ts-pos)))))
 
 (setq org-latex-pdf-process
       '("lualatex -shell-escape -interaction nonstopmode %f"
