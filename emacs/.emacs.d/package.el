@@ -266,7 +266,7 @@
     ;; toggle `dired-omit-mode' with C-x M-o
     (add-hook 'dired-mode-hook #'dired-omit-mode)
     (setq dired-omit-files
-          (concat dired-omit-files "\\|^.DS_STORE$\\|^.projectile$\\|\\.~undo-tree~$"))))
+          (concat dired-omit-files "\\|^.DS_STORE$\\|\\.~undo-tree~$"))))
 
 (use-package dired-aux
   :after dired
