@@ -1615,6 +1615,7 @@ With prefix argument C-u, copy the file path relative to the project root."
 (setq select-enable-clipboard t)
 (setq select-enable-primary t)
 (setq save-interprogram-paste-before-kill 8192)
+(setq enable-recursive-minibuffers t)
 
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
