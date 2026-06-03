@@ -1223,8 +1223,6 @@ With a prefix ARG, remove start location."
   (with-eval-after-load 'pdf-annot
     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
-(use-package org-clock-csv
-  :ensure t)
 
 (use-package csv-mode
   :ensure t)
