@@ -1057,17 +1057,43 @@
   (add-to-list 'org-file-apps '(directory . emacs))
   (define-key org-mode-map (kbd "C-c C-x C-r") 'org-clock-report)
   (define-key org-mode-map (kbd "C-c C-x s") #'rpo/org-clock-continue)
+  (define-key org-mode-map (kbd "C-c C-x S") #'rpo/org-clock-split-half)
   (add-hook 'org-mode-hook (lambda () (setq-local tab-width 8)))
+
+  (defun rpo/org-clock--timestamp-time (timestamp suffix)
+    "Return Emacs time value for TIMESTAMP.
+SUFFIX is either `start' or `end'."
+    (encode-time
+     0
+     (org-element-property (intern (format ":minute-%s" suffix)) timestamp)
+     (org-element-property (intern (format ":hour-%s" suffix)) timestamp)
+     (org-element-property (intern (format ":day-%s" suffix)) timestamp)
+     (org-element-property (intern (format ":month-%s" suffix)) timestamp)
+     (org-element-property (intern (format ":year-%s" suffix)) timestamp)))
+
+  (defun rpo/org-clock--format-time (time)
+    "Return TIME as inactive Org timestamp."
+    (format-time-string "[%Y-%m-%d %a %H:%M]" time))
+
+  (defun rpo/org-clock--format-duration (start end)
+    "Return duration between START and END as Org clock duration."
+    (let* ((minutes (round (/ (float-time (time-subtract end start)) 60)))
+           (hours (/ minutes 60))
+           (mins (% minutes 60)))
+      (format "%d:%02d" hours mins)))
+
+  (defun rpo/org-clock--insert-clock-line-from-times (start end)
+    "Insert Org CLOCK line from START to END.
+Return the buffer position of the minutes field of END."
+    (rpo/org-insert-clock-line
+     (rpo/org-clock--format-time start)
+     (rpo/org-clock--format-time end)
+     (rpo/org-clock--format-duration start end)))
 
   (defun rpo/org-clock--timestamp-from-end (timestamp)
     "Return inactive Org timestamp string from end of TIMESTAMP."
-    (let* ((year   (org-element-property :year-end timestamp))
-           (month  (org-element-property :month-end timestamp))
-           (day    (org-element-property :day-end timestamp))
-           (hour   (org-element-property :hour-end timestamp))
-           (minute (org-element-property :minute-end timestamp))
-           (time   (encode-time 0 minute hour day month year)))
-      (format-time-string "[%Y-%m-%d %a %H:%M]" time)))
+    (rpo/org-clock--format-time
+     (rpo/org-clock--timestamp-time timestamp 'end)))
 
   (defun rpo/org-insert-clock-line (start end &optional duration)
     "Insert an Org CLOCK line from START to END.
@@ -1101,7 +1127,38 @@ CLOCK entry. Point is moved to the end timestamp of the new line."
         (setq end-ts-pos
               (rpo/org-insert-clock-line end-stamp end-stamp "0:00"))
         (insert "\n")
-        (goto-char end-ts-pos)))))
+        (goto-char end-ts-pos))))
+
+  (defun rpo/org-clock-split-half ()
+    "Split CLOCK entry at point into two equal halves.
+
+The current CLOCK entry becomes the first half. A new CLOCK entry
+representing the second half is inserted above it."
+    (interactive)
+    (unless (derived-mode-p 'org-mode)
+      (user-error "Not in Org mode"))
+
+    (let ((element (org-element-context)))
+      (unless (eq (org-element-type element) 'clock)
+        (user-error "Point is not on a CLOCK entry"))
+
+      (let* ((timestamp (org-element-property :value element))
+             (start (rpo/org-clock--timestamp-time timestamp 'start))
+             (end (rpo/org-clock--timestamp-time timestamp 'end))
+             (duration (float-time (time-subtract end start)))
+             (middle (time-add start (seconds-to-time (/ duration 2))))
+             (line-begin (org-element-property :begin element))
+             (line-end (org-element-property :end element)))
+
+        (goto-char line-begin)
+        (delete-region line-begin line-end)
+
+        (rpo/org-clock--insert-clock-line-from-times middle end)
+        (insert "\n")
+        (rpo/org-clock--insert-clock-line-from-times start middle)
+        (insert "\n")
+
+        (goto-char line-begin)))))
 
 (setq org-latex-pdf-process
       '("lualatex -shell-escape -interaction nonstopmode %f"
