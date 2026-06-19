@@ -943,24 +943,43 @@
          ("M-s-h" . windmove-left)
          ("M-s-<left>" . windmove-left)))
 
-(use-package eat
-  :ensure t
+(use-package ghostel
+  :bind (("C-x m" . ghostel)
+         :map ghostel-semi-char-mode-map
+         ("C-s"  . consult-line)
+         ("C-k"  . my/ghostel-send-C-k-and-kill)
+         ;; ;; I'm used to go up/down the shell history with M-n/p from eshell
+         ;; ;; Simulate this behavior in ghostel by sending C-p and C-n
+         ("M-p" . (lambda () (interactive) (ghostel-send-key "p" "ctrl")))
+         ("M-n" . (lambda () (interactive) (ghostel-send-key "n" "ctrl")))
+         :map project-prefix-map
+         ("m" . ghostel-project)
+         ("M" . ghostel-project-list-buffers))
   :config
-  (setq eat-minimum-latency 0)
-  (setopt eat-shell-prompt-annotation-delay 0)
-  (setopt eat-very-visible-cursor-type '(t nil nil))
-  (setopt eat-term-scrollback-size nil)
-  (setopt eat-default-cursor-type '(t nil nil)))
-(add-hook `eat-mode-hook (lambda () (setq-local scroll-conservatively 10000)))
+  (setq ghostel-query-before-killing nil)
+  (defun my/ghostel-send-C-k-and-kill ()
+    "Send `C-k' to ghostel.
+Like normal Emacs `C-k'.  Kill to end of line and put content in kill-ring."
+    (interactive)
+    (kill-ring-save (point) (line-end-position))
+    (ghostel-send-key "k" "ctrl"))
 
-(defun rp/terminal-split-vertically ()
+  (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+  (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
+  (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
+
+(defun rpo/ghostel-new ()
+    (interactive)
+    ;; Non-numeric prefix arg => always create a fresh buffer.
+    (ghostel '(4)))
+(defun rpo/terminal-split-below ()
   (interactive)
-  (select-window (split-window-vertically))
-  (eat nil (list nil)))
-(defun rp/terminal-split-horizontally ()
+  (select-window (split-window-below))
+  (rpo/ghostel-new))
+(defun rpo/terminal-split-right ()
   (interactive)
-  (select-window (split-window-horizontally))
-  (eat nil (list nil)))
+  (select-window (split-window-right))
+  (rpo/ghostel-new))
 
 (use-package shell-pop
   :ensure
@@ -1675,9 +1694,9 @@ With prefix argument C-u, copy the file path relative to the project root."
 ;; global key map
 (global-set-key (kbd "C-:") 'avy-goto-char)
 
-(global-set-key (kbd "C-c t") (lambda () (interactive) (eat nil (list nil))))
-(global-set-key (kbd "C-c 2") 'rp/terminal-split-vertically)
-(global-set-key (kbd "C-c 3") 'rp/terminal-split-horizontally)
+(global-set-key (kbd "C-c t") 'rpo/ghostel-new)
+(global-set-key (kbd "C-c 2") 'rpo/terminal-split-below)
+(global-set-key (kbd "C-c 3") 'rpo/terminal-split-right)
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-staging)
 ;; (global-set-key (kbd "C-c s 3") 'rp/multi-vterm-jump-device-prod)
 
