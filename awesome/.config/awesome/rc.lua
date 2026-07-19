@@ -433,7 +433,7 @@ local globalkeys = gears.table.join(
         end,
         { description = "recall arrangement of clients", group = "awesome" }),
     awful.key({ modkey }, "z",
-        function() awful.spawn("/home/rpoisel/.local/bin/flameshot-workaround") end,
+        function() awful.spawn("flameshot gui") end,
         { description = "Take screenshot with flameshot", group = "awesome" })
 )
 
