@@ -433,7 +433,8 @@ local globalkeys = gears.table.join(
         end,
         { description = "recall arrangement of clients", group = "awesome" }),
     awful.key({ modkey }, "z",
-        function() awful.spawn("flameshot gui") end,
+        function() awful.spawn("bash -c 'flameshot gui -r | xclip -selection clipboard -t image/png'") end
+        ,
         { description = "Take screenshot with flameshot", group = "awesome" })
 )
 
