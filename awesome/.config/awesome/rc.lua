@@ -264,6 +264,8 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 -- }}}
 
+awful.spawn.once("copyq")
+
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
     awful.button({}, 3, function() mymainmenu:toggle() end),
@@ -374,6 +376,14 @@ local globalkeys = gears.table.join(
 
     awful.key({ modkey, "Shift" }, "d", naughty.destroy_all_notifications,
         { description = "clear notifications", group = "awesome" }),
+
+
+    -- Clipboard
+    awful.key({ modkey }, "v", function()
+        awful.spawn("copyq toggle")
+    end,
+        { description = "show clipboard history", group = "launcher" }
+    ),
 
     -- Prompt
     awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end,
