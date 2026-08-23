@@ -941,7 +941,8 @@
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-indexing-method 'hybrid)
+  (setq projectile-indexing-method 'hybrid
+        projectile-switch-project-action #'projectile-dired)
 
   :config
   ;; Enable Projectile's default keymap: C-c p f, C-c p p, etc.
