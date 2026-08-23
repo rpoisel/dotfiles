@@ -919,14 +919,43 @@
   :init
   :config)
 
-(use-package projectile
-  :ensure)
+(use-package project
+  :ensure nil
+  :init
+  (require 'cl-lib)
 
-(projectile-mode +1)
-;; Recommended keymap prefix on macOS
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-;; Recommended keymap prefix on Windows/Linux
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (defun my/project-try-uv (dir)
+    "Treat the nearest ancestor containing uv.lock as a project root."
+    (when-let ((root (locate-dominating-file dir "uv.lock")))
+      (cons 'uv (file-name-as-directory (expand-file-name root)))))
+
+  (cl-defmethod project-root ((project (head uv)))
+    (cdr project))
+
+  :config
+  ;; Eglot uses project.el. Make uv.lock win before Projectile/VC.
+  (setq project-find-functions
+        (cons #'my/project-try-uv
+              (remove #'my/project-try-uv project-find-functions))))
+
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-indexing-method 'hybrid)
+
+  :config
+  ;; Enable Projectile's default keymap: C-c p f, C-c p p, etc.
+  (projectile-mode +1)
+
+  ;; Make Projectile itself recognize uv.lock as a project root.
+  (add-to-list 'projectile-project-root-files "uv.lock")
+
+  ;; Projectile may add its own project.el backend after loading.
+  ;; Keep uv.lock first for Eglot/project.el.
+  (setq project-find-functions
+        (cons #'my/project-try-uv
+              (remove #'my/project-try-uv project-find-functions)))
+  (keymap-global-set "C-c p" projectile-command-map))
 
 (use-package php-mode
   :ensure
